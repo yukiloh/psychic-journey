@@ -1,5 +1,5 @@
 <!DOCTYPE HTML>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -59,9 +59,14 @@
                 <!--传入GitHub的登陆连接--><!--url中,第一个参数使用?分割,之后使用&-->
                 <!--client_id:传入服务器id-->    <!--redirect_uri= 获取返回的登陆页面-->
                 <!--scope:获取user信息-->   <!--state: 生成随机字符串,防止跨站攻击-->
-                <li><a href="https://github.com/login/oauth/authorize?client_id=Iv1.2299807260a02e0e&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登陆</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">项目名称 <span class="caret"></span></a>
+                <!--thymeleaf的if表达式,从session中获取user属性,为空则显示-->
+                <li th:if="${session.user == null }">
+                    <a href="https://github.com/login/oauth/authorize?client_id=Iv1.2299807260a02e0e&redirect_uri=http://localhost:8080/callback&scope=user&state=1">登陆</a>
+                </li>
+                <li class="dropdown" th:if="${session.user != null }">
+                    <!--关于session.user.getLogin()获取用户账户,如果无法获取会出现404页面;此处get方法基于JavaBean-->
+                    <!--之后问题在于:无法持久化存储登录状态-->
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" th:text="${session.user.getLogin()}"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><a href="#">项目1</a></li>
                         <li><a href="#">项目2</a></li>
@@ -74,6 +79,13 @@
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
+
+<div>
+    用于测试<br>
+    <p th:if="${session.user != null}" th:text="'用户名称：'+${session.user.getLogin()}"/>
+<!--    <p th:text="#{user.name}"/>-->
+</div>
+
 
 </body>
 </html>

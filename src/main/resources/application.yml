@@ -1,4 +1,5 @@
 spring:
+#  静态资源放行
   mvc:
     view:
       prefix: /templates/
@@ -6,12 +7,24 @@ spring:
     static-path-pattern: /static/**
 
 
+  #缓存设置为false, 这样修改之后马上生效，便于调试
+  thymeleaf:
+    cache: false
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/H2database
+    data-username:
+    password:
+
+#github服务器端的配置
 github:
-  client_id: Iv1.2299807260a02e0e
-  client_secret: b0500db3906303de1ab10cca68da8e33b7ad1b64
-  code: null
-  redirect_uri: http://localhost:8080/callback
-  state: null
+    client_id: Iv1.2299807260a02e0e
+    cli ent_secret: b0500db3906303de1ab10cca68da8e33b7ad1b64
+    code: null
+    redirect_uri: http://localhost:8080/callback
+    state: null
+
 
 
 

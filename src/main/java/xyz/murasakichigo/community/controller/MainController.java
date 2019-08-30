@@ -23,6 +23,8 @@ public class MainController {
         return "login";
     }
 
+
+
     /*设置初始访问页,跳转至index*/
     @GetMapping("/")
     public String index() {

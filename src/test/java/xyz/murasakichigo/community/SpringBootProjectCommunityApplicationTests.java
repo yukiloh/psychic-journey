@@ -8,15 +8,17 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import xyz.murasakichigo.community.dto.AccessTokenDTO;
+import xyz.murasakichigo.community.mapper.IUserMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-
 public class SpringBootProjectCommunityApplicationTests {
 
 
     @Autowired
     private AccessTokenDTO accessTokenDTO;
+    @Autowired
+    private IUserMapper userMapper;
 
     /*测试读取yml中的数据*/
     @Value("${test.test1.test2}")
@@ -29,6 +31,9 @@ public class SpringBootProjectCommunityApplicationTests {
         System.out.println(accessTokenDTO.getClient_secret());
         System.out.println(accessTokenDTO.getRedirect_uri());
         System.out.println(a);
+
+        System.out.println(userMapper.findAll());
+
 
     }
 
