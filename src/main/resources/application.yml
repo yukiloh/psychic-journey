@@ -4,3 +4,22 @@ spring:
       prefix: /templates/
       suffix: .html
     static-path-pattern: /static/**
+
+
+github:
+  client_id: Iv1.2299807260a02e0e
+  client_secret: b0500db3906303de1ab10cca68da8e33b7ad1b64
+  code: null
+  redirect_uri: http://localhost:8080/callback
+  state: null
+
+
+
+
+
+
+#仅用于测试
+test:
+  test1:
+    test2: 100
+

@@ -2,8 +2,8 @@ package xyz.murasakichigo.community.provider;
 
 
 import com.alibaba.fastjson.JSON;
-import dto.AccessTokenDTO;
-import dto.GithubUser;
+import xyz.murasakichigo.community.dto.AccessTokenDTO;
+import xyz.murasakichigo.community.dto.GithubUser;
 import okhttp3.*;
 import org.springframework.stereotype.Component;
 

@@ -1,4 +1,4 @@
-package dto;
+package xyz.murasakichigo.community.dto;
 
 
 /*用于封装github返回的user数据*/

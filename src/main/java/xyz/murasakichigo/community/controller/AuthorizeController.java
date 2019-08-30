@@ -1,7 +1,8 @@
 package xyz.murasakichigo.community.controller;
 
-import dto.AccessTokenDTO;
-import dto.GithubUser;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import xyz.murasakichigo.community.dto.AccessTokenDTO;
+import xyz.murasakichigo.community.dto.GithubUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,17 +17,21 @@ public class AuthorizeController {
     /*提供一个由spring容器管理的provider,用于注入dto&token*/
     private GithubProvider githubProvider;
 
+    @Autowired
+    private AccessTokenDTO accessTokenDTO;
+
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name="code") String code,  /*需要交换访问令牌的临时用户*/
                            @RequestParam(name = "state") String state /*本地服务器生成的匹配验证码*/){
 
         /*封装获取的accessToken的数据*/
-        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
+//        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri("http://localhost:8080/callback");
+        accessTokenDTO.setRedirect_uri(accessTokenDTO.getRedirect_uri());
         accessTokenDTO.setState(state);
-        accessTokenDTO.setClient_id("Iv1.2299807260a02e0e");
-        accessTokenDTO.setClient_secret("b0500db3906303de1ab10cca68da8e33b7ad1b64");
+        accessTokenDTO.setClient_id(accessTokenDTO.getClient_id());
+        accessTokenDTO.setClient_secret(accessTokenDTO.getClient_secret());
 
         /*传入dto,获取accessToken*/
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);/*C + A + v: 快速生成变量*/
