@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class MainController {
 
+    /*springboot提供的标准greeting演示*/
     @GetMapping("/greeting")        /*@GetMapping = @RequestMapping(method = RequestMethod.GET)*/
     /*@RequestParam中,required:可以不进行传参,并且defaultValue指定为World*/
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -16,9 +17,16 @@ public class MainController {
         return "greeting";  /*返回一个greeting.html页面,会默认从resources/templates/下查找; 方法上不可添加@ResponseBody!!*/
     }
 
+    /*用于跳转至login*/
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+    /*设置初始访问页,跳转至index*/
+    @GetMapping("/")
+    public String index() {
+        return "index";
     }
 
 }
