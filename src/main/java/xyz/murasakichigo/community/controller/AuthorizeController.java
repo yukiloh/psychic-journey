@@ -2,14 +2,17 @@ package xyz.murasakichigo.community.controller;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import xyz.murasakichigo.community.dto.AccessTokenDTO;
+import xyz.murasakichigo.community.dto.CommunityUser;
 import xyz.murasakichigo.community.dto.GithubUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.provider.GithubProvider;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 
 /*授权登陆的控制器*/
 @Controller
@@ -21,6 +24,9 @@ public class AuthorizeController {
 
     @Autowired
     private AccessTokenDTO accessTokenDTO;
+
+    @Autowired
+    private IUserMapper userMapper;
 
 
     @GetMapping("/callback")
@@ -55,9 +61,25 @@ public class AuthorizeController {
 
         /*判断是否获取到了user*/
         if (user != null) {
-            System.out.println("user != null");
-            /*错误点:request.getSession后才能再set user!*/
+            System.out.println("user is not empty!");
+            /*错误点:request.getSession后才能再setAttribute！*/
             request.getSession().setAttribute("user",user);
+
+            /*存入本地数据库*/
+            String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());/*获取当前时间的timestamp*/
+            CommunityUser communityUser = new CommunityUser();
+            communityUser.setGithub_account_id(Long.toString(user.getId()));
+            communityUser.setUsername(user.getLogin());
+            if (communityUser.getGmt_create() == null) {communityUser.setGmt_create(datetime);}
+            communityUser.setGmt_modified(datetime);
+            System.out.println(communityUser);
+
+            userMapper.createUser(communityUser);
+
+
+
+
+
 
             /*无论成功(携带session)与否重定向 至/login*/
             return "redirect:/login";

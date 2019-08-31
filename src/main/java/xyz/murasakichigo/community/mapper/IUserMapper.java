@@ -17,7 +17,7 @@ public interface IUserMapper {
     @Select("SELECT * FROM user_table")
     List<CommunityUser> findAll();
 
-    @Insert("insert into user_table (username,github_account_id,token,gmt_create) value (#{username},#{github_account_id},#{token},#{gtm_create})")
+    @Insert("insert into user_table (username,github_account_id,token,gmt_create) value (#{username},#{github_account_id},#{token},#{gmt_create})")
     void createUser(CommunityUser user);
 
     @Update("update user_table set username = #{username},github_account_id = #{github_account_id},token = #{token},gmt_modified = #{gmt_modified},gmt_last_login = #{gmt_last_login} where id = #{id}")
