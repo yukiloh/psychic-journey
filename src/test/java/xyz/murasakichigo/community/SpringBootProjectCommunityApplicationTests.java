@@ -8,7 +8,14 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import xyz.murasakichigo.community.dto.AccessTokenDTO;
+import xyz.murasakichigo.community.dto.CommunityUser;
 import xyz.murasakichigo.community.mapper.IUserMapper;
+
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,14 +34,28 @@ public class SpringBootProjectCommunityApplicationTests {
     /*测试读取yml中的github数据*/
     @Test
     public void contextLoads() {
-        System.out.println(accessTokenDTO.getClient_id());
-        System.out.println(accessTokenDTO.getClient_secret());
-        System.out.println(accessTokenDTO.getRedirect_uri());
-        System.out.println(a);
+//        System.out.println(accessTokenDTO.getClient_id());
+//        System.out.println(accessTokenDTO.getClient_secret());
+//        System.out.println(accessTokenDTO.getRedirect_uri());
+//        System.out.println(a);
 
-        System.out.println(userMapper.findAll());
+        CommunityUser communityUser = userMapper.findAll().get(0);
+        String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());/*获取当前时间的timestamp*/
 
+
+        communityUser.setGmt_create(datetime);
+        communityUser.setGmt_last_login(datetime);
+
+        userMapper.updateUser(communityUser);
 
     }
 
+
+    @Test
+    public void contextLoads1() {
+//        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+//        System.out.println(new Timestamp(System.currentTimeMillis()));
+
+
+    }
 }

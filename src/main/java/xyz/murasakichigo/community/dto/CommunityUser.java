@@ -6,22 +6,23 @@ public class CommunityUser {
 
 
     private Integer id;
-    private String account_id;
-    private String name;
+    private String username;
+    private String github_account_id;
     private String token;
-    private Date gmt_create;
-    private Date gmt_modified;
-
+    private String gmt_create;
+    private String gmt_modified;
+    private String gmt_last_login;
 
     @Override
     public String toString() {
         return "CommunityUser{" +
                 "id=" + id +
-                ", account_id='" + account_id + '\'' +
-                ", name='" + name + '\'' +
+                ", username='" + username + '\'' +
+                ", github_account_id='" + github_account_id + '\'' +
                 ", token='" + token + '\'' +
                 ", gmt_create=" + gmt_create +
                 ", gmt_modified=" + gmt_modified +
+                ", gmt_last_login=" + gmt_last_login +
                 '}';
     }
 
@@ -33,20 +34,20 @@ public class CommunityUser {
         this.id = id;
     }
 
-    public String getAccount_id() {
-        return account_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount_id(String account_id) {
-        this.account_id = account_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public String getName() {
-        return name;
+    public String getGithub_account_id() {
+        return github_account_id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGithub_account_id(String github_account_id) {
+        this.github_account_id = github_account_id;
     }
 
     public String getToken() {
@@ -57,19 +58,27 @@ public class CommunityUser {
         this.token = token;
     }
 
-    public Date getGmt_create() {
+    public String getGmt_create() {
         return gmt_create;
     }
 
-    public void setGmt_create(Date gmt_create) {
+    public void setGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }
 
-    public Date getGmt_modified() {
+    public String getGmt_modified() {
         return gmt_modified;
     }
 
-    public void setGmt_modified(Date gmt_modified) {
+    public void setGmt_modified(String gmt_modified) {
         this.gmt_modified = gmt_modified;
+    }
+
+    public String getGmt_last_login() {
+        return gmt_last_login;
+    }
+
+    public void setGmt_last_login(String gmt_last_login) {
+        this.gmt_last_login = gmt_last_login;
     }
 }
