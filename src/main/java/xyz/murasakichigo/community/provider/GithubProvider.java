@@ -13,7 +13,7 @@ import java.io.IOException;
 @Component
 public class GithubProvider {
 
-    /*获取accessToken*/
+    /*用于获取github提供的accessToken*/
     public String getAccessToken(AccessTokenDTO accessTokenDTO){
         /*使用okHttp快速解析获取的json*/
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
@@ -30,7 +30,6 @@ public class GithubProvider {
         try (Response response = client.newCall(request).execute()) {
             /*获取body中的access_token  参考:31ed8bab88c1d796bdbb7e37cc12f016515bedf8&scope=&token_type=bearer*/
             String string = response.body().string();
-            System.out.println(string);
 
             String[] split = string.split("=");
             String[] split1 = split[1].split("&");

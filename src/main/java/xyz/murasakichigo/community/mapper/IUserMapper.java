@@ -17,6 +17,13 @@ public interface IUserMapper {
     @Select("SELECT * FROM user_table")
     List<CommunityUser> findAll();
 
+    @Select("SELECT * FROM user_table where github_account_id =#{id}")
+    CommunityUser findUserByGithub_account_id(String id);
+
+    @Select("SELECT * FROM user_table where token = #{token}")
+    CommunityUser findUserByToken(String token);
+
+
     @Insert("insert into user_table (username,github_account_id,token,gmt_create) value (#{username},#{github_account_id},#{token},#{gmt_create})")
     void createUser(CommunityUser user);
 
@@ -25,4 +32,6 @@ public interface IUserMapper {
 
     @Delete("delete from user_table where id = #{id}")
     void deleteUserById(Integer id);
+
+
 }

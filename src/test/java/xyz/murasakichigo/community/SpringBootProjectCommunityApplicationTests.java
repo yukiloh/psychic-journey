@@ -39,14 +39,14 @@ public class SpringBootProjectCommunityApplicationTests {
 //        System.out.println(accessTokenDTO.getRedirect_uri());
 //        System.out.println(a);
 
-        CommunityUser communityUser = userMapper.findAll().get(0);
-        String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());/*获取当前时间的timestamp*/
+//        CommunityUser communityUser = userMapper.findAll().get(0);
+//        String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());/*获取当前时间的timestamp*/
+//        communityUser.setGmt_create(datetime);
+//        communityUser.setGmt_last_login(datetime);
+        System.out.println(userMapper.findUserByToken("d9ad88cf-9577-4e09-8d09-768e095d5658"));
 
 
-        communityUser.setGmt_create(datetime);
-        communityUser.setGmt_last_login(datetime);
-
-        userMapper.updateUser(communityUser);
+//        userMapper.updateUser(communityUser);
 
     }
 
