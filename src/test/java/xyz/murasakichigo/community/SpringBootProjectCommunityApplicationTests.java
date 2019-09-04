@@ -8,7 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import xyz.murasakichigo.community.dto.AccessTokenDTO;
+import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 
 import java.sql.Date;
@@ -26,6 +28,8 @@ public class SpringBootProjectCommunityApplicationTests {
     private AccessTokenDTO accessTokenDTO;
     @Autowired
     private IUserMapper userMapper;
+    @Autowired
+    private IQuestionMapper questionMapper;
 
     /*测试读取yml中的数据*/
     @Value("${test.test1.test2}")
@@ -53,8 +57,9 @@ public class SpringBootProjectCommunityApplicationTests {
 
     @Test
     public void contextLoads1() {
-//        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
-//        System.out.println(new Timestamp(System.currentTimeMillis()));
+        CommunityQuestion communityQuestion = new CommunityQuestion();
+        communityQuestion.setTitle("test2");
+        questionMapper.createIssue(communityQuestion);
 
 
     }

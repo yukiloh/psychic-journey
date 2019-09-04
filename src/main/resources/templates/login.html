@@ -1,21 +1,52 @@
-<!DOCTYPE HTML>
+<!--原版head，因为无法响应式布局所以注释-->
+<!--<!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-
-
-    <!--加载bootstrap css&js资源-->
-    <!--出现问题:
+    &lt;!&ndash;加载bootstrap css&js资源&ndash;&gt;
+    &lt;!&ndash;出现问题:
         1.无法加载静态资源; 解决方案:配置yml 参考:https://blog.csdn.net/LiuKingJia/article/details/80180122
-        2.无法加载下拉框,开发者模式console出现 Bootstrap's JavaScript requires jQuery; 解决方案:加载jquery.js,并置于.css和bootstrap.js前-->
+        2.无法加载下拉框,开发者模式console出现 Bootstrap's JavaScript requires jQuery; 解决方案:加载jquery.js,并置于.css和bootstrap.js前&ndash;&gt;
     <script src = "../static/js/jquery.js"></script>
     <script src = "../static/js/bootstrap.js"></script>
     <link rel = "stylesheet" href = "../static/css/bootstrap.css">
     <link rel = "stylesheet" href = "../static/css/bootstrap-theme.css">
+</head>-->
 
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
+    <title>Home Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <!--    <link href="navbar.css" rel="stylesheet">-->
+    <!---->
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="../../assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
 </head>
+
 <body>
 <!--复制自bootstrap主页,将不需要的项目会暂时注释-->
 <nav class="navbar navbar-default">
@@ -84,6 +115,7 @@
     用于测试<br>
     <p th:if="${session.communityUser != null}" th:text="'用户名称：'+${session.communityUser.getUsername()}"/>
 <!--    <p th:text="#{user.name}"/>-->
+
 </div>
 
 

@@ -20,7 +20,8 @@ public class GithubProvider {
         OkHttpClient client = new OkHttpClient();
 
         /*通过传入：AuthorizeController下的callback方法，获取的accessTokenDTO，生成RequestBody*/
-        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+//        RequestBody body = RequestBody.create(mediaType, JSON.toJSONString(accessTokenDTO));
+        RequestBody body = FormBody.create(JSON.toJSONString(accessTokenDTO),mediaType);
         /*传入url&requestBody，获取request*/
         Request request = new Request.Builder()
                 .url("https://github.com/login/oauth/access_token")

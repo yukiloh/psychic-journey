@@ -50,10 +50,10 @@ public class MainController {
                     if (communityUser != null) {
                         /*与request.setAttribute不同,r.g.s可以在多个页面、重定向后保留session*/
                         request.getSession().setAttribute("communityUser", communityUser);  /*所以返回前端的是communityUser*/
-                    } else {
-                        System.out.println("not find c_user,by token");
                     }
                     break;  /*找到则停止循环*/
+                } else {
+                    System.out.println("not find c_user with token");
                 }
             }
             /*或者可以在这里加入其他的验证信息*/
@@ -63,6 +63,9 @@ public class MainController {
     }
 
 
-
+    @GetMapping("/newIssue")
+    public String newIssue() {
+        return "newIssue";
+    }
 
 }
