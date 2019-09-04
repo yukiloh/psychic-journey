@@ -112,8 +112,11 @@
 </nav>
 
 <div>
-    用于测试<br>
-    <p th:if="${session.communityUser != null}" th:text="'用户名称：'+${session.communityUser.getUsername()}"/>
+    <p>用于测试</p><br>
+    <p th:if="${session.communityUser != null}" th:text="'用户名称：'+${session.communityUser.getUsername()}"/><br>
+    <p><img th:if="${session.communityUser != null}" th:src="${session.communityUser.getAvatar_url()}" width="50px"/>（可能会因为网络问题无法显示头像）</p>
+
+
 <!--    <p th:text="#{user.name}"/>-->
 
 </div>

@@ -42,7 +42,7 @@ public class MainController {
         /*判断是否携带token的cookie,如果有就判断是否匹配数据库的token,一致则登陆*/
         Cookie[] cookies = request.getCookies();
         /*如果存在cookies,遍历获取名为token的cookie,并通过此cookie查询sql获取user信息*/
-        if (cookies != null) {
+        if (cookies != null && cookies.length != 0) {
             for (Cookie c : cookies) {
                 String token = c.getName();
                 if ("token".equals(token)) {

@@ -48,6 +48,7 @@ public class AuthorizeController {
         accessTokenDTO.setClient_id(accessTokenDTO.getClient_id());
         accessTokenDTO.setClient_secret(accessTokenDTO.getClient_secret());
 
+
         /*传入dto,获取accessToken*/
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);     /*C + A + v: 快速生成变量*/
         /*传入token,获取user*/
@@ -75,6 +76,7 @@ public class AuthorizeController {
                 /*如果存在，则更新*/
                 communityUser.setGmt_last_login(datetime);    /*更新登陆时间*/
                 communityUser.setToken(token);                  /*更新token*/
+                communityUser.setAvatar_url(githubUser.getAvatar_url());            /*头像*/
                 userMapper.updateUser(communityUser);
             } else {
                 /*如果不存在，则创建*/
@@ -84,6 +86,7 @@ public class AuthorizeController {
                 communityUser.setToken(token);                                      /*设置token*/
                 communityUser.setGmt_create(datetime);                              /*生成时间*/
                 communityUser.setGmt_last_login(datetime);                         /*最近登陆*/
+                communityUser.setAvatar_url(githubUser.getAvatar_url());            /*头像*/
                 userMapper.createUser(communityUser);
             }
             /*手动赋予cookie*/  /*此链接是从/callback返回,也就是说只有登陆的时候才会获取cookie*/

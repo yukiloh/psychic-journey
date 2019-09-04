@@ -12,6 +12,16 @@ public class CommunityUser {
     private String gmt_create;
     private String gmt_modified;
     private String gmt_last_login;
+    private String avatar_url;
+
+
+    public String getAvatar_url() {
+        return avatar_url;
+    }
+
+    public void setAvatar_url(String avatar_url) {
+        this.avatar_url = avatar_url;
+    }
 
     @Override
     public String toString() {
