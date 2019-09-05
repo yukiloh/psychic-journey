@@ -24,11 +24,15 @@ public interface IQuestionMapper {
     @Select("select * from quest_table limit #{page},10")
     List<CommunityQuestion> findQuestionByPage(Integer page);
 
-
     @Select("SELECT COUNT(id) FROM quest_table")
     Integer countQuestion();
 
 
+    @Select("select * from quest_table where author_user_id = #{id} limit #{page},10")
+    List<CommunityQuestion> findQuestionById(int id,int page);
+
+    @Select("SELECT COUNT(id) FROM quest_table where author_user_id = #{id}")
+    Integer countProfileQuestion(Integer id);
 }
 
 

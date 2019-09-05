@@ -85,16 +85,17 @@
                             <span aria-hidden="true">TOP</span>
                         </a>
                     </li>
-                    <li>
+                    <li>        <!--使用二元+th：href，决定分页逻辑-->
                         <a th:href="@{'homepage?page='+${(session.page)-1 >=1 ? (session.page)-1:1}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li th:class="${session.page == session.page ? 'active':''}"><a th:href="@{'homepage?page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <!--使用thymeleaf做判断-->
+                    <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'homepage?page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
+                    <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'homepage?page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
+                    <li th:class="'active '+${(session.page) <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page}}" th:text="${session.page}"></a></li>
                     <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
                     <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
-                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
-                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
                     <li >
                         <a th:href="@{'homepage?page='+${(session.page)+1 <= session.maxPage ? (session.page)+1:(session.maxPage)}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>

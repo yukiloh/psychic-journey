@@ -45,10 +45,9 @@ public class MainController {
     /*登陆页面（应该命名为homepage）；会判断是否携带token，是则直接调用数据库；应该交由拦截器*/
     @GetMapping("/homepage")
     public String homepage(HttpServletRequest request) {
-        /*判断是否携带token的cookie,如果有就判断是否匹配数据库的token,一致则登陆*/
-        Cookie[] cookies = request.getCookies();
+
         /*检查cookie*/
-        checkCookie(cookies, request);
+        checkCookie(request);
 
         /*或者可以在这里加入其他的验证信息*/
 
@@ -94,7 +93,9 @@ public class MainController {
 
 //    ==================
     /*检查cookie，有则给予commUser*/
-    private void checkCookie(Cookie[] cookies,HttpServletRequest request){
+    private void checkCookie(HttpServletRequest request){
+        /*判断是否携带token的cookie,如果有就判断是否匹配数据库的token,一致则登陆*/
+        Cookie[] cookies = request.getCookies();
         /*如果存在cookies,遍历获取名为token的cookie,并通过此cookie查询sql获取user信息*/
         if (cookies != null && cookies.length != 0) {
             for (Cookie c : cookies) {
