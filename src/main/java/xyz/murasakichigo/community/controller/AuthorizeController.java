@@ -93,10 +93,10 @@ public class AuthorizeController {
             response.addCookie(new Cookie("token", token));
 
             /*无论成功(携带session)与否重定向 至/login*/
-            return "redirect:/login";
+            return "redirect:/homepage";
         } else {
             System.out.println("can not find user！");
-            return "redirect:/login";
+            return "redirect:/homepage";
         }
     }
 }

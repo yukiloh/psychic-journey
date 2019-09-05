@@ -21,6 +21,12 @@ public interface IQuestionMapper {
     @Insert("insert into quest_table (title,description,gmt_create,gmt_modified,author_user_id,comment_count,view_count,like_count,tag) value (#{title},#{description},#{gmt_create},#{gmt_modified},#{author_user_id},#{comment_count},#{view_count},#{like_count},#{tag})")
     void createIssue(CommunityQuestion question);
 
+    @Select("select * from quest_table limit #{page},10")
+    List<CommunityQuestion> findQuestionByPage(Integer page);
+
+
+    @Select("SELECT COUNT(id) FROM quest_table")
+    Integer countQuestion();
 
 
 }

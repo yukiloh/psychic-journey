@@ -1,0 +1,142 @@
+<!--原版head，因为无法响应式布局所以注释-->
+<!--<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    &lt;!&ndash;加载bootstrap css&js资源&ndash;&gt;
+    &lt;!&ndash;出现问题:
+        1.无法加载静态资源; 解决方案:配置yml 参考:https://blog.csdn.net/LiuKingJia/article/details/80180122
+        2.无法加载下拉框,开发者模式console出现 Bootstrap's JavaScript requires jQuery; 解决方案:加载jquery.js,并置于.css和bootstrap.js前&ndash;&gt;
+    <script src = "../static/js/jquery.js"></script>
+    <script src = "../static/js/bootstrap.js"></script>
+    <link rel = "stylesheet" href = "../static/css/bootstrap.css">
+    <link rel = "stylesheet" href = "../static/css/bootstrap-theme.css">
+</head>-->
+
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../static/images/favicon.ico">
+
+    <title>Home Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <!--自定义css样式-->
+    <link rel="stylesheet" href="../static/css/myCss.css">
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+    <!-- Custom styles for this template -->
+    <!--    <link href="navbar.css" rel="stylesheet">-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+
+
+</head>
+
+<body>
+<!--复制自bootstrap主页,将不需要的项目会暂时注释-->
+<!--使用thymeleaf的引入-->
+<div th:insert="~{navBar::navBar}"></div>
+
+
+<div class="container-fluid mainCss">
+    <div class="row">
+        <div class="col-xs-8 col-md-8" >
+            <div>
+
+                <h3><span class="glyphicon glyphicon-th-list" aria-hidden="true">&nbsp;<strong>寻找</strong></span></h3>
+            </div>
+            <hr>
+            <!--使用th:each遍历获取帖子内容-->
+            <div th:each="question:${session.questionList}">
+                <div class="media">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1567583816161&di=8c53bfd9bb1e181cf575ae6c5d5011c7&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F4acb627553501c1cd21df96581c8cf09817bab945438-jleZ6L_fw658" alt="..." width="50px">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
+                        <div id="mediaBody" th:text="${question.getDescription()}"></div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+
+            <!--分页条-->
+            <nav aria-label="Page navigation" class="navbar-right right-push">
+                <ul class="pagination">
+                    <li>
+                        <a th:href="@{'homepage?page='+${1}}">
+                            <span aria-hidden="true">TOP</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{'homepage?page='+${(session.page)-1 >=1 ? (session.page)-1:1}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:class="${session.page == session.page ? 'active':''}"><a th:href="@{'homepage?page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
+                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
+                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
+                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
+                    <li >
+                        <a th:href="@{'homepage?page='+${(session.page)+1 <= session.maxPage ? (session.page)+1:(session.maxPage)}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{'homepage?page='+${session.maxPage}}">
+                            <span aria-hidden="true">END</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+
+        <div class="col-xs-4 col-md-4 left-border"> <!--style="background:burlywood; color:#FFF"-->
+            <h3>热门话题</h3>
+            <ul class="list-group">
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+            </ul>
+            <hr>
+            <ul class="list-group">
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>
+

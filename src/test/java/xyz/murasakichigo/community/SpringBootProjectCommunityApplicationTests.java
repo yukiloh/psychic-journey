@@ -57,10 +57,11 @@ public class SpringBootProjectCommunityApplicationTests {
 
     @Test
     public void contextLoads1() {
-        CommunityQuestion communityQuestion = new CommunityQuestion();
-        communityQuestion.setTitle("test2");
-        questionMapper.createIssue(communityQuestion);
-
-
+        Integer page = 3;
+        page = (page-1)*10;
+        List<CommunityQuestion> questionList = questionMapper.findQuestionByPage(page);
+        for (CommunityQuestion q:questionList) {
+            System.out.println(q);
+        }
     }
 }

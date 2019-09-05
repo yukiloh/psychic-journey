@@ -46,11 +46,9 @@ public class QuestionController {
         communityQuestion.setAuthor_user_id(userMapper.findUserByToken(token).getId());
         communityQuestion.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
         communityQuestion.setTag(tag);
-
-        System.out.println(communityQuestion);
         questionMapper.createIssue(communityQuestion);
 
         /*应该是重定向至成功页面,然后返回到问题浏览的...*/
-        return "redirect:/login";
+        return "redirect:/homepage";
     }
 }
