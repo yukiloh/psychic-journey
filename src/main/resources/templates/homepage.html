@@ -93,7 +93,7 @@
                     <!--使用thymeleaf做判断-->
                     <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'homepage?page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
                     <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'homepage?page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
-                    <li th:class="'active '+${(session.page) <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <li th:class="active"><a th:href="@{'homepage?page='+${session.page}}" th:text="${session.page}"></a></li>
                     <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
                     <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'homepage?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
                     <li >

@@ -46,11 +46,10 @@ public class MainController {
     @GetMapping("/homepage")
     public String homepage(HttpServletRequest request) {
 
-        /*检查cookie*/
-        checkCookie(request);
+//        /*检查cookie*/
+//        checkCookie(request);
 
         /*或者可以在这里加入其他的验证信息*/
-
 
         /*展示页面内容*/
         String page = request.getParameter("page");
@@ -58,9 +57,6 @@ public class MainController {
             page = "1";
         }
         showPage(request,page);
-
-
-
 
 
 
@@ -72,9 +68,13 @@ public class MainController {
         return "login";
     }
 
+    /*进入提交问题页面，如果没有获取到cUser则返回登陆页面*/
     @GetMapping("/newIssue")
-    public String newIssue() {
-        return "newIssue";
+    public String newIssue(HttpServletRequest request) {
+        CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
+        if (communityUser != null) {
+            return "newIssue";
+        }else return "redirect:/login";
     }
 
     /*登出*/
@@ -88,32 +88,6 @@ public class MainController {
         request.getSession().invalidate();
         return "redirect:/homepage";
     }
-
-
-
-//    ==================
-    /*检查cookie，有则给予commUser*/
-    private void checkCookie(HttpServletRequest request){
-        /*判断是否携带token的cookie,如果有就判断是否匹配数据库的token,一致则登陆*/
-        Cookie[] cookies = request.getCookies();
-        /*如果存在cookies,遍历获取名为token的cookie,并通过此cookie查询sql获取user信息*/
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie c : cookies) {
-                String token = c.getName();
-                if ("token".equals(token)) {
-                    CommunityUser communityUser = userMapper.findUserByToken(c.getValue());
-                    if (communityUser != null) {
-                        /*与request.setAttribute不同,r.g.s可以在多个页面、重定向后保留session*/
-                        request.getSession().setAttribute("communityUser", communityUser);  /*所以返回前端的是communityUser*/
-                    }
-                    break;  /*找到则停止循环*/
-                }
-            }
-        }else {
-            System.out.println("not find c_user with token");
-        }
-    }
-
 
     /*返回前端基于当前页面数的列表*/
     private void showPage(HttpServletRequest request,String page){

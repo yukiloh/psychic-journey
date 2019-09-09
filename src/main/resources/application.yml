@@ -22,6 +22,7 @@ spring:
     #修改页面–>保存：应用不会重启，但会重新加载，页面会刷新（原理是将spring.thymeleaf.cache设为false，参考:Spring Boot配置模板引擎）
 
 
+
 #github服务器端的配置
 github:
     client_id: Iv1.2299807260a02e0e
@@ -29,7 +30,6 @@ github:
     code: null
     redirect_uri: http://localhost:8080/callback
     state: null
-
 
 
 

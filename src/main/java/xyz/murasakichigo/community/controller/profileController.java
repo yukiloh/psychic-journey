@@ -17,24 +17,25 @@ public class profileController {
 
     @Autowired
     private IQuestionMapper questionMapper;
-    @Autowired
-    private IUserMapper userMapper;
 
-    /*个人问题页面*/
+
+    /*个人问题页面，如果没有获取到cUser则返回登陆页面*/
     @GetMapping("/profile")
     public String profile(HttpServletRequest request) {
-        CommunityUser communityUser = checkCookie(request);
-
+        CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
         if (communityUser != null) {
+            /*如果获取到commUser则获取page页面*/
             String page = request.getParameter("page");
             if (page == null || page.length() == 0) {
-                page = "1";
+                page = "1"; /*默认赋予page = 1*/
             }
             int pageNumber = Integer.valueOf(page);
+            /*通过id获取个人页面的帖子列表*/
             Integer id = communityUser.getId();
+            /*通过调用域显示页面*/
             showPage(request,id,pageNumber);
-        }
-        return "question";
+            return "question";
+        }else return "redirect:/login";      /*如果没有获取到cUser则重定向至登陆页面*/
     }
 
 
@@ -49,20 +50,6 @@ public class profileController {
 
     }
 
-
-    private CommunityUser checkCookie(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie c : cookies) {
-                String token = c.getName();
-                if ("token".equals(token)) {
-                    CommunityUser communityUser = userMapper.findUserByToken(c.getValue());
-                    return communityUser;
-                }
-            }
-        }
-        return new CommunityUser();
-    }
 
 
 }

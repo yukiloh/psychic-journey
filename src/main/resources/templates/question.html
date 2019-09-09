@@ -62,7 +62,7 @@
                     </li>
                     <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'profile?page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
                     <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'profile?page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
-                    <li th:class="'active '+${(session.page) <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <li th:class="'active'"><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
                     <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
                     <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
 
@@ -92,9 +92,9 @@
         </div>
 
         <div class="col-xs-4 col-md-4"> <br><br><br>
-            <div class="list-group col-md-7">
-                <a  href="#" class="list-group-item active"><span class="glyphicon glyphicon-unchecked">&nbsp;我的问题</span>  </a>
-                <a  href="#" class="list-group-item "><span class="glyphicon glyphicon-new-window">&nbsp;我的回复</span>  </a>
+            <div class="list-group col-lg-6">
+                <a  href="/profile" class="list-group-item active btn"><span class="glyphicon glyphicon-unchecked ">&nbsp;我的提问</span>  </a>
+                <a  href="/profile/myAnswer" class="list-group-item  btn disabled"><span class="glyphicon glyphicon-new-window">&nbsp;我的回复</span>  </a>
             </div>
         </div>
     </div>
