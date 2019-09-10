@@ -65,12 +65,19 @@
             <div th:each="question:${session.questionList}">
                 <div class="media">
                     <div class="media-left">
-                        <a href="#">
+                        <div href="#">
                             <img class="media-object img-rounded" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1567583816161&di=8c53bfd9bb1e181cf575ae6c5d5011c7&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F4acb627553501c1cd21df96581c8cf09817bab945438-jleZ6L_fw658" alt="..." width="50px">
-                        </a>
+                        </div>
                     </div>
                     <div class="media-body">
-                        <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
+                        <a th:href="${'/publish/issue'}+${question.getId()}">
+                            <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
+
+                        </a>
+                        <div>
+                            <span>作者：</span>
+                            <span th:text="${question.getAuthor_name()}"></span>
+                        </div>
                         <div id="mediaBody" th:text="${question.getDescription()}"></div>
                         <hr>
                     </div>

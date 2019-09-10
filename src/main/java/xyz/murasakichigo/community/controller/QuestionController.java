@@ -3,15 +3,13 @@ package xyz.murasakichigo.community.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 
 /*用于提交问题的控制器*/
@@ -50,12 +48,25 @@ public class QuestionController {
         communityQuestion.setTitle(title);
         communityQuestion.setDescription(description);
         communityQuestion.setTag(tag);
-        communityQuestion.setAuthor_user_id(userMapper.findUserByToken(token).getId());
+        Integer id = userMapper.findUserByToken(token).getId(); /*获取id*/
+        communityQuestion.setAuthor_user_id(id);
+        communityQuestion.setAuthor_name(userMapper.findUserById(id).getUsername());    /*通过id查找userName*/
         communityQuestion.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
         communityQuestion.setTag(tag);
         questionMapper.createIssue(communityQuestion);
 
         /*应该是重定向至成功页面,然后返回到问题浏览的...*/
         return "redirect:/homepage";
+    }
+
+
+    /*问题跳转*/
+    @GetMapping("/publish/issue{id}")
+    public String findQuestionByIssueId(HttpServletRequest request,
+                                        /*使用{param} + @PathVariable的方法来接受地址栏的某个特定变量*/
+                                        @PathVariable String id) {
+        CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
+        request.getSession().setAttribute("questionByIssueId",questionByIssueId);
+        return "publish";
     }
 }

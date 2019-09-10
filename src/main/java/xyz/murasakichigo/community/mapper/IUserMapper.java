@@ -20,6 +20,9 @@ public interface IUserMapper {
     @Select("SELECT * FROM user_table where github_account_id =#{id}")
     CommunityUser findUserByGithub_account_id(String id);
 
+    @Select("SELECT * FROM user_table where id =#{id}")
+    CommunityUser findUserById(Integer id);
+
     @Select("SELECT * FROM user_table where token = #{token}")
     CommunityUser findUserByToken(String token);
 

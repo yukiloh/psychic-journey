@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../static/images/favicon.ico">
+
+    <title>Home Page</title>
+
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/myCss.css">
+
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+
+
+</head>
+
+<body>
+<div th:insert="~{navBar::navBar}"></div>
+
+
+<div class="container-fluid mainCss">
+    <div class="row">
+        <div class="col-xs-8 col-md-8" >
+            <div>
+
+                <h3><span class="glyphicon glyphicon-th-list" aria-hidden="true">&nbsp;<strong>问题</strong></span></h3>
+            </div>
+            <hr>
+            <h3>
+                <div th:text="${session.questionByIssueId.getTitle()}"></div>
+
+            </h3>
+            <div>
+                <span>作者：</span>
+                <span th:text="${session.questionByIssueId.getAuthor_name()}"></span>
+
+            </div><br>
+            <div th:text="${session.questionByIssueId.getDescription()}"></div>
+        </div>
+
+
+
+
+
+        <div class="col-xs-4 col-md-4 left-border"> <!--style="background:burlywood; color:#FFF"-->
+            <h3>热门话题</h3>
+            <ul class="list-group">
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+                <li class="list-group-item">邻家母猪为何深夜怀孕</li>
+            </ul>
+            <hr>
+            <ul class="list-group">
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+                <li class="list-group-item">是道德的沦丧还是人性的扭曲</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>
+

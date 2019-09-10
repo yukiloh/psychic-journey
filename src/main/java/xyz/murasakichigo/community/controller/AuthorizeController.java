@@ -99,4 +99,11 @@ public class AuthorizeController {
             return "redirect:/homepage";
         }
     }
+
+    /*验证多账号*/
+    @GetMapping("/special")
+    public String specialLogin(HttpServletResponse response){
+        response.addCookie(new Cookie("token","e91a9f6b-02b1-4ea3-a4e9-908340e2c125"));
+        return "redirect:/homepage";
+    }
 }

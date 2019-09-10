@@ -3,6 +3,7 @@ package xyz.murasakichigo.community.dto;
 public class CommunityQuestion {
    private  Integer id;
    private  String title;
+   private  String author_name;
    private  String description;
    private  String gmt_create;
    private  String gmt_modified;
@@ -18,6 +19,7 @@ public class CommunityQuestion {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
+                ", description='" + author_name + '\'' +
                 ", gmt_create='" + gmt_create + '\'' +
                 ", gmt_modified='" + gmt_modified + '\'' +
                 ", author_user_id=" + author_user_id +
@@ -106,5 +108,12 @@ public class CommunityQuestion {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+    public String getAuthor_name() {
+        return author_name;
+    }
+
+    public void setAuthor_name(String author_name) {
+        this.author_name = author_name;
     }
 }

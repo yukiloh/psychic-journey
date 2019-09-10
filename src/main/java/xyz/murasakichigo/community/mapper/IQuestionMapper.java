@@ -19,7 +19,7 @@ public interface IQuestionMapper {
     @Select("SELECT * FROM quest_table")
     List<CommunityQuestion> findAll();
 
-    @Insert("insert into quest_table (title,description,gmt_create,gmt_modified,author_user_id,comment_count,view_count,like_count,tag) value (#{title},#{description},#{gmt_create},#{gmt_modified},#{author_user_id},#{comment_count},#{view_count},#{like_count},#{tag})")
+    @Insert("insert into quest_table (title,description,gmt_create,gmt_modified,author_user_id,comment_count,view_count,like_count,tag,author_name) value (#{title},#{description},#{gmt_create},#{gmt_modified},#{author_user_id},#{comment_count},#{view_count},#{like_count},#{tag},#{author_name})")
     void createIssue(CommunityQuestion question);
 
     @Select("select * from quest_table order by id desc limit #{page},10")
@@ -34,6 +34,9 @@ public interface IQuestionMapper {
 
     @Select("SELECT COUNT(id) FROM quest_table where author_user_id = #{id}")
     Integer countProfileQuestion(Integer id);
+
+    @Select("select * from quest_table where id = #{id} ")
+    CommunityQuestion findQuestionByIssueId(String id);
 }
 
 
