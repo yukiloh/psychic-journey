@@ -45,36 +45,19 @@ public class MainController {
     /*登陆页面（应该命名为homepage）；会判断是否携带token，是则直接调用数据库；应该交由拦截器*/
     @GetMapping("/homepage")
     public String homepage(HttpServletRequest request) {
-
-//        /*检查cookie*/
-//        checkCookie(request);
-
-        /*或者可以在这里加入其他的验证信息*/
-
         /*展示页面内容*/
         String page = request.getParameter("page");
         if (page == null || page.length() == 0) {
             page = "1";
         }
         showPage(request,page);
-
-
-
         return "homepage";
     }
 
+    /*登陆页面*/
     @GetMapping("/login")
     public String login() {
         return "login";
-    }
-
-    /*进入提交问题页面，如果没有获取到cUser则返回登陆页面*/
-    @GetMapping("/newIssue")
-    public String newIssue(HttpServletRequest request) {
-        CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
-        if (communityUser != null) {
-            return "newIssue";
-        }else return "redirect:/login";
     }
 
     /*登出*/
@@ -89,6 +72,9 @@ public class MainController {
         return "redirect:/homepage";
     }
 
+
+
+//    ================================================================================================================
     /*返回前端基于当前页面数的列表*/
     private void showPage(HttpServletRequest request,String page){
         Integer questionCount = questionMapper.countQuestion();

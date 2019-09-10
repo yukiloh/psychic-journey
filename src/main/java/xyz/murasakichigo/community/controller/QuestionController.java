@@ -24,20 +24,27 @@ public class QuestionController {
     @Autowired
     private IQuestionMapper questionMapper;
 
+    /*进入提交问题页面*/
+    @GetMapping("/profile/newIssue")
+    public String newIssue() {
+        return "newIssue";
+    }
 
+
+//    提交问题页面的submit按钮
     /*当接收到get时原路返回(理由不明)*/
-    @GetMapping("/questionSubmit")
+    @GetMapping("/profile/questionSubmit")
     public String getQuestion() {
         return "question";
     }
 
     /*使用post接受*/
-    @PostMapping("/questionSubmit")
+    @PostMapping("/profile/questionSubmit")
     public String postQuestion(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
             @RequestParam(name = "tag") String tag,
-            @CookieValue(value = "token")String token) {
+            @CookieValue(value = "token")String token)  {
 
         CommunityQuestion communityQuestion = new CommunityQuestion();
         communityQuestion.setTitle(title);
