@@ -6,7 +6,11 @@
 </head>
 <body>
 <!--类似于jsp页面;如果${param}没有获取到会自动跳红-->
-<p th:text="'Hello, ' + ${login} + '!'" />
+
+<p>你可以在地址添加?name=你想要的名字</p>
+<p>insert any word after /greeting?name=,like 'world' </p>
+
+<p th:text="'Hello, ' + ${name} + '!'" />
 
 
 </body>
