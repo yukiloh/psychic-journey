@@ -3,6 +3,7 @@ package xyz.murasakichigo.community.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
@@ -100,8 +101,27 @@ public class QuestionController {
     public String findQuestionByIssueId(HttpServletRequest request,
                                         /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
-        CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
-        request.getSession().setAttribute("questionByIssueId",questionByIssueId);
+        /*累加阅读数*/
+        CommunityQuestion question = questionMapper.findQuestionByIssueId(id);
+        accumulateView(question,id,request);
+        request.getSession().setAttribute("questionByIssueId",question);
         return "publish";
+    }
+
+
+
+//    ================================================================================================
+    void accumulateView(CommunityQuestion question, String id, HttpServletRequest request) {
+        /*添加判断：如果ip不累计访问；暂时省略;应该存在事务管理，同时有多个访问时候；*/
+        if (1 == 1) {
+            Integer view_count = question.getView_count();
+            if (view_count == null) {
+                view_count = 0;
+            }
+
+            int view = view_count + 1;
+            questionMapper.updateQuestionView(view,id);
+        }
+
     }
 }

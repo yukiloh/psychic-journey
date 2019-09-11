@@ -40,6 +40,10 @@ public interface IQuestionMapper {
 
     @Update("UPDATE `springboot_community_project`.`quest_table` t SET t.`title` = #{title},t.`description` = #{description},t.`gmt_modified` = #{gmt_modified} WHERE t.`id` = #{id}")
     void updateQuestion(CommunityQuestion question);
+
+    @Update("UPDATE `springboot_community_project`.`quest_table` t SET t.`view_count` = #{view_count} WHERE t.`id` = #{id}")
+    void updateQuestionView(int view_count, String id);
+
 }
 
 

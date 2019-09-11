@@ -47,7 +47,10 @@ public class SpringBootProjectCommunityApplicationTests {
 //        String datetime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis());/*获取当前时间的timestamp*/
 //        communityUser.setGmt_create(datetime);
 //        communityUser.setGmt_last_login(datetime);
-        System.out.println(userMapper.findUserByToken("d9ad88cf-9577-4e09-8d09-768e095d5658"));
+//        System.out.println(userMapper.findUserByToken("d9ad88cf-9577-4e09-8d09-768e095d5658"));
+        Integer integer = null;
+        int i = integer + 1;
+        System.out.println(i);
 
 
 //        userMapper.updateUser(communityUser);
@@ -55,13 +58,5 @@ public class SpringBootProjectCommunityApplicationTests {
     }
 
 
-    @Test
-    public void contextLoads1() {
-        Integer page = 3;
-        page = (page-1)*10;
-        List<CommunityQuestion> questionList = questionMapper.findQuestionByPage(page);
-        for (CommunityQuestion q:questionList) {
-            System.out.println(q);
-        }
-    }
+
 }
