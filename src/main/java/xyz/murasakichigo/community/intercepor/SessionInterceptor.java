@@ -41,8 +41,6 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     }
 
-
-
     /*检查cookie，有则给予commUser*/
     private void checkCookie(HttpServletRequest request){
         /*判断是否携带token的cookie,如果有就判断是否匹配数据库的token,一致则登陆*/

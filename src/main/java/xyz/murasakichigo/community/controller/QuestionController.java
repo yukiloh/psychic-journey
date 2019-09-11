@@ -33,7 +33,7 @@ public class QuestionController {
     /*当接收到get时原路返回(理由不明)*/
     @GetMapping("/profile/questionSubmit")
     public String getQuestion() {
-        return "question";
+        return "redirect:/question";
     }
 
     /*使用post接受*/
@@ -58,12 +58,47 @@ public class QuestionController {
         /*应该是重定向至成功页面,然后返回到问题浏览的...*/
         return "redirect:/homepage";
     }
+//===================================================================
+    /*进入问题修改*/
+    @GetMapping("/profile/issueEdit/{id}")
+    public String issueEdit(@PathVariable String id,
+                            HttpServletRequest request) {
+        /*验证是否issue作者ID与登陆者相同*/
+        CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
+        if (communityUser.getId() == questionMapper.findQuestionByIssueId(id).getAuthor_user_id()) {
+            CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
+            request.getSession().setAttribute("questionByIssueId",questionByIssueId);
+            return "issueEdit";
+        }else {
+            return "error";
+        }
+    }
 
+    /*修改问题后submit按钮*/
+    @PostMapping("/profile/issueUpdate")
+    public String postQuestion(
+            @RequestParam(name = "title") String title,
+            @RequestParam(name = "id") Integer id,
+            @RequestParam(name = "description") String description,
+            @RequestParam(name = "tag") String tag
+            ) {
+        CommunityQuestion communityQuestion = new CommunityQuestion();
+        communityQuestion.setTitle(title);
+        communityQuestion.setDescription(description);
+        communityQuestion.setTag(tag);
+        communityQuestion.setId(id);
+        communityQuestion.setGmt_modified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 
-    /*问题跳转*/
+        questionMapper.updateQuestion(communityQuestion);
+
+        return "redirect:/homepage";
+    }
+
+//    ================================================================================================
+    /*进入单个question页面*/
     @GetMapping("/publish/issue{id}")
     public String findQuestionByIssueId(HttpServletRequest request,
-                                        /*使用{param} + @PathVariable的方法来接受地址栏的某个特定变量*/
+                                        /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
         CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
         request.getSession().setAttribute("questionByIssueId",questionByIssueId);

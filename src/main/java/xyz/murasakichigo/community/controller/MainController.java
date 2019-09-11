@@ -62,13 +62,14 @@ public class MainController {
 
     /*登出*/
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
+    public String logout(HttpServletRequest request, HttpServletResponse response){
         /*删除cookie*/
         Cookie cookie = new Cookie("token",null);
         cookie.setMaxAge(0);
         response.addCookie(cookie);
         /*清除session*/
-        request.getSession().invalidate();
+        request.getSession().removeAttribute("communityUser");
+//        request.getSession().invalidate();      /*可能会出现连续第三次登陆无法登陆的情况*/
         return "redirect:/homepage";
     }
 

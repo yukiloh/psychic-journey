@@ -44,6 +44,11 @@
 
             </div><br>
             <div th:text="${session.questionByIssueId.getDescription()}"></div>
+            <hr>
+            <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
+            <div class="pull-left" th:if="${session.communityUser != null}">
+                <a  th:href="'/profile/issueEdit/'+${session.questionByIssueId.getId()}" th:text="${(session.questionByIssueId.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
+            </div>
         </div>
 
 

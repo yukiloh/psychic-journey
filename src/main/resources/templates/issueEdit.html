@@ -1,64 +1,47 @@
-<!--原版head，因为无法响应式布局所以注释-->
-<!--<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Getting Started: Serving Web Content</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-&lt;!&ndash;编写发起问题的页面&ndash;&gt;
-    <script src = "../static/js/jquery.js"></script>
-    <script src = "../static/js/bootstrap.js"></script>
-    <link rel = "stylesheet" href = "../static/css/bootstrap.css">
-    <link rel = "stylesheet" href = "../static/css/bootstrap-theme.css">
-</head>-->
-
-
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="icon" href="../static/images/favicon.ico">
 
     <title>Navbar Template for Bootstrap</title>
 
-    <!-- Bootstrap core CSS -->
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <!--自定义css样式-->
-    <link rel="stylesheet" href="../static/css/myCss.css">
+    <link rel="stylesheet" href="/static/css/myCss.css">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     </head>
 <body>
-<!--使用thymeleaf的引入-->
 <div th:insert="~{navBar::navBar}"></div>
 
-<!--.container-fluid：按照百分比定义宽度；.container：固定宽度-->
 <div class="container-fluid mainCss">
     <div class="row">
-        <form method="post" action="/profile/questionSubmit">
+        <form method="post" action="/profile/issueUpdate">
             <div class="col-xs-8 col-md-8">
                 <div>
 
-                    <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>发起</strong></span></h3>
+                    <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>编辑</strong></span></h3>
                 </div>
                 <hr>
                 <div>
                     <h4>
                         <strong>问题标题</strong><br>
                     </h4>
-                                                                                <!--name用于参数传回后端@RequestParam-->
-                    <input type="text" class="form-control" placeholder="你的问题..."  name="title">
-                </div><br>
-                <div>                                                                           <!--resize:none 禁止缩放大小-->
-                    <textarea class="form-control" rows="9" placeholder="问题描述..."  name="description" style="resize:none" th:placeholder="问题详述..."></textarea><br>
+                    <input type="text" class="form-control" name="title" th:value="${session.questionByIssueId.getTitle()}">
                 </div>
+                <input class="hidden" name="id" id="id"  th:value="${session.questionByIssueId.getId()}">
+                <br>
+                <div>
+                    <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.questionByIssueId.getDescription()}"></textarea>
+                </div>
+                <br>
 
 
                 <div>
@@ -69,16 +52,16 @@
 
                 <div>
                     <div><strong>&nbsp;添加标签</strong></div>
-                    <input type="text" class="form-control" placeholder="标签..."  id="tag" name="tag">
+                    <input type="text" class="form-control" id="tag" name="tag" th:value="${session.questionByIssueId.getTag()}">
 
 
                 </div><br>
 
-                <button type="submit" class="btn btn-info" href="/profile/questionSubmit">提交</button>
+                <button type="submit" class="btn btn-info" href="/profile/issueUpdate">提交</button>
             </div>
         </form>
 
-        <div class="col-xs-4 col-md-4"> <!--style="background:burlywood; color:#FFF"--><br><br><br>
+        <div class="col-xs-4 col-md-4"><br><br><br>
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h4><strong>&nbsp;问题发起指南</strong></h4>

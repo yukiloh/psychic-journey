@@ -37,6 +37,9 @@ public interface IQuestionMapper {
 
     @Select("select * from quest_table where id = #{id} ")
     CommunityQuestion findQuestionByIssueId(String id);
+
+    @Update("UPDATE `springboot_community_project`.`quest_table` t SET t.`title` = #{title},t.`description` = #{description},t.`gmt_modified` = #{gmt_modified} WHERE t.`id` = #{id}")
+    void updateQuestion(CommunityQuestion question);
 }
 
 
