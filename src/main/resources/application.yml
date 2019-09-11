@@ -1,9 +1,9 @@
 spring:
-#  静态资源放行
   mvc:
     view:
       prefix: /templates/
       suffix: .html
+    ##  静态资源放行
     static-path-pattern: /static/**
 
 
@@ -20,6 +20,15 @@ spring:
     #修改类–>保存：应用会重启
     #修改配置文件–>保存：应用会重启
     #修改页面–>保存：应用不会重启，但会重新加载，页面会刷新（原理是将spring.thymeleaf.cache设为false，参考:Spring Boot配置模板引擎）
+
+
+#  数据库信息
+  datasource:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/springboot_community_project?serverTimezone=UTC
+      username: root
+      password: 111111
 
 
 
