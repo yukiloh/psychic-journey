@@ -1,6 +1,8 @@
 package xyz.murasakichigo.community.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,13 +38,10 @@ public class MainController {
         return "index";
     }
 
-
-    @Autowired
-    private IUserMapper userMapper;
     @Autowired
     private IQuestionMapper questionMapper;
 
-    /*登陆页面（应该命名为homepage）；会判断是否携带token，是则直接调用数据库；应该交由拦截器*/
+    /*主页（应该命名为homepage）；会判断是否携带token，是则直接调用数据库；应该交由拦截器*/
     @GetMapping("/homepage")
     public String homepage(HttpServletRequest request) {
         /*展示页面内容*/

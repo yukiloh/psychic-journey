@@ -39,13 +39,8 @@ github:
     code: null
     redirect_uri: http://localhost:8080/callback
     state: null
+    testText: baidu
 
 
 
-
-
-#仅用于测试
-test:
-  test1:
-    test2: 100
 

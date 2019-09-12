@@ -19,6 +19,7 @@ import java.util.UUID;
 @Controller
 public class AuthorizeController {
 
+
 //    提供一个由spring容器管理的provider,用于注入dto&token
     @Autowired
     private GithubProvider githubProvider;
@@ -30,7 +31,6 @@ public class AuthorizeController {
     @Autowired
     private IUserMapper userMapper;
 
-
     /*用于验证账户，成功后会创建/更新本地数据库的Token和登录时间*/
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,          /*需要交换访问令牌的临时用户*/
@@ -40,6 +40,9 @@ public class AuthorizeController {
 
 //        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
 //        GithubProvider githubProvider = new GithubProvider();
+
+        System.out.println(code);
+        System.out.println(state);
 
         /*封装获取的accessToken的数据*/
         accessTokenDTO.setCode(code);
