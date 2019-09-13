@@ -4,8 +4,8 @@ package xyz.murasakichigo.community.mapper;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 import xyz.murasakichigo.community.dto.CommunityUser;
+
 import java.util.List;
-import org.slf4j.MDC;
 /*ctrl+alt+O: 自动移除无用的import*/
 
 

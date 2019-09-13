@@ -7,11 +7,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.dto.Reply;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
+import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /*用于提交问题的控制器*/
 @Controller
@@ -22,6 +25,9 @@ public class QuestionController {
 
     @Autowired
     private IQuestionMapper questionMapper;
+
+    @Autowired
+    private IReplyMapper replyMapper;
 
     /*进入提交问题页面*/
     @GetMapping("/profile/newIssue")
@@ -101,12 +107,20 @@ public class QuestionController {
     public String findQuestionByIssueId(HttpServletRequest request,
                                         /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
-        /*累加阅读数*/
         CommunityQuestion question = questionMapper.findQuestionByIssueId(id);
+
+        /*累加阅读数*/
         accumulateView(question,id,request);
-        request.getSession().setAttribute("questionByIssueId",question);
+
+        /*回传回复*/
+        List<Reply> replyList = replyMapper.findReplyByIssueId(id);
+        request.getSession().setAttribute("question",question);
+        request.getSession().setAttribute("replyList",replyList);
         return "publish";
-    }
+   }
+
+
+//    ================================================================================================
 
 
 

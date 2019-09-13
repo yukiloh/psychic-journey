@@ -75,8 +75,12 @@
 
                         </a>
                         <div>
-                            <span>作者：</span>
+                            <span>作者:</span>
                             <span th:text="${question.getAuthor_name()}"></span>
+                            <span>&nbsp;创建时间:</span>
+                            <span th:text="${question.getGmt_create()}"></span>
+                            <span>&nbsp;阅读数:</span>
+                            <span th:text="${question.getView_count()}"></span>
                         </div>
                         <div id="mediaBody" th:text="${question.getDescription()}"></div>
                         <hr>

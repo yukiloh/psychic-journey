@@ -39,7 +39,6 @@ github:
     code: null
     redirect_uri: http://localhost:8080/callback
     state: null
-    testText: baidu
 
 
 

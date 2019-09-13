@@ -10,7 +10,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import xyz.murasakichigo.community.dto.AccessTokenDTO;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.dto.Reply;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
+import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 
 import java.sql.Date;
@@ -30,12 +32,9 @@ public class SpringBootProjectCommunityApplicationTests {
     private IUserMapper userMapper;
     @Autowired
     private IQuestionMapper questionMapper;
+    @Autowired
+    private IReplyMapper replyMapper;
 
-    /*测试读取yml中的数据*/
-    @Value("${test.test1.test2}")
-    private String a;
-
-    /*测试读取yml中的github数据*/
     @Test
     public void contextLoads() {
 //        System.out.println(accessTokenDTO.getClient_id());
@@ -48,9 +47,14 @@ public class SpringBootProjectCommunityApplicationTests {
 //        communityUser.setGmt_create(datetime);
 //        communityUser.setGmt_last_login(datetime);
 //        System.out.println(userMapper.findUserByToken("d9ad88cf-9577-4e09-8d09-768e095d5658"));
-        Integer integer = null;
-        int i = integer + 1;
-        System.out.println(i);
+        List<CommunityQuestion> questions = questionMapper.findAll();
+        for (CommunityQuestion c:questions) {
+            System.out.println(c);
+        }
+        List<Reply> replies = replyMapper.findAll();
+        for (Reply r:replies) {
+            System.out.println(r);
+        }
 
 
 //        userMapper.updateUser(communityUser);

@@ -35,21 +35,33 @@
             </div>
             <hr>
             <h3>
-                <div th:text="${session.questionByIssueId.getTitle()}"></div>
+                <div th:text="${session.question.getTitle()}"></div>
 
             </h3>
             <div>
-                <span>作者：</span>
-                <span th:text="${session.questionByIssueId.getAuthor_name()}"></span>
-                <span th:text="${'&nbsp阅读数：'+session.questionByIssueId.getView_count()}"></span>
+                <span>作者:</span>
+                <span th:text="${session.question.getAuthor_name()}"></span>
+                <span>&nbsp;创建时间:</span>
+                <span th:text="${session.question.getGmt_create()}"></span>
+                <span th:text="${'&nbsp;&nbsp;阅读数：'+session.question.getView_count()}"></span>
 
             </div><br>
-            <div th:text="${session.questionByIssueId.getDescription()}"></div>
-            <hr>
+            <div th:text="${session.question.getDescription()}"></div>
             <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
             <div class="pull-left" th:if="${session.communityUser != null}">
-                <a  th:href="'/profile/issueEdit/'+${session.questionByIssueId.getId()}" th:text="${(session.questionByIssueId.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
+                <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
             </div>
+            <hr>
+
+            <div >
+                <div>
+                    <h4><span class="glyphicon glyphicon-th-list" aria-hidden="true">&nbsp;回复</span></h4>
+                </div>
+                <div th:text="'回复'+${session.replyList.get(0).getReply_description()}">
+
+                </div>
+            </div>
+
         </div>
 
 
