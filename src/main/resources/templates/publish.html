@@ -30,7 +30,6 @@
     <div class="row">
         <div class="col-xs-8 col-md-8" >
             <div>
-
                 <h3><span class="glyphicon glyphicon-th-list" aria-hidden="true">&nbsp;<strong>问题</strong></span></h3>
             </div>
             <hr>
@@ -51,17 +50,47 @@
             <div class="pull-left" th:if="${session.communityUser != null}">
                 <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
             </div>
-            <hr>
+            <br><br>
+
 
             <div >
                 <div>
-                    <h4><span class="glyphicon glyphicon-th-list" aria-hidden="true">&nbsp;回复</span></h4>
+                    <h4><span class="glyphicon glyphicon-edit" aria-hidden="true">&nbsp;回复</span></h4>
                 </div>
-                <div th:text="'回复'+${session.replyList.get(0).getReply_description()}">
+                <div th:if="${session.communityUser == null}">
+                    <p class="after_login_show">登陆后可回复</p>
+                </div>
+                <div th:if="${session.communityUser != null}">
+                    <form method="post" action="/profile/replySubmit">
+                        <div>
+                            <input class="hidden" name="parent_id" th:value="${session.question.getId()}">
+                            <input class="hidden" name="critic_id" th:value="${session.communityUser.getId()}">
+                            <textarea class="form-control" name="reply_description" style="resize:none" cols="40" rows="3" th:placeholder="'回复...（500字以内）'"></textarea><br>
+                            <button type="submit" class="btn btn-info" href="/profile/replySubmit">提交</button>
+                        </div>
+                    </form>
+                </div>
 
+            </div>
+            <hr>
+            <div>
+                <div th:if="${session.replyList != null && session.replyList.size() > 0}">
+                    <div th:each="reply:${session.replyList}">
+                        <ul class="media-list">
+                            <li class="media">
+                                <div class="media-left">
+                                    <a href="#">
+                                        <img src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1568358265559&di=9f40135df059d7e6cc3a8f9d1b9a4d2a&imgtype=0&src=http%3A%2F%2Fku.90sjimg.com%2Felement_origin_min_pic%2F01%2F37%2F41%2F87573c4bdacf52b.jpg" width="20px"/>
+                                    </a>
+                                </div>
+                                <div class="media-body">
+                                    <div ><strong><p class="media-heading nobr" th:text="${reply.getUsername()}+'：'"></p></strong><p class="nobr" th:text="${reply.getReply_description()+'&nbsp;&nbsp;'}"></p><p class="nobr grey_font" th:text="${'('+reply.getGmt_reply_create()+')'}"></p></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
         </div>
 
 

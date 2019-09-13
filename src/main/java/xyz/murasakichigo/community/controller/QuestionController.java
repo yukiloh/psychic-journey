@@ -3,11 +3,10 @@ package xyz.murasakichigo.community.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
-import xyz.murasakichigo.community.dto.Reply;
+import xyz.murasakichigo.community.dto.ReplyDTO;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
@@ -35,14 +34,6 @@ public class QuestionController {
         return "newIssue";
     }
 
-
-//    提交问题页面的submit按钮
-    /*当接收到get时原路返回(理由不明)*/
-    @GetMapping("/profile/questionSubmit")
-    public String getQuestion() {
-        return "redirect:/question";
-    }
-
     /*使用post接受*/
     @PostMapping("/profile/questionSubmit")
     public String postQuestion(
@@ -65,6 +56,9 @@ public class QuestionController {
         /*应该是重定向至成功页面,然后返回到问题浏览的...*/
         return "redirect:/homepage";
     }
+
+
+
 //===================================================================
     /*进入问题修改*/
     @GetMapping("/profile/issueEdit/{id}")
@@ -113,16 +107,32 @@ public class QuestionController {
         accumulateView(question,id,request);
 
         /*回传回复*/
-        List<Reply> replyList = replyMapper.findReplyByIssueId(id);
+        List<ReplyDTO> replyDTOList = replyMapper.findReplyByIssueId(id);
+        if (replyDTOList != null) {request.getSession().setAttribute("replyList", replyDTOList);}
         request.getSession().setAttribute("question",question);
-        request.getSession().setAttribute("replyList",replyList);
         return "publish";
    }
 
 
 //    ================================================================================================
+    /*回复按钮*/
+    @PostMapping("/profile/replySubmit")
+    public String postReply(
+            @RequestParam(name = "parent_id") String parent_id,
+            @RequestParam(name = "reply_description") String description,
+            @RequestParam(name = "critic_id") String critic_id
+            )  {
 
+        ReplyDTO replyDTO = new ReplyDTO();
+        replyDTO.setCritic_id(Integer.valueOf(critic_id));
+        replyDTO.setParent_id(Integer.valueOf(parent_id));
+        replyDTO.setReply_description(description);
+        replyDTO.setGmt_reply_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+        replyMapper.createReply(replyDTO);
 
+        /*应该是重定向至成功页面,然后返回到问题浏览的...*/
+        return "redirect:/publish/issue"+parent_id;
+    }
 
 //    ================================================================================================
     void accumulateView(CommunityQuestion question, String id, HttpServletRequest request) {

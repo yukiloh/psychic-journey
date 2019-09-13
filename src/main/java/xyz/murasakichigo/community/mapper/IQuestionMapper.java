@@ -1,10 +1,12 @@
 package xyz.murasakichigo.community.mapper;
 
 
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
-import xyz.murasakichigo.community.dto.CommunityUser;
 
 import java.util.List;
 /*ctrl+alt+O: 自动移除无用的import*/

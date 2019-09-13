@@ -2,17 +2,18 @@ package xyz.murasakichigo.community.dto;
 
 import java.sql.Date;
 
-public class Reply {
+public class ReplyDTO {
     private Integer reply_id;
     private Integer parent_id;
     private String reply_description;
+    private String username;
     private Integer critic_id;
-    private Date gmt_reply_create;
-    private Date gmt_reply_modified;
+    private String gmt_reply_create;
+    private String gmt_reply_modified;
 
     @Override
     public String toString() {
-        return "Reply{" +
+        return "ReplyDTO{" +
                 "reply_id=" + reply_id +
                 ", parent_id=" + parent_id +
                 ", parent_id=" + reply_description +
@@ -20,6 +21,14 @@ public class Reply {
                 ", gmt_reply_create=" + gmt_reply_create +
                 ", gmt_reply_modified=" + gmt_reply_modified +
                 '}';
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getReply_description() {
@@ -54,19 +63,19 @@ public class Reply {
         this.critic_id = critic_id;
     }
 
-    public Date getGmt_reply_create() {
+    public String getGmt_reply_create() {
         return gmt_reply_create;
     }
 
-    public void setGmt_reply_create(Date gmt_reply_create) {
+    public void setGmt_reply_create(String gmt_reply_create) {
         this.gmt_reply_create = gmt_reply_create;
     }
 
-    public Date getGmt_reply_modified() {
+    public String getGmt_reply_modified() {
         return gmt_reply_modified;
     }
 
-    public void setGmt_reply_modified(Date gmt_reply_modified) {
+    public void setGmt_reply_modified(String gmt_reply_modified) {
         this.gmt_reply_modified = gmt_reply_modified;
     }
 }

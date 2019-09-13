@@ -6,7 +6,6 @@ spring:
     ##  静态资源放行
     static-path-pattern: /static/**
 
-
   #缓存设置为false, 这样修改之后马上生效，便于调试
   thymeleaf:
     cache: false

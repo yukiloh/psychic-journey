@@ -12,3 +12,19 @@
 .right-push{
     transform:translateX(-30px);
 }
+
+
+.nobr{
+    display:inline;            /*内联对象需加*/
+    word-break:keep-all;      /* 不换行 */
+    white-space:nowrap;       /* 不换行 */
+}
+
+.grey_font{
+    color:grey;
+    font-size: x-small;
+}
+
+.after_login_show{
+    color: grey;
+}
