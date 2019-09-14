@@ -28,3 +28,7 @@
 .after_login_show{
     color: grey;
 }
+
+.middle-font-size{
+    font-size: small;
+}

@@ -29,6 +29,7 @@
 <div class="container-fluid mainCss">
     <div class="row">
         <div class="col-xs-12 col-md-8" >
+            <!--问题展示区-->
             <div>
                 <h3><span class="glyphicon glyphicon-th-list" aria-hidden="true">&nbsp;<strong>问题</strong></span></h3>
             </div>
@@ -45,14 +46,20 @@
                 <span th:text="${'&nbsp;&nbsp;阅读数：'+session.question.getView_count()}"></span>
 
             </div><br>
-            <div th:text="${session.question.getDescription()}"></div>
+            <div th:text="${session.question.getDescription()}"></div><br>
+            <div class="label label-info middle-font-size" th:text="${session.question.getTag()}"></div>
+
+
+
+
             <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
-            <div class="pull-left" th:if="${session.communityUser != null}">
+            <div th:if="${session.communityUser != null}">
+                <br>
                 <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
             </div>
-            <br><br>
+            <br>
 
-
+            <!--回复区-->
             <div class="container-fluid">
                 <div class="col-md-9">
                     <div>
@@ -74,6 +81,7 @@
                 </div>
             </div>
             <hr>
+            <!--回复展示区-->
             <div>
                 <div th:if="${session.replyList != null && session.replyList.size() > 0}">
                     <div th:each="reply:${session.replyList}">
@@ -93,10 +101,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
         <div class="col-md-4 left-border"> <!--style="background:burlywood; color:#FFF"-->
             <h3>热门话题</h3>
