@@ -34,7 +34,7 @@ public class profileController {
             Integer id = communityUser.getId();
             /*通过调用域显示页面*/
             showPage(request,id,pageNumber);
-            return "question";
+            return "profile";
         }else return "redirect:/login";      /*如果没有获取到cUser则重定向至登陆页面*/
     }
 

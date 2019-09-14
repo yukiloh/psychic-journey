@@ -27,7 +27,7 @@
 
 <div class="container-fluid mainCss">
     <div class="row">
-        <div class="col-xs-8 col-md-8">
+        <div class="col-xs-12 col-md-8">
             <div>
                 <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>我的问题</strong></span></h3>
             </div>
@@ -36,7 +36,7 @@
                 <div class="media">
                     <div class="media-left">
                         <div href="#">
-                            <img class="media-object img-rounded" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1567583816161&di=8c53bfd9bb1e181cf575ae6c5d5011c7&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F4acb627553501c1cd21df96581c8cf09817bab945438-jleZ6L_fw658" alt="..." width="50px">
+                            <img class="media-object img-rounded" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1567583816161&di=8c53bfd9bb1e181cf575ae6c5d5011c7&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F4acb627553501c1cd21df96581c8cf09817bab945438-jleZ6L_fw658"  width="50px">
                         </div>
                     </div>
                     <div class="media-body">
@@ -44,15 +44,20 @@
                             <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
 
                         </a>
-
+                        <div>
+                            <span>作者:</span>
+                            <span th:text="${question.getAuthor_name()}"></span>
+                            <span>&nbsp;创建时间:</span>
+                            <span th:text="${question.getGmt_create()}"></span>
+                            <span>&nbsp;阅读数:</span>
+                            <span th:text="${question.getView_count()}"></span>
+                        </div>
                         <div id="mediaBody" th:text="${question.getDescription()}"></div>
                         <hr>
                     </div>
-
-                    </div>
+                </div>
             </div>
-
-
+            <!--分页-->
             <nav aria-label="Page navigation" class="navbar-right right-push">
                 <ul class="pagination">
                     <li>
@@ -96,7 +101,7 @@
 
         </div>
 
-        <div class="col-xs-4 col-md-4"> <br><br><br>
+        <div class="col-md-4"> <br><br><br>
             <div class="list-group col-lg-6">
                 <a  href="/profile" class="list-group-item active btn"><span class="glyphicon glyphicon-unchecked ">&nbsp;我的提问</span>  </a>
                 <a  href="/profile/myAnswer" class="list-group-item  btn disabled"><span class="glyphicon glyphicon-new-window">&nbsp;我的回复</span>  </a>
