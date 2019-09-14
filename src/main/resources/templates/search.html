@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../static/images/favicon.ico">
+
+    <title>搜索</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--自定义css样式-->
+    <link rel="stylesheet" href="../static/css/myCss.css">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    </head>
+<body>
+<!--使用thymeleaf的引入-->
+<div th:insert="~{navBar::navBar}"></div>
+
+<div class="container-fluid mainCss">
+    <div class="row">
+        <div class="col-xs-12 col-md-8">
+            <div>
+                <h3><span class="glyphicon glyphicon-search" aria-hidden="true">&nbsp;<strong>搜索</strong></span></h3>
+            </div>
+            <hr>
+            <div th:each="question:${session.questionList}">
+                <div class="media">
+                    <div class="media-left">
+                        <div href="#">
+                            <img class="media-object img-rounded" src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1567583816161&di=8c53bfd9bb1e181cf575ae6c5d5011c7&imgtype=0&src=http%3A%2F%2Fhbimg.b0.upaiyun.com%2F4acb627553501c1cd21df96581c8cf09817bab945438-jleZ6L_fw658"  width="50px">
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <a th:href="${'/publish/issue'}+${question.getId()}">
+                            <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
+
+                        </a>
+                        <div>
+                            <span>作者:</span>
+                            <span th:text="${question.getAuthor_name()}"></span>
+                            <span>&nbsp;创建时间:</span>
+                            <span th:text="${question.getGmt_create()}"></span>
+                            <span>&nbsp;阅读数:</span>
+                            <span th:text="${question.getView_count()}"></span>
+                        </div>
+                        <div id="mediaBody" th:text="${question.getDescription()}"></div>
+                        <hr>
+                    </div>
+                </div>
+            </div>
+            <!--分页-->
+<!--
+            <nav aria-label="Page navigation" class="navbar-right right-push">
+                <ul class="pagination">
+                    <li>
+                        <a th:href="@{'profile?page='+${1}}">
+                            <span aria-hidden="true">TOP</span>
+                        </a>
+                    </li>
+                    <li>        &lt;!&ndash;使用二元+th：href，决定分页逻辑&ndash;&gt;
+                        <a th:href="@{'profile?page='+${(session.page)-1 >=1 ? (session.page)-1:1}}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'profile?page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
+                    <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'profile?page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
+                    <li th:class="'active'"><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
+                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
+
+&lt;!&ndash;                    1.0版本的分页栏，收藏用&ndash;&gt;
+&lt;!&ndash;
+                    <li th:class="${session.page == session.page ? 'active':''} "><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
+                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
+                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
+                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
+&ndash;&gt;
+
+                    <li >
+                        <a th:href="@{'profile?page='+${(session.page)+1 <= session.maxPage ? (session.page)+1:(session.maxPage)}}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{'profile?page='+${session.maxPage}}">
+                            <span aria-hidden="true">END</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+-->
+
+
+        </div>
+
+<!--
+        <div class="col-md-4"> <br><br><br>
+            <div class="list-group col-lg-6">
+                <a  href="/profile" class="list-group-item active btn"><span class="glyphicon glyphicon-unchecked ">&nbsp;我的提问</span>  </a>
+                <a  href="/profile/myAnswer" class="list-group-item  btn disabled"><span class="glyphicon glyphicon-new-window">&nbsp;我的回复</span>  </a>
+            </div>
+        </div>
+-->
+    </div>
+</div>
+
+</body>
+</html>

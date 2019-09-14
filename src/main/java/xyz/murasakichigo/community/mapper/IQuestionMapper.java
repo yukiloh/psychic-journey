@@ -46,6 +46,8 @@ public interface IQuestionMapper {
     @Update("UPDATE `springboot_community_project`.`quest_table` t SET t.`view_count` = #{view_count} WHERE t.`id` = #{id}")
     void updateQuestionView(int view_count, String id);
 
+    @Select("select * from quest_table t where t.title like '%' #{keyword} '%'")
+    List<CommunityQuestion> findKeyword(String keyword);
 }
 
 

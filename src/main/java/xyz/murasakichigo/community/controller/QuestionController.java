@@ -134,6 +134,16 @@ public class QuestionController {
         return "redirect:/publish/issue"+parent_id;
     }
 
+
+    /*问题搜索*/
+    @GetMapping("/search")
+    public String search(HttpServletRequest request,@RequestParam(name = "keyword") String keyword) {
+        List<CommunityQuestion> questionList = questionMapper.findKeyword(keyword);
+        request.getSession().setAttribute("questionList",questionList);
+        return "search";
+    }
+
+
 //    ================================================================================================
     void accumulateView(CommunityQuestion question, String id, HttpServletRequest request) {
         /*添加判断：如果ip不累计访问；暂时省略;应该存在事务管理，同时有多个访问时候；*/

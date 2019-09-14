@@ -22,16 +22,15 @@ public class SpringBootProjectCommunityApplicationTests {
 
 
     @Autowired
-    private IReplyMapper replyMapper;
+    private IQuestionMapper questionMapper;
 
     @Test
     public void contextLoads() {
-        ReplyDTO replyDTO = new ReplyDTO();
-        replyDTO.setCritic_id(1);
-        replyDTO.setReply_description("testtt");
-        replyDTO.setParent_id(62);
-        replyDTO.setGmt_reply_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
-        replyMapper.createReply(replyDTO);
+        String keyword = "标";
+        List<CommunityQuestion> questionList = questionMapper.findKeyword(keyword);
+        for (CommunityQuestion c:questionList) {
+            System.out.println(c);
+        }
 
 
     }
