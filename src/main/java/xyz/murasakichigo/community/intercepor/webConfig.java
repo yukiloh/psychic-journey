@@ -22,12 +22,13 @@ public class webConfig implements WebMvcConfigurer {
         /*自定义一个会话拦截器SessionInterceptor*/
         registry.addInterceptor(sessionInterceptor).
                 addPathPatterns("/**").                                             /*拦截所有*/
-                excludePathPatterns("/excludePath/**","/logout","/error");          /*放行路径*/
+                excludePathPatterns("/logout","/error");          /*放行路径*/
 
         /*可以添加多个registry.addInterceptor()*/
         /*拦截profile下的路径，仅验证cUser*/
         registry.addInterceptor(communityUserInterceptor).addPathPatterns("/profile","/profile/**").
-                excludePathPatterns("/excludePath/**","/logout","/error");
+                excludePathPatterns("/logout","/error");
+
 
     }
 

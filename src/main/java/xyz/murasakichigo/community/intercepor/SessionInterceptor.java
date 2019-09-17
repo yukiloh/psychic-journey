@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.mapper.IIpMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 
 import javax.servlet.http.Cookie;
@@ -18,14 +19,23 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Autowired
     private IUserMapper userMapper;
 
+    @Autowired
+    private IIpMapper ipMapper;
+
 
     /*预处理拦截内容，返回布尔值*/
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        System.out.println("checking cookie");
-        checkCookie(request);
-        return true;
+
+        Boolean flag = checkAccessCounts(request);
+        if (flag == true){
+            checkCookie(request);
+            return true;
+        }else return false;
     }
+
+
 
     /*后处理*/
     @Override
@@ -59,6 +69,27 @@ public class SessionInterceptor implements HandlerInterceptor {
                 }
             }
         }
+    }
+
+    /*检查访问次数*/
+    private Boolean checkAccessCounts(HttpServletRequest request) {
+
+        if (1 == 1) {
+            Integer maxCount = 49;
+            String ipAddr = request.getRemoteAddr();/*获取用户地址*/
+            Integer count = ipMapper.findCountByIp(ipAddr);
+
+            if (count != null&& count>= maxCount) {
+                return false;
+            }else if (count == null){
+                /*插入*/
+                ipMapper.createIp(ipAddr);
+            }else {
+                /*累加*/
+                ipMapper.updateIp(ipAddr);
+            }
+            return true;
+        }else return false;
     }
 
 
