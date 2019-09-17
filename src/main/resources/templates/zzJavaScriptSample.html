@@ -1,0 +1,209 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../static/images/favicon.ico">
+
+    <title>test page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--自定义css样式-->
+    <link rel="stylesheet" href="../static/css/myCss.css">
+    <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+
+
+    <!--当script在head标签内时，会默认先加载，但当sc标签内存在body中的变量时并不能读取到值，可以通过读取完页面后再进行加载script标签来解决
+        实现有2种解决办法：
+        1.window.onload = function(){}  此方法**只会**加载一次，第二次调用后会覆盖第一次的内容
+        2.$(    function(){...}  )      也被称为jq的入口函数 -->
+    <!--jq入口函数的示例-->
+    <script>
+        $( function () {
+            alert($div1.html())
+            alert(typeof(div2.html(5555)))   /*调用div2时候并修改值为555,typeof()返回的是object*/
+        })
+    </script>
+</head>
+
+<body>
+
+    <!--一个完整演示Ajax的案例-->
+    <div><div1 id="div1" class="aaa-class" title="aaa-title">111</div1></div>
+    <div><div2 id="div2">222</div2></div>
+    <input type="button" value="click" id="btn1">
+
+    <input name="testInput" id="testInput" value="test1">
+
+    <form id="register">
+        <input type="text" name="user" value="hpc"><br>
+        <input type="text" name="pwd" value="123"><br>
+        <input type="text" name="sex" value="M"><br>
+        <input type="text" name="age" value="100"><br>
+        <input type="text" name="phone" value="13011112222"><br>
+        <input type="text" name="email" value="xxx@xxx.com"><br>
+    </form><br>
+    Jquery 的serialize()方法
+    <div id="show">
+
+    </div><br>
+    Jquery 的serializeArray()方法
+    <div id="show2">
+
+    </div><br>
+    Jquery serializeArray()方法的数据转json
+    <div id="show3"></div>
+
+    <hr>
+
+    <div id="data1"><div>内嵌div</div>外部div</div>
+
+    <form id="form1" name="form1">
+        <input id="name" type="text" value="namee" name="name">
+        <input id="paswd" type="text"  value="paswdd" name="paswd">
+        <input id="data" type="date" value="0000-00-00" name="date">
+    </form>
+    <button id="btn">发送ajax请求</button>
+    <div>替换部分</div>
+    <div id="show11" >111</div>
+    <div id="show22" >222</div>
+
+    <!--一段获取今日日期（string）并填充至input date的方法-->
+    <div>今日日期<input type="date" id="datePicker"  value="2000-01-01"/></div>
+
+
+
+<script>
+
+    /*定义一个function，然后调用（可以不按照顺序）*/
+    f();
+    function f() {
+        alert("123")
+    }
+
+
+
+    /*js获取标签的方式*/
+    var div1 = document.getElementById("div1");
+    div1.innerHTML = 'aaa';         /*给div1标签填入值aaa*/
+
+
+    /*JQ获取(选择)元素的方式*/
+    var $div1 = $("div1");              /*$元素选取器*/
+    var div2 = $("div2");
+    var $div_1 = $("#div1");            /*通过#选择的是id*/
+    var $aaa = $('.aaa-class');         /*通过.classname选取class属性*/
+    var $aaa1 = $('.aaa-class,div1');   /*病机选择器,通过,隔断"el1,el2....."*/
+
+        /*层级选择器*/
+    $('div div1');      /*后代选择器,选择div下所有div1*/
+    $('div > div1');    /*子选择器,选择div下所有名为div1的子集(如果div1下存在子集div3,则不会被选中)*/
+        /*属性选择器*/
+    $("div[id][title != 'aaa-title']");     /*选择title 值为 等于=/不等于!=/以xx开头^=/以xx结尾$=/包含xx*= 的元素*/
+        /*过滤器选择器*/
+    $("div1:first");     /*选择div1中第一个元素,其他省略;*/
+        /*表单过滤器*/
+    $("input[id=testInput]").val('test2');  /*选择input标签中id=testInput,修改value为'test2'*/
+
+    /*也可以有多个[],同时成立时才会被选区*/
+
+
+    /*$()获取的是对象，var是赋值给定义的变量（对象），最后实际是对象去调用相应函数*/
+
+    div2.html("333");       /*修改标签的value为333*/
+    $("#btn1").click(function () {      /*选取id=btn,实行click点击,弹出div2的内容*/
+        alert(div2.html());
+    });
+
+
+    /*通过jq控制css样式*/
+    div2.css('background-color','red');     /*通过对象.css,调用css()方法来控制css,css()内的参数为'key':'value'*/
+    div2.css('backgroundColor','red');      /*此种方法也可,估计是调用了默认的类*/
+
+
+
+/*==============================================*/
+    var register =$("#register");
+    //返回字符串xxx=xxx&yyy=yyy;
+    var formData = register.serialize();
+    $("#show").html(formData);
+    // 返回的是json数组[{xxx:xxx},{yyy:yyy}]
+    formData = register.serializeArray();
+    $("#show2").html(JSON.stringify(formData));
+
+    //将json数组转为json 对象
+    var jsons = transformToJson(formData);
+    $("#show3").html(JSON.stringify(jsons));
+
+    // 转为json数据格式
+    function transformToJson(formData){
+        var obj={}
+        for (var i in formData) {
+            /*[{"name":"user","value":"hpc"},{"name":"pwd","value":"123"},{"name":"sex","value":"M"},{"name":"age","value":"100"},{"name":"phone","value":"13011112222"},{"name":"email","value":"xxx@xxx.com"}]
+            */
+            //下标为的i的name做为json对象的key，下标为的i的value做为json对象的value
+            obj[formData[i].name]=formData[i]['value'];
+        }
+        return obj;
+    }
+
+
+//    ===============================================================================================================
+    $(function(){
+        $("#btn").click(function () {
+            /*
+                        alert("hello");             /!*测试用,如能正常弹出则表示就js正常被调用*!/
+            */
+
+            /*常用的2种json序列化方法*/
+            var data1 = $("#form1").serialize();                        /*数据类型：string;name=xxx&paswd=xxx*/
+            var data2 = JSON.stringify($("#form1").serializeArray());   /*数据类型：string;数组显示,[{"name":"xxx","value":"xxx",....}]*/
+            // alert('data2数据内容：'+data2);
+            var show1 = $("#show11");
+            var show2 = $("#show22");
+            show1.html("serialize:"+data1);
+            show2.html("serializeArray:"+data2);
+            /*调用ajax*/
+            $.ajax({
+                url:"/testAjax",                                        /*请求的路径*/
+                contentType:"application/json;charset=UTF-8",           /*固定写法*/
+                data:data2,        /*传递的数据内容*/
+                type:"post",        /*传递的方式*/
+                dataType:"text",    /*预期返回的数据格式;xml,html,script,json,jsonp,text*/
+                success:function (data) {   /*成功后回调函数.指定传入的data(Jackson自动解析为json数据了)*/
+                    alert('返回的data：'+data);    /*弹窗显示回调的结果*/
+                }
+            });
+        });
+    });
+
+
+
+
+
+    //=========================================================================
+    /*一段获取今日日期（string）并填充至input date的方法*/
+    var now = new Date();
+    var day = ("0" + now.getDate()).slice(-2);              /*ex：012，截取最后两位*/
+    var month = ("0" + (now.getMonth() + 1)).slice(-2);     /*同上，月份会少1，所以+1*/
+    var today = now.getFullYear()+"-"+(month)+"-"+(day) ;
+    $('#datePicker').val(today);
+    //=========================================================================
+
+</script>
+
+
+</body>
+
+</html>

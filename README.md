@@ -1,8 +1,10 @@
 ### psychic-journey
+
 我也不知道为什么起这个名字，系统给的
 
 
 ### 关于mysql
+
 新增一个remote账号
 
 create user onlyforremote@'%' identified by 'TAof2P1OBG24OG!P3iQi';
@@ -42,5 +44,7 @@ git pull origin master
 mvn spring-boot:run
 
 ###移至其他项目需要更改的内容
+
 application.yml中，数据库信息和github登陆信息
+
 messages.properties中，用于login.html登陆github认证的重定向url

@@ -60,30 +60,44 @@
                                                                                 <!--name用于参数传回后端@RequestParam-->
                     <input type="text" class="form-control" placeholder="你的问题..."  name="title">
                 </div><br>
-<!--富文本，获取内容麻烦，省略-->
-<!--                <div id="editor">
+                <!--富文本，获取内容麻烦，省略-->
+                <!--                <div id="editor">
                     <p>初试内容</p>
-                </div>-->
+                </div>      -->
+
                 <textarea id="textarea"  class="form-control" rows="9" placeholder="问题描述..."  name="description" style="resize:none" th:placeholder="问题详述..."></textarea><br>
-                <br>
-
-
                 <div>
-                    <button type="button" class="btn btn-default">上传附件</button>
-                    <font size="1px" color="#a9a9a9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许格式：....</font>
+                    <button type="submit" class="btn btn-info " >提交</button>
+                    <span>
+                        <!--上传功能暂时禁用-->
+                        <button type="button" class="btn btn-default btn disabled">上传附件</button>
+                        <span class="attachmentFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许格式：....</span>
+                    </span>
+                </div><br>
+                <div>
+                    <div  >
+                        <span class="btnn" id="addTag_btn">
+                            <span class="glyphicon glyphicon-plus addTag"></span>
+                            <span class="addTag" >添加一个好看但是没用的标签&nbsp;&nbsp;</span>
+                            <span id="addTag_span" style="display: none" class="tagLocation"></span>
+                        </span>
+                        <div id="tags" class="tagLocation" style="display: none" >
+<!--                            <input class="input-group"><br>-->
+                            <span id="tag1"><button type="button" class="btn-xs btn-info" >老铁</button></span>
+                            <span id="tag2"><button type="button" class="btn-xs btn-info" >双击</button></span>
+                            <span id="tag3"><button type="button" class="btn-xs btn-info" >666</button></span>
+                            <span id="tag4"><button type="button" class="btn-xs btn-info" >没毛病</button></span>
+                        </div>
+
+                    </div>
+                    <br>
+<!--                    <input type="text" class="form-control" placeholder="标签..."  id="tag" name="tag"/><br>-->
+
+
                 </div><br>
 
+            </div></form>
 
-                <div>
-                    <div><strong>&nbsp;添加标签</strong></div>
-                    <input type="text" class="form-control" placeholder="标签..."  id="tag" name="tag">
-
-
-                </div><br>
-
-                <button type="submit" class="btn btn-info" >提交</button>
-            </div>
-        </form>
 
         <div class="col-md-4"> <!--style="background:burlywood; color:#FFF"--><br><br><br>
             <div class="panel panel-default">
@@ -122,11 +136,40 @@
     </div>
 
 
-<!--<script type="text/javascript">
-    var E = window.wangEditor
-    var editor = new E('#editor')
-    editor.create()
-</script>-->
+<script >
+
+    /*tag栏获取焦点显示tags，失去焦点隐藏tags*/
+    var addTagBtn = $("#addTag_btn");
+    var tags = $("#tags");
+    addTagBtn.click(function(){
+        tags.toggle("normal");
+        $("#addTag_span").toggle();
+    });
+
+    var tag1 = $("#tag1");
+    tag1.click(function () {
+        $("#addTag_span").append(tag1.clone(),"&nbsp;");
+        tag1.hide("fast");
+
+        });
+    var tag2 = $("#tag2");
+    tag2.click(function () {
+        $("#addTag_span").append(tag2.clone(),"&nbsp;");
+        tag2.hide("fast");
+    });
+    var tag3 = $("#tag3");
+    tag3.click(function () {
+        $("#addTag_span").append(tag3.clone(),"&nbsp;");
+        tag3.hide("fast");
+    });
+    var tag4 = $("#tag4");
+    tag4.click(function () {
+        $("#addTag_span").append(tag4.clone(),"&nbsp;");
+        tag4.hide("fast");
+    });
+
+
+</script>
 
 </body>
 </html>

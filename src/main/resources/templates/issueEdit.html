@@ -12,7 +12,7 @@
 
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
 
-    <link rel="stylesheet" href="/static/css/myCss.css">
+    <link rel="stylesheet" href="../static/css/myCss.css">
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -40,24 +40,15 @@
                 <br>
                 <div>
                     <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.questionByIssueId.getDescription()}"></textarea>
-                </div>
-                <br>
-
-
-                <div>
-                    <button type="button" class="btn btn-default">上传附件</button>
-                    <font size="1px" color="#a9a9a9">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许格式：....</font>
                 </div><br>
-
-
                 <div>
-                    <div><strong>&nbsp;添加标签</strong></div>
-                    <input type="text" class="form-control" id="tag" name="tag" th:value="${session.questionByIssueId.getTag()}">
-
-
+                    <button type="submit" class="btn btn-info " >提交</button>
+                    <span>
+                        <!--上传功能暂时禁用-->
+                        <button type="button" class="btn btn-default btn disabled">上传附件</button>
+                        <span class="attachmentFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许格式：....</span>
+                    </span>
                 </div><br>
-
-                <button type="submit" class="btn btn-info" href="/profile/issueUpdate">提交</button>
             </div>
         </form>
 

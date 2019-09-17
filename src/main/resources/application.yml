@@ -25,9 +25,12 @@ spring:
   datasource:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/springboot_community_project?serverTimezone=UTC
+#      jdbc-url: jdbc:mysql://localhost:3306/springboot_community_project?serverTimezone=UTC
       username: root
       password: 111111
+#      奇怪的WARN，在注释掉H2数据库的dependency后会出现Failed to configure a DataSource: 'url' attribute is not specified and no embedded
+#      需要在此配置url，之后jdbc-url可以省略
+    url: jdbc:mysql://localhost:3306/springboot_community_project?serverTimezone=UTC
 
 
 
@@ -39,6 +42,7 @@ github:
     redirect_uri: http://localhost:8080/callback
     state: null
 
-
-
-
+#log日志，path为根目录
+logging:
+  file: logging.log
+  path: /

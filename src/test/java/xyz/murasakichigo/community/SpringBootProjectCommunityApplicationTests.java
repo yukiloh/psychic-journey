@@ -21,16 +21,21 @@ public class SpringBootProjectCommunityApplicationTests {
 
 
 
-    @Autowired
-    private IQuestionMapper questionMapper;
+//    @Autowired
+//    private IQuestionMapper questionMapper;
 
     @Test
     public void contextLoads() {
-        String keyword = "标";
-        List<CommunityQuestion> questionList = questionMapper.findKeyword(keyword);
-        for (CommunityQuestion c:questionList) {
-            System.out.println(c);
-        }
+//        String keyword = "标";
+//        List<CommunityQuestion> questionList = questionMapper.findKeyword(keyword);
+//        for (CommunityQuestion c:questionList) {
+//            System.out.println(c);
+
+        int i = 1;
+        if (++i == 1) {
+            System.out.println(true);
+        }else System.out.println(false);
+
 
 
     }

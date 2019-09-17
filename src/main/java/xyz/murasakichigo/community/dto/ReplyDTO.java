@@ -16,7 +16,7 @@ public class ReplyDTO {
         return "ReplyDTO{" +
                 "reply_id=" + reply_id +
                 ", parent_id=" + parent_id +
-                ", parent_id=" + reply_description +
+                ", reply_description=" + reply_description +
                 ", critic_id=" + critic_id +
                 ", gmt_reply_create=" + gmt_reply_create +
                 ", gmt_reply_modified=" + gmt_reply_modified +
