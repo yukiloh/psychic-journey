@@ -1,17 +1,20 @@
 spring:
   mvc:
-    view:
-      prefix: /templates/
-      suffix: .html
-    ##  静态资源放行
+#    view:
+#      prefix: /templates/
+#      suffix: .html
+    #  静态资源放行
     static-path-pattern: /static/**
 
-  #缓存设置为false, 这样修改之后马上生效，便于调试
   thymeleaf:
+    # 引入spring-boot-starter-thymeleaf后，默认会从/templates/下寻找对应html；静态目录也变为/templates/
+    # thymeleaf默认路径(匹配比较严格，尾缀需加/)
+    prefix: classpath:/templates/
+    # 开发阶段缓存设置为false;正式使用应该为true
     cache: false
 
 
-#启用热部署
+  #启用热部署
   devtools:
     restart:
       enabled: true
