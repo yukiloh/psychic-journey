@@ -1,6 +1,8 @@
 package xyz.murasakichigo.community.dto;
 
-public class CommunityQuestion {
+import java.io.Serializable;
+
+public class CommunityQuestion implements Serializable {
    private  Integer id;
    private  String title;
    private  String author_name;

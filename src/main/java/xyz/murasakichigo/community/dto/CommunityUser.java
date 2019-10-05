@@ -1,8 +1,9 @@
 package xyz.murasakichigo.community.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class CommunityUser {
+public class CommunityUser implements Serializable {
 
 
     private Integer id;

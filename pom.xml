@@ -9,6 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>xyz.murasakichigo.community</groupId>
+    <!--demo名称可修改-->
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 <!--    <login>SpringBootProject_Community</login>-->
@@ -16,6 +17,8 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <docker.image.prefix>springboot</docker.image.prefix>
+
     </properties>
 
     <dependencies>
@@ -74,10 +77,18 @@
             <version>1.4.199</version>
         </dependency>-->
 
+        <!--mysql-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.17</version>
+        </dependency>
+
+        <!--maria-->
+        <dependency>
+            <groupId>org.mariadb.jdbc</groupId>
+            <artifactId>mariadb-java-client</artifactId>
+<!--            <version>2.2.6</version>-->
         </dependency>
 
         <dependency>
@@ -107,6 +118,13 @@
             <version>1.0.2</version>
         </dependency>-->
 
+        <!--redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+
 
     </dependencies>
 
@@ -115,6 +133,24 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+
+            <!-- Docker maven plugin -->
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -1,8 +1,10 @@
 package xyz.murasakichigo.community.dto;
 
 
+import java.io.Serializable;
+
 /*用于封装github返回的user数据*/
-public class GithubUser {
+public class GithubUser implements Serializable {
     private String login;
     private long id;
     private String updated_at;

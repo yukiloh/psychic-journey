@@ -1,8 +1,9 @@
 package xyz.murasakichigo.community.dto;
 
+import java.io.Serializable;
 import java.sql.Date;
 
-public class ReplyDTO {
+public class ReplyDTO implements Serializable {
     private Integer reply_id;
     private Integer parent_id;
     private String reply_description;

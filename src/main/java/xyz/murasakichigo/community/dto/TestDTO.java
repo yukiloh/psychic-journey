@@ -1,8 +1,8 @@
 package xyz.murasakichigo.community.dto;
 
-import java.sql.Date;
+import java.io.Serializable;
 
-public class TestDTO {
+public class TestDTO implements Serializable {
     private String name;
     private String paswd;
     private String date;

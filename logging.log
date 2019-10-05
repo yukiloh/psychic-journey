@@ -1,6 +1,72 @@
-2019-10-02 22:40:08.241  INFO 14332 --- [main] ringBootProjectCommunityApplicationTests : Starting SpringBootProjectCommunityApplicationTests on DESKTOP-EOFC857 with PID 14332 (started by Ash in D:\Code\JAVA\SpringBoot_Project_Community)
-2019-10-02 22:40:08.244  INFO 14332 --- [main] ringBootProjectCommunityApplicationTests : No active profile set, falling back to default profiles: default
-2019-10-02 22:40:11.223  INFO 14332 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
-2019-10-02 22:40:11.333  INFO 14332 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
-2019-10-02 22:40:11.767  INFO 14332 --- [main] ringBootProjectCommunityApplicationTests : Started SpringBootProjectCommunityApplicationTests in 4.013 seconds (JVM running for 5.029)
-2019-10-02 22:40:12.503  INFO 14332 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:18:41.482  INFO 6512 --- [main] ringBootProjectCommunityApplicationTests : Starting SpringBootProjectCommunityApplicationTests on DESKTOP-EOFC857 with PID 6512 (started by Ash in D:\Code\JAVA\SpringBoot_Project_Community)
+2019-10-05 12:18:41.532  INFO 6512 --- [main] ringBootProjectCommunityApplicationTests : No active profile set, falling back to default profiles: default
+2019-10-05 12:18:43.155  INFO 6512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-05 12:18:43.159  INFO 6512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-05 12:18:43.218  INFO 6512 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 33ms. Found 0 repository interfaces.
+2019-10-05 12:18:43.801  INFO 6512 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$377c319a] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-05 12:18:45.869  INFO 6512 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:18:45.978  INFO 6512 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-10-05 12:18:46.749  INFO 6512 --- [main] ringBootProjectCommunityApplicationTests : Started SpringBootProjectCommunityApplicationTests in 6.165 seconds (JVM running for 7.399)
+2019-10-05 12:18:47.341  INFO 6512 --- [main] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2019-10-05 12:18:47.343  INFO 6512 --- [main] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2019-10-05 12:18:47.923  INFO 6512 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-05 12:18:48.503  INFO 6512 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-05 12:18:49.759  INFO 6512 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:18:49.761  INFO 6512 --- [Thread-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-10-05 12:18:49.778  INFO 6512 --- [Thread-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2019-10-05 12:20:57.180  INFO 8892 --- [main] ringBootProjectCommunityApplicationTests : Starting SpringBootProjectCommunityApplicationTests on DESKTOP-EOFC857 with PID 8892 (started by Ash in D:\Code\JAVA\SpringBoot_Project_Community)
+2019-10-05 12:20:57.182  INFO 8892 --- [main] ringBootProjectCommunityApplicationTests : No active profile set, falling back to default profiles: default
+2019-10-05 12:20:58.789  INFO 8892 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-05 12:20:58.796  INFO 8892 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-05 12:20:58.837  INFO 8892 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 20ms. Found 0 repository interfaces.
+2019-10-05 12:20:59.485  INFO 8892 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$c3d83f8d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-05 12:21:01.750  INFO 8892 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:21:01.940  INFO 8892 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-10-05 12:21:02.899  INFO 8892 --- [main] ringBootProjectCommunityApplicationTests : Started SpringBootProjectCommunityApplicationTests in 6.27 seconds (JVM running for 7.341)
+2019-10-05 12:21:03.378  INFO 8892 --- [main] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2019-10-05 12:21:03.379  INFO 8892 --- [main] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2019-10-05 12:21:03.822  INFO 8892 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-05 12:21:03.889  INFO 8892 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-05 12:21:05.107  INFO 8892 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:21:05.109  INFO 8892 --- [Thread-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-10-05 12:21:05.123  INFO 8892 --- [Thread-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2019-10-05 12:44:37.929  INFO 12772 --- [main] ringBootProjectCommunityApplicationTests : Starting SpringBootProjectCommunityApplicationTests on DESKTOP-EOFC857 with PID 12772 (started by Ash in D:\Code\JAVA\SpringBoot_Project_Community)
+2019-10-05 12:44:37.932  INFO 12772 --- [main] ringBootProjectCommunityApplicationTests : No active profile set, falling back to default profiles: default
+2019-10-05 12:44:39.601  INFO 12772 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-05 12:44:39.604  INFO 12772 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-05 12:44:39.638  INFO 12772 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 18ms. Found 0 repository interfaces.
+2019-10-05 12:44:40.097  INFO 12772 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$c3d83f8d] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-05 12:44:41.095  INFO 12772 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:44:41.185  INFO 12772 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-10-05 12:44:41.921  INFO 12772 --- [main] ringBootProjectCommunityApplicationTests : Started SpringBootProjectCommunityApplicationTests in 4.486 seconds (JVM running for 5.458)
+2019-10-05 12:44:42.369  INFO 12772 --- [main] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2019-10-05 12:44:42.371  INFO 12772 --- [main] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2019-10-05 12:44:43.936  INFO 12772 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:47:35.779  INFO 12068 --- [main] ringBootProjectCommunityApplicationTests : Starting SpringBootProjectCommunityApplicationTests on DESKTOP-EOFC857 with PID 12068 (started by Ash in D:\Code\JAVA\SpringBoot_Project_Community)
+2019-10-05 12:47:35.781  INFO 12068 --- [main] ringBootProjectCommunityApplicationTests : No active profile set, falling back to default profiles: default
+2019-10-05 12:47:37.087  INFO 12068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-05 12:47:37.090  INFO 12068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-05 12:47:37.139  INFO 12068 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 13ms. Found 0 repository interfaces.
+2019-10-05 12:47:37.559  INFO 12068 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$e019b5ce] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-05 12:47:38.542  INFO 12068 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:47:38.641  INFO 12068 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-10-05 12:47:39.394  INFO 12068 --- [main] ringBootProjectCommunityApplicationTests : Started SpringBootProjectCommunityApplicationTests in 4.303 seconds (JVM running for 5.287)
+2019-10-05 12:47:39.862  INFO 12068 --- [main] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2019-10-05 12:47:39.863  INFO 12068 --- [main] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2019-10-05 12:47:40.310  INFO 12068 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2019-10-05 12:47:40.375  INFO 12068 --- [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2019-10-05 12:47:41.534  INFO 12068 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:47:41.536  INFO 12068 --- [Thread-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2019-10-05 12:47:41.549  INFO 12068 --- [Thread-2] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2019-10-05 12:47:51.190  INFO 13448 --- [main] ringBootProjectCommunityApplicationTests : Starting SpringBootProjectCommunityApplicationTests on DESKTOP-EOFC857 with PID 13448 (started by Ash in D:\Code\JAVA\SpringBoot_Project_Community)
+2019-10-05 12:47:51.192  INFO 13448 --- [main] ringBootProjectCommunityApplicationTests : No active profile set, falling back to default profiles: default
+2019-10-05 12:47:52.802  INFO 13448 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode!
+2019-10-05 12:47:52.805  INFO 13448 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data repositories in DEFAULT mode.
+2019-10-05 12:47:52.853  INFO 13448 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 27ms. Found 0 repository interfaces.
+2019-10-05 12:47:53.261  INFO 13448 --- [main] trationDelegate$BeanPostProcessorChecker : Bean 'org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration' of type [org.springframework.transaction.annotation.ProxyTransactionManagementConfiguration$$EnhancerBySpringCGLIB$$565d08db] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying)
+2019-10-05 12:47:54.212  INFO 13448 --- [main] o.s.s.concurrent.ThreadPoolTaskExecutor  : Initializing ExecutorService 'applicationTaskExecutor'
+2019-10-05 12:47:54.302  INFO 13448 --- [main] o.s.b.a.w.s.WelcomePageHandlerMapping    : Adding welcome page template: index
+2019-10-05 12:47:55.025  INFO 13448 --- [main] ringBootProjectCommunityApplicationTests : Started SpringBootProjectCommunityApplicationTests in 4.429 seconds (JVM running for 5.423)
+2019-10-05 12:47:55.465  INFO 13448 --- [main] io.lettuce.core.EpollProvider            : Starting without optional epoll library
+2019-10-05 12:47:55.467  INFO 13448 --- [main] io.lettuce.core.KqueueProvider           : Starting without optional kqueue library
+2019-10-05 12:47:57.032  INFO 13448 --- [Thread-2] o.s.s.concurrent.ThreadPoolTaskExecutor  : Shutting down ExecutorService 'applicationTaskExecutor'
