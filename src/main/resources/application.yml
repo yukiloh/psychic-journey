@@ -48,7 +48,12 @@ spring:
     host: 192.168.1.90
     port: 32768
     password: MuMD02Hov6Xk
-
+    jedis:
+      pool:
+        max-active: 8   # 连接池最大空闲
+        min-idle: 0     # 最小
+        max-wait: -1    # 连接超时,负值为无限制
+    timeout: 100          # 等待超时
 
 
 #github服务器端的配置
@@ -58,6 +63,7 @@ github:
     code: null
     redirect_uri: http://localhost:8080/callback
     state: null
+
 
 #log日志，path为根目录
 logging:

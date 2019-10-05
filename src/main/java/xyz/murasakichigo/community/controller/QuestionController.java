@@ -10,6 +10,7 @@ import xyz.murasakichigo.community.dto.ReplyDTO;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -97,11 +98,15 @@ public class QuestionController {
 
 //    ================================================================================================
     /*进入单个question页面*/
+    @Autowired
+    private RedisUtil redisUtil;
+
     @GetMapping("/publish/issue{id}")
     public String findQuestionByIssueId(HttpServletRequest request,
                                         /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
-        CommunityQuestion question = questionMapper.findQuestionByIssueId(id);
+//        CommunityQuestion question = questionMapper.findQuestionByIssueId(id);        /*直接调用数据库*/
+        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);        /*通过redis缓存*/
 
         /*累加阅读数*/
         accumulateView(question,id,request);

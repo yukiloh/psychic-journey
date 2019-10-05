@@ -14,6 +14,7 @@ import xyz.murasakichigo.community.dto.ReplyDTO;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.utils.RedisUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -27,8 +28,14 @@ public class SpringBootProjectCommunityApplicationTests {
 //    @Autowired
 //    private IQuestionMapper questionMapper;
 
+    @Autowired
+    private RedisUtil redisUtil;
+
     @Test
     public void contextLoads() {
+        String id = "10";
+        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);
+        System.out.println(question);
 //        String keyword = "标";
 //        List<CommunityQuestion> questionList = questionMapper.findKeyword(keyword);
 //        for (CommunityQuestion c:questionList) {
@@ -36,17 +43,22 @@ public class SpringBootProjectCommunityApplicationTests {
 
     }
 
-    @Autowired
-    private IUserMapper userMapper;
 
+
+
+
+    /*redis测试*/
     /*注入springboot自动配置的template，其泛型只能为Object或String*/
     @Autowired
     private RedisTemplate<Object,Object> redisTemplate;
 
+
+    @Autowired
+    private IUserMapper userMapper;
+
     @Test
     public void contextLoads2() {
         List<CommunityUser> userList;
-
         /*序列化key，使得key不为乱码（value无所谓）*/
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         /*从redis中获取key=userList的值（通常返回的是object或string）*/
@@ -68,7 +80,9 @@ public class SpringBootProjectCommunityApplicationTests {
                 System.out.println(u);
             }
         }
-
     }
+
+
+
 
 }

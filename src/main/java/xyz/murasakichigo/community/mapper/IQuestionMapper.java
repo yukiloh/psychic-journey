@@ -31,12 +31,14 @@ public interface IQuestionMapper {
     Integer countQuestion();
 
 
+    /*通过用户id查找*/
     @Select("select * from quest_table where author_user_id = #{id} order by id desc limit #{page},10")
     List<CommunityQuestion> findQuestionById(int id,int page);
 
     @Select("SELECT COUNT(id) FROM quest_table where author_user_id = #{id}")
     Integer countProfileQuestion(Integer id);
 
+    /*通过问题id查找*/
     @Select("select * from quest_table where id = #{id} ")
     CommunityQuestion findQuestionByIssueId(String id);
 
