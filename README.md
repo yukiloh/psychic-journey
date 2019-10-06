@@ -3,7 +3,7 @@
 系统取的名
 
 
-基于springboot、thymeleaf、mysql/mariaDB、redis（暂时禁用）开发的一个简单问答项目；
+基于springboot、bootstrap、thymeleaf、mysql/mariaDB、redis（暂时禁用）开发的一个简单问答项目；
 
 
 

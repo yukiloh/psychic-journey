@@ -36,13 +36,9 @@ public class AuthorizeController {
     public String callback(@RequestParam(name = "code") String code,          /*需要交换访问令牌的临时用户*/
                            @RequestParam(name = "state") String state,      /*本地服务器生成的匹配验证码*/
                            HttpServletResponse response) {
-
-
-//        AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
-//        GithubProvider githubProvider = new GithubProvider();
-
-        System.out.println(code);
-        System.out.println(state);
+        /*用于验证state；应置于拦截器内*/
+//        String localState = "1";
+//        if (localState.equals(state)) {System.out.println("state OK!");}
 
         /*封装获取的accessToken的数据*/
         accessTokenDTO.setCode(code);
