@@ -1,3 +1,7 @@
+-- 可能会遇到无法插入中文字符问题,可以尝试↓
+-- alter table TABLE_NAME convert to character set utf8mb4 collate utf8mb4_bin;
+
+
 -- auto-generated definition
 CREATE TABLE ip_table
 (

@@ -43,7 +43,9 @@
                 <span th:text="${session.question.getAuthor_name()}"></span>
                 <span>&nbsp;创建时间:</span>
                 <span th:text="${session.question.getGmt_create()}"></span>
-                <span th:text="${'&nbsp;&nbsp;阅读数：'+session.question.getView_count()}"></span>
+                <span th:if="${session.question.getView_count() != null}">  <!--当阅读数为0时不显示-->
+                    <span th:text="${'&nbsp;&nbsp;阅读数：'+session.question.getView_count()}"></span>
+                </span>
 
             </div><br>
             <div th:text="${session.question.getDescription()}"></div><br>
@@ -53,10 +55,15 @@
 
 
             <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
-            <div th:if="${session.communityUser != null}">
-                <br>
-                <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
+            <div>
+                <span th:if="${session.communityUser != null}"><br>
+                    <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
+                </span>
+                <span th:if="${session.communityUser != null}">
+                    <a href="#">删除问题（功能未开放）</a>
+                </span>
             </div>
+
             <br>
 
             <!--回复区-->

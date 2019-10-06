@@ -8,6 +8,7 @@ import xyz.murasakichigo.community.dto.CommunityUser;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/*判断用户是否登陆*/
 @Component
 public class CommunityUserInterceptor implements HandlerInterceptor {
     @Override

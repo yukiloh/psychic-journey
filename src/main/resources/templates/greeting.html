@@ -11,7 +11,7 @@
 <p>insert any word after /greeting?name=,like 'World' </p>
 
 <p th:text="'Hello, ' + ${name} + '!'" />
-
+<p>测试调用messages.properties中的数据</p>
 <a th:href="@{'https://www.'+#{test.url}+'.com'}">baidu</a>
 <span th:text="@{'https://www.'+#{test.url}+'.com'}"></span>
 

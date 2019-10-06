@@ -75,7 +75,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     private Boolean checkAccessCounts(HttpServletRequest request) {
 
         if (1 == 1) {
-            Integer maxCount = 49;
+            Integer maxCount = 200;
             String ipAddr = request.getRemoteAddr();/*获取用户地址*/
             Integer count = ipMapper.findCountByIp(ipAddr);
 

@@ -35,14 +35,14 @@ public class QuestionController {
         return "newIssue";
     }
 
-    /*使用post接受*/
+    /*使用post接收*/
     @PostMapping("/profile/questionSubmit")
     public String postQuestion(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
-            @RequestParam(name = "tag") String tag,
+//            @RequestParam(name = "tag") String tag,
             @CookieValue(value = "token")String token)  {
-
+        String tag = "test";
         CommunityQuestion communityQuestion = new CommunityQuestion();
         communityQuestion.setTitle(title);
         communityQuestion.setDescription(description);
@@ -81,13 +81,13 @@ public class QuestionController {
     public String postQuestion(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "id") Integer id,
-            @RequestParam(name = "description") String description,
-            @RequestParam(name = "tag") String tag
+            @RequestParam(name = "description") String description
+//            @RequestParam(name = "tag") String tag
             ) {
         CommunityQuestion communityQuestion = new CommunityQuestion();
         communityQuestion.setTitle(title);
         communityQuestion.setDescription(description);
-        communityQuestion.setTag(tag);
+//        communityQuestion.setTag(tag);
         communityQuestion.setId(id);
         communityQuestion.setGmt_modified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 
@@ -105,8 +105,8 @@ public class QuestionController {
     public String findQuestionByIssueId(HttpServletRequest request,
                                         /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
-//        CommunityQuestion question = questionMapper.findQuestionByIssueId(id);        /*直接调用数据库*/
-        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);        /*通过redis缓存*/
+        CommunityQuestion question = questionMapper.findQuestionByIssueId(id);        /*直接调用数据库*/
+//        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
 
         /*累加阅读数*/
         accumulateView(question,id,request);
@@ -157,7 +157,6 @@ public class QuestionController {
             if (view_count == null) {
                 view_count = 0;
             }
-
             int view = view_count + 1;
             questionMapper.updateQuestionView(view,id);
         }

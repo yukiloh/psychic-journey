@@ -38,6 +38,7 @@ spring:
 ##  数据库--maria
   datasource:
     url: jdbc:mariadb://192.168.1.90:3306/springboot_community_project
+#    url: jdbc:mariadb://cloud1701.myqnapcloud.com:33306/springboot_community_project
     hikari:
       username: root
       password: zou9RYdAGW2MKoBY
@@ -46,6 +47,7 @@ spring:
   # redis配置
   redis:
     host: 192.168.1.90
+#    host: cloud1701.myqnapcloud.com
     port: 32768
     password: MuMD02Hov6Xk
     jedis:
@@ -61,11 +63,12 @@ github:
     client_id: Iv1.2299807260a02e0e
     cli ent_secret: b0500db3906303de1ab10cca68da8e33b7ad1b64
     code: null
-    redirect_uri: http://localhost:8080/callback
+    redirect_uri: http://cloud1701.myqnapcloud.com:30080/callback
+#    redirect_uri: http://localhost:8080/callback
     state: null
 
 
 #log日志，path为根目录
-logging:
-  file: logging.log
-  path: /
+  #logging:
+  #  file: logging.log
+  #  path: /
