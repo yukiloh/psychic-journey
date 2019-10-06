@@ -1,32 +1,15 @@
-### psychic-journey
+### 关于psychic-journey
 
-我也不知道为什么起这个名字，系统给的
-
-
-### 关于mysql
-
-新增一个remote账号
-
-create user onlyforremote@'%' identified by 'TAof2P1OBG24OG!P3iQi';
-
-修改了密码
-
-ALTER USER 'onlyforremote'@'%' IDENTIFIED WITH mysql_native_password BY '24OG!P3iQi';
-
-赋予权限
-
-grant all privileges on *.* to 'onlyforremote'@'%'  with grant option;
-
-数据库配置配置文件
-
-vi /etc/mysql/my.cnf
-
-重启服务
-
-service mysql restart
+系统取的名
 
 
-###Linux一些操作
+基于springboot、thymeleaf、mysql/mariaDB、redis（暂时禁用）开发的一个简单问答项目；
+
+
+
+
+
+###Linux上关于复制项目的操作
 克隆git项目
 
 git clone https://....
@@ -50,7 +33,32 @@ application.yml中，数据库信息和github登陆信息
 messages.properties中，用于login.html登陆github认证的重定向url
 
 
-###4个SQL的语句
+
+
+### ----以下弃用----
+### 关于远程服务器上得mysql(2019年10月6日-已禁用)
+
+新增一个remote账号
+
+create user onlyforremote@'%' identified by 'TAof2P1OBG24OG!P3iQi';
+
+修改了密码
+
+ALTER USER 'onlyforremote'@'%' IDENTIFIED WITH mysql_native_password BY '24OG!P3iQi';
+
+赋予权限
+
+grant all privileges on *.* to 'onlyforremote'@'%'  with grant option;
+
+数据库配置配置文件
+
+vi /etc/mysql/my.cnf
+
+重启服务
+
+service mysql restart
+
+###4个SQL的语句(已移至sql包内)
 
 ip_table:
 
