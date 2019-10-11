@@ -49,14 +49,18 @@ public class RedisUtil {
     public Integer findIPByRedis(String ip){
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         Integer ipCounts = (Integer)redisTemplate.opsForValue().get(ip);
-        /*存入数据库作为备份*/
-        ipMapper.createIp(ip);
+
 
         if (ipCounts != null) {
             ipCounts++;
             redisTemplate.opsForValue().set(ip,ipCounts);
             return ipCounts;
         }else {
+            /*如首次访问则（检查并）存入数据库作为备份*/
+            Integer count = ipMapper.findCountByIp(ip);
+            if (count == null) {
+                ipMapper.createIp(ip);
+            }
             ipCounts = 1;
             redisTemplate.opsForValue().set(ip,ipCounts);
             return ipCounts;

@@ -34,7 +34,7 @@ public class SessionInterceptor implements HandlerInterceptor {
             checkCookie(request);
             return true;
         }else {
-            System.out.println("over than load times");
+            System.out.println("over than max load times");
             response.sendRedirect("https://www.baidu.com");
             return false;
         }
@@ -82,16 +82,15 @@ public class SessionInterceptor implements HandlerInterceptor {
     /*检查访问次数,当超过次数后会跳转至baidu*/
     private Boolean checkAccessCounts(HttpServletRequest request) {
         Integer maxCount = 100;
-        if (1 == 1) {
-            String ipAddr = request.getRemoteAddr();/*获取用户地址*/
-            Integer counts = redisUtil.findIPByRedis(ipAddr);
-            if (counts >= maxCount) {
-                /*当超出最大访问次数后更新数据库*/
-                ipMapper.updateIp(ipAddr,maxCount);
-                return false;
-            }else return true;
 
-            }else return true;
+        String ipAddr = request.getRemoteAddr();/*获取用户地址*/
+        Integer counts = redisUtil.findIPByRedis(ipAddr);
+        if (counts >= maxCount) {
+            /*当超出最大访问次数后更新数据库*/
+            ipMapper.updateIp(ipAddr,maxCount);
+            return false;
+        }else return true;
+
 
 
 /*原读取数据库部分*/

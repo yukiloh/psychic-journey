@@ -14,7 +14,7 @@ public interface IIpMapper {
     @Select("select count from ip_table where ip = #{ip}")
     Integer findCountByIp(String ip);
 
-    @Insert("insert into ip_table (ip,count) value (#{ipAddr},0)")
+    @Insert("insert into ip_table (ip,count) value (#{ipAddr},1)")
     void createIp(String ipAddr);
 
     @Update("UPDATE ip_table SET count = #{maxCount} WHERE ip = #{ipAddr}")
