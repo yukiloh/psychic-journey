@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 import xyz.murasakichigo.community.dto.CommunityUser;
 import xyz.murasakichigo.community.mapper.IIpMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.utils.RedisUtil;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -32,7 +33,11 @@ public class SessionInterceptor implements HandlerInterceptor {
         if (flag == true){
             checkCookie(request);
             return true;
-        }else return false;
+        }else {
+            System.out.println("over than load times");
+            response.sendRedirect("https://www.baidu.com");
+            return false;
+        }
     }
 
 
@@ -71,25 +76,38 @@ public class SessionInterceptor implements HandlerInterceptor {
         }
     }
 
-    /*检查访问次数*/
+    @Autowired
+    private RedisUtil redisUtil;
+
+    /*检查访问次数,当超过次数后会跳转至baidu*/
     private Boolean checkAccessCounts(HttpServletRequest request) {
-
+        Integer maxCount = 100;
         if (1 == 1) {
-            Integer maxCount = 200;
             String ipAddr = request.getRemoteAddr();/*获取用户地址*/
-            Integer count = ipMapper.findCountByIp(ipAddr);
-
-            if (count != null&& count>= maxCount) {
+            Integer counts = redisUtil.findIPByRedis(ipAddr);
+            if (counts >= maxCount) {
+                /*当超出最大访问次数后更新数据库*/
+                ipMapper.updateIp(ipAddr,maxCount);
                 return false;
-            }else if (count == null){
-                /*插入*/
-                ipMapper.createIp(ipAddr);
-            }else {
-                /*累加*/
-                ipMapper.updateIp(ipAddr);
-            }
-            return true;
-        }else return false;
+            }else return true;
+
+            }else return true;
+
+
+/*原读取数据库部分*/
+//            Integer count = ipMapper.findCountByIp(ipAddr);
+//            if (count != null&& count>= maxCount) {
+//                return false;
+//            }else if (count == null){
+//                /*插入*/
+//                ipMapper.createIp(ipAddr);
+//            }else {
+//                /*累加*/
+//                ipMapper.updateIp(ipAddr);
+//            }
+//            return true;
+//        }else return false;
+
     }
 
 

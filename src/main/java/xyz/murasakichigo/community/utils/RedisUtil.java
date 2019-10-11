@@ -5,6 +5,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
+import xyz.murasakichigo.community.mapper.IIpMapper;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 
 @Component
@@ -41,4 +42,25 @@ public class RedisUtil {
         return communityQuestion;
 
     }
+
+    @Autowired
+    private IIpMapper ipMapper;
+
+    public Integer findIPByRedis(String ip){
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Integer ipCounts = (Integer)redisTemplate.opsForValue().get(ip);
+        /*存入数据库作为备份*/
+        ipMapper.createIp(ip);
+
+        if (ipCounts != null) {
+            ipCounts++;
+            redisTemplate.opsForValue().set(ip,ipCounts);
+            return ipCounts;
+        }else {
+            ipCounts = 1;
+            redisTemplate.opsForValue().set(ip,ipCounts);
+            return ipCounts;
+        }
+    }
+
 }
