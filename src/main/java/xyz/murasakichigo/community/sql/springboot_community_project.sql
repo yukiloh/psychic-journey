@@ -54,3 +54,11 @@ CREATE TABLE user_table
     avatar_url        VARCHAR(100) NULL
 );
 
+-- 用于储存上传图片的地址
+create table springboot_community_project.question_img_table
+(
+    question_id   int default 0 not null
+        primary key,
+    question_addr varchar(50)   null
+);
+

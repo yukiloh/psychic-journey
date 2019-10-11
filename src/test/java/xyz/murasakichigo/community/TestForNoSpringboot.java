@@ -25,7 +25,9 @@ public class TestForNoSpringboot {
 //        }
 //        checkThird(originList);
 //        checkThirdV2(originList);
-
+        Integer ipCounts = 0;
+        ipCounts++;
+        System.out.println(ipCounts);
 
     }
 
