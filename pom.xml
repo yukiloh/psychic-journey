@@ -12,7 +12,8 @@
     <!--demo名称可修改-->
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-<!--    <login>SpringBootProject_Community</login>-->
+    <packaging>war</packaging>
+    <!--    <login>SpringBootProject_Community</login>-->
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -144,23 +145,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
-            <!-- Docker maven plugin -->
-            <plugin>
-                <groupId>com.spotify</groupId>
-                <artifactId>docker-maven-plugin</artifactId>
-                <version>1.0.0</version>
-                <configuration>
-                    <imageName>${docker.image.prefix}/${project.artifactId}</imageName>
-                    <dockerDirectory>src/main/docker</dockerDirectory>
-                    <resources>
-                        <resource>
-                            <targetPath>/</targetPath>
-                            <directory>${project.build.directory}</directory>
-                            <include>${project.build.finalName}.jar</include>
-                        </resource>
-                    </resources>
-                </configuration>
-            </plugin>
+
         </plugins>
     </build>
 

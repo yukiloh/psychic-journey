@@ -5,6 +5,10 @@ spring:
 #      suffix: .html
     #  静态资源放行
     static-path-pattern: /static/**
+#    配置静态资源的路径
+#  resources:
+#    static-locations: classpath:/static/
+
 
   thymeleaf:
     # 引入spring-boot-starter-thymeleaf后，默认会从/templates/下寻找对应html；静态目录也变为/templates/

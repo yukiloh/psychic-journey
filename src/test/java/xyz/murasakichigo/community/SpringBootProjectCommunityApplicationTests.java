@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
 import xyz.murasakichigo.community.utils.FtpUtil;
 
 @RunWith(SpringRunner.class)
@@ -13,11 +14,11 @@ public class SpringBootProjectCommunityApplicationTests {
 
 
     @Autowired
-    private FtpUtil ftpUtil;
+    private IQuestionImgMapper questionImgMapper;
 
     @Test
     public void contextLoads() {
-        ftpUtil.testFtp();
+        questionImgMapper.createQuestionImgAddr(10,"test2");
     }
 
 

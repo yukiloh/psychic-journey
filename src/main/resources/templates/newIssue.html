@@ -47,7 +47,7 @@
 <!--.container-fluid：按照百分比定义宽度；.container：固定宽度-->
 <div class="container-fluid mainCss">
     <div class="row">
-        <form method="post" action="/profile/questionSubmit">
+        <form method="post" action="/profile/questionSubmit" enctype="multipart/form-data">
             <div class="col-xs-12 col-md-8">
                 <div>
                     <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>发起</strong></span></h3>
@@ -67,12 +67,13 @@
 
                 <textarea id="textarea"  class="form-control" rows="9" placeholder="问题描述..."  name="description" style="resize:none" th:placeholder="问题详述..."></textarea><br>
                 <div>
+                    <div>
+                        <input type="file" class="" name="upload" >
+                        <!--原上传按钮-->
+                        <!--                        <button type="" class="btn btn-default btn disabled" >上传附件</button>-->
+                        <span class="attachmentFont">允许格式：....</span>
+                    </div><br>
                     <button type="submit" class="btn btn-info " >提交</button>
-                    <span>
-                        <!--上传功能暂时禁用-->
-                        <button type="button" class="btn btn-default btn disabled">上传附件</button>
-                        <span class="attachmentFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许格式：....</span>
-                    </span>
                 </div><br>
                 <div>
                     <div  >

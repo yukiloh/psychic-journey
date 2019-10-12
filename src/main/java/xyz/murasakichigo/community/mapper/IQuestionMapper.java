@@ -6,15 +6,16 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 
 import java.util.List;
 /*ctrl+alt+O: 自动移除无用的import*/
 
 
-/*mybatis的mapper*/
-@Mapper
-@Component
+
+@Repository
+@Mapper     /*mybatis的mapper*/
 public interface IQuestionMapper {
 
     @Select("SELECT * FROM quest_table")
@@ -50,6 +51,9 @@ public interface IQuestionMapper {
 
     @Select("select * from quest_table t where t.title like '%' #{keyword} '%'")
     List<CommunityQuestion> findKeyword(String keyword);
+
+    @Select("select max(id) from quest_table;")
+    Integer findMaxIssueId();
 }
 
 

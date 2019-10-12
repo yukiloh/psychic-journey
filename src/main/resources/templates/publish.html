@@ -49,10 +49,12 @@
 
             </div><br>
             <div th:text="${session.question.getDescription()}"></div><br>
+            <!--显示图片-->
+            <div th:if="${session.imgAddr != null}">
+                <img th:src="'http://localhost:8080/static/images/uploadImg/'+${session.imgAddr}" width="400" class="img-thumbnail"/>
+            </div>
+            <!--显示tag-->
 <!--            <div class="label label-info middle-font-size" th:text="${session.question.getTag()}"></div>-->
-
-
-
 
             <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
             <div>

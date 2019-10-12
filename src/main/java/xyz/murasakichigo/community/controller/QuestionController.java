@@ -4,17 +4,23 @@ package xyz.murasakichigo.community.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
 import xyz.murasakichigo.community.dto.ReplyDTO;
+import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.utils.FtpUtil;
 import xyz.murasakichigo.community.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
 
 /*用于提交问题的控制器*/
 @Controller
@@ -29,6 +35,9 @@ public class QuestionController {
     @Autowired
     private IReplyMapper replyMapper;
 
+    @Autowired
+    private FtpUtil ftpUtil;
+
     /*进入提交问题页面*/
     @GetMapping("/profile/newIssue")
     public String newIssue() {
@@ -41,7 +50,8 @@ public class QuestionController {
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
 //            @RequestParam(name = "tag") String tag,
-            @CookieValue(value = "token")String token)  {
+            @CookieValue(value = "token")String token,
+            HttpServletRequest request, MultipartFile upload)  {
         String tag = "test";
         CommunityQuestion communityQuestion = new CommunityQuestion();
         communityQuestion.setTitle(title);
@@ -53,14 +63,63 @@ public class QuestionController {
         communityQuestion.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
         communityQuestion.setTag(tag);
         questionMapper.createIssue(communityQuestion);
+        /*获取最后上传的问题id*/
+        Integer maxIssueId = questionMapper.findMaxIssueId();
 
-        /*应该是重定向至成功页面,然后返回到问题浏览的...*/
-        return "redirect:/homepage";
+        /*如果upload不为空则上传图片附件至FTP服务器*/
+        if (!upload.isEmpty()) {
+
+            uploadToServer(upload,request,maxIssueId);
+//            uploadToFtp(upload,request,maxIssueId);
+        }
+
+        /*重定向至问题*/
+        return "redirect:/publish/issue"+maxIssueId;
+    }
+
+    @Autowired
+    IQuestionImgMapper questionImgMapper;
+
+    private void uploadToServer(MultipartFile upload, HttpServletRequest request, Integer maxIssueId) {
+        String uploadedFileName =UUID.randomUUID() + "_" +upload.getOriginalFilename();
+        try {
+            upload.transferTo(new File(("E:\\Code\\git\\springboot_community\\src\\main\\resources\\static\\images\\uploadImg\\"+uploadedFileName)));
+//                upload.transferTo(new File(("//share/homes/onlyForFtp/upload")));   /*预留为linux的路径*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        /*将文件名更新至数据库*/
+        questionImgMapper.createQuestionImgAddr(maxIssueId,uploadedFileName);
+    }
+
+    /*上传至FTP*/
+    private void uploadToFtp(MultipartFile upload, HttpServletRequest request, Integer maxIssueId) {
+        String realPath = request.getServletContext().getRealPath("/");
+        String originalFilename = upload.getOriginalFilename();        /*使用upload（MultipartFile）获取文件名*/
+        String name = UUID.randomUUID() + "_" + originalFilename;       /*使用upload中的transferTo存储文件*/
+        File file = new File(realPath, name);
+
+        try {
+            upload.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        /*上传至ftp服务器*/   /*并更新img数据库*/
+        if (ftpUtil.uploadToFtp(file,maxIssueId)){
+//            System.out.println("上传至ftp服务器！");
+        }else {
+//            System.out.println("上传至ftp服务器失败!");
+        }
+        if (file.delete()) {
+//            System.out.println("本地文件删除成功");
+        }else {
+//            System.out.println("本地文件删除失败");
+        }
     }
 
 
-
-//===================================================================
+    //===================================================================
     /*进入问题修改*/
     @GetMapping("/profile/issueEdit/{id}")
     public String issueEdit(@PathVariable String id,
@@ -98,8 +157,9 @@ public class QuestionController {
 
 //    ================================================================================================
     /*进入单个question页面*/
-    @Autowired
-    private RedisUtil redisUtil;
+
+//    @Autowired
+//    private RedisUtil redisUtil;
 
     @GetMapping("/publish/issue{id}")
     public String findQuestionByIssueId(HttpServletRequest request,
@@ -111,10 +171,18 @@ public class QuestionController {
         /*累加阅读数*/
         accumulateView(question,id,request);
 
-        /*回传回复*/
+        /*显示图片*/
+        String imgAddr = questionImgMapper.findQuestionImgById(Integer.valueOf(id));
+        if (!"null".equals(imgAddr)) {
+            request.getSession().setAttribute("imgAddr",imgAddr);
+        }
+
+        /*读取回复*/
         List<ReplyDTO> replyDTOList = replyMapper.findReplyByIssueId(id);
-        if (replyDTOList != null) {request.getSession().setAttribute("replyList", replyDTOList);}
-        request.getSession().setAttribute("question",question);
+        if (replyDTOList != null) {
+            request.getSession().setAttribute("replyList", replyDTOList);
+            request.getSession().setAttribute("question",question);
+        }
         return "publish";
    }
 

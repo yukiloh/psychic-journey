@@ -12,14 +12,14 @@ import xyz.murasakichigo.community.mapper.IQuestionMapper;
 public class RedisUtil {
 
 
+    /*redis记录问题，暂时禁用*/
+
     /*注入springboot自动配置的template，其泛型只能为Object或String*/
     @Autowired
     private RedisTemplate<Object,Object> redisTemplate;
 
     @Autowired
     private IQuestionMapper questionMapper;
-
-
 
     public CommunityQuestion findQuestionByIssueIdByRedis(String id){
         /*序列化key，使得key不为乱码（value无所谓）*/
@@ -43,28 +43,33 @@ public class RedisUtil {
 
     }
 
+
+    /*redis记录ip*/
     @Autowired
     private IIpMapper ipMapper;
 
     public Integer findIPByRedis(String ip){
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        Integer ipCounts = (Integer)redisTemplate.opsForValue().get(ip);
+        if (ip != "0:0:0:0:0:0:0:1" && ip != "127.0.0.1") {
+            redisTemplate.setKeySerializer(new StringRedisSerializer());
+            Integer ipCounts = (Integer)redisTemplate.opsForValue().get(ip);
 
 
-        if (ipCounts != null) {
-            ipCounts++;
-            redisTemplate.opsForValue().set(ip,ipCounts);
-            return ipCounts;
-        }else {
-            /*如首次访问则（检查并）存入数据库作为备份*/
-            Integer count = ipMapper.findCountByIp(ip);
-            if (count == null) {
-                ipMapper.createIp(ip);
+            if (ipCounts != null) {
+                ipCounts++;
+                redisTemplate.opsForValue().set(ip,ipCounts);
+                return ipCounts;
+            }else {
+                /*如首次访问则（检查并）存入数据库作为备份*/
+                Integer count = ipMapper.findCountByIp(ip);
+                if (count == null) {
+                    ipMapper.createIp(ip);
+                }
+                ipCounts = 1;
+                redisTemplate.opsForValue().set(ip,ipCounts);
+                return ipCounts;
             }
-            ipCounts = 1;
-            redisTemplate.opsForValue().set(ip,ipCounts);
-            return ipCounts;
-        }
+        }else return 0;
+
     }
 
 }

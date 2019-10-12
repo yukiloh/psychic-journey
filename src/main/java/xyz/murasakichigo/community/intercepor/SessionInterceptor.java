@@ -81,7 +81,7 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     /*检查访问次数,当超过次数后会跳转至baidu*/
     private Boolean checkAccessCounts(HttpServletRequest request) {
-        Integer maxCount = 100;
+        Integer maxCount = 10000;
 
         String ipAddr = request.getRemoteAddr();/*获取用户地址*/
         Integer counts = redisUtil.findIPByRedis(ipAddr);

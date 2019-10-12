@@ -6,9 +6,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import xyz.murasakichigo.community.dto.TestDTO;
+import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
 import xyz.murasakichigo.community.utils.FtpUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -33,32 +35,13 @@ public class TestController {
 
 
     @Autowired
-    private FtpUtil ftpUtil;
+    private IQuestionImgMapper questionImgMapper;
 
-    @PostMapping("/fileUpload")
-    public @ResponseBody String TestFileUpload(HttpServletRequest request, MultipartFile upload) throws IOException {
-        String realPath = request.getServletContext().getRealPath("/");
-
-        String originalFilename = upload.getOriginalFilename();        /*使用upload（MultipartFile）获取文件名*/
-        String name = UUID.randomUUID() + "_" + originalFilename;       /*使用upload中的transferTo存储文件*/
-        File file = new File(realPath, name);
-        upload.transferTo(file);
-//        System.out.println(file.getPath()); /*打印本机上传的路径*/
+    @GetMapping("/showImg")
+    public String TestFileUpload(HttpServletRequest request){
 
 
-        /*上传至ftp服务器*/
-
-        if (ftpUtil.uploadToFtp(file)){
-//            System.out.println("上传至ftp服务器！");
-        }else {
-//            System.out.println("上传至ftp服务器失败!");
-        }
-        if (file.delete()) {
-//            System.out.println("本地文件删除成功");
-        }else {
-//            System.out.println("本地文件删除失败");
-        }
-        return "success";
+        return "test";
     }
 
 
