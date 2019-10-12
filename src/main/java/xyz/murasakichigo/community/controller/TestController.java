@@ -43,20 +43,21 @@ public class TestController {
         String name = UUID.randomUUID() + "_" + originalFilename;       /*使用upload中的transferTo存储文件*/
         File file = new File(realPath, name);
         upload.transferTo(file);
-        System.out.println(file.getPath()); /*打印路径*/
+//        System.out.println(file.getPath()); /*打印本机上传的路径*/
 
 
         /*上传至ftp服务器*/
 
         if (ftpUtil.uploadToFtp(file)){
-            System.out.println("上传至ftp服务器！");
+//            System.out.println("上传至ftp服务器！");
         }else {
-            System.out.println("上传至ftp服务器失败!");
+//            System.out.println("上传至ftp服务器失败!");
         }
-        boolean isDeleted = file.delete();
-        if (isDeleted) {
-            System.out.println("本地文件删除成功");
-        }else System.out.println("本地文件删除失败");
+        if (file.delete()) {
+//            System.out.println("本地文件删除成功");
+        }else {
+//            System.out.println("本地文件删除失败");
+        }
         return "success";
     }
 

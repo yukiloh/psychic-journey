@@ -60,12 +60,18 @@ spring:
 
 #github服务器端的配置
 github:
-    client_id: Iv1.2299807260a02e0e
-    cli ent_secret: b0500db3906303de1ab10cca68da8e33b7ad1b64
-    code: null
-    redirect_uri: http://cloud1701.myqnapcloud.com:30080/callback
-#    redirect_uri: http://localhost:8080/callback
-    state: null
+  client_id: Iv1.2299807260a02e0e
+  cli ent_secret: b0500db3906303de1ab10cca68da8e33b7ad1b64
+  code: null
+  redirect_uri: http://cloud1701.myqnapcloud.com:30080/callback
+#  redirect_uri: http://localhost:8080/callback
+  state: null
+
+#ftp上传地址配置
+ftp:
+  ip: 192.168.1.90
+  user: onlyForFtp
+  password: H%5Ytp&t6b$^28
 
 
 #log日志，path为根目录

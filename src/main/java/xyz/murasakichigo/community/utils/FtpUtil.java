@@ -2,7 +2,10 @@ package xyz.murasakichigo.community.utils;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -11,14 +14,25 @@ import java.io.IOException;
 
 
 @Component
+@PropertySource("classpath:application.yml")    /*指定读取的文件路径和名称*/
 public class FtpUtil {
+
+    /*从指定路径获取ftp的上传ip、用户、密码*/
+    @Value("${ftp.ip}")
+    private String ip;
+    @Value("${ftp.user}")
+    private String user;
+    @Value("${ftp.password}")
+    private String password;
+
+    public void testFtp(){
+        System.out.println(ip+user+password);
+    }
 
     public boolean uploadToFtp(File file){
         FTPClient ftpClient = new FTPClient();
 
-        String ip = "192.168.1.90";
-        String user = "onlyForFtp";
-        String password = "H%5Ytp&t6b$^28";
+
 
         try {
             //连接ftp服务器 参数填服务器的ip
@@ -40,7 +54,7 @@ public class FtpUtil {
             //上传文件 参数：上传后的文件名，输入流
             FileInputStream fileInputStream = new FileInputStream(file);
             ftpClient.storeFile(file.getName(), fileInputStream);
-            System.out.println(file.getName());
+            System.out.println(file.getName()); /*上传后的文件名*/
             fileInputStream.close();
 
         } catch (IOException e) {
@@ -57,4 +71,5 @@ public class FtpUtil {
         }
         return true;
     }
+
 }
