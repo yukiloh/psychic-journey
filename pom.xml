@@ -12,7 +12,9 @@
     <!--demo名称可修改-->
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
+
+
     <!--    <login>SpringBootProject_Community</login>-->
     <description>Demo project for Spring Boot</description>
 

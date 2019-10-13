@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8010
 
 
 spring:
@@ -91,6 +91,6 @@ ftp:
 file:
   staticAccessPath: /upload/**
   ##linux path
-#  uploadFolder: /share/homes/onlyForFtp/upload/
+  uploadFolder: /share/homes/onlyForFtp/upload/
   ##windows path
-  uploadFolder: E://Code/git/springboot_community/target/classes/static/images/uploadImg/
+#  uploadFolder: E://Code/git/springboot_community/target/classes/static/images/uploadImg/
