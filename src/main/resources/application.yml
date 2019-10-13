@@ -1,3 +1,7 @@
+server:
+  port: 8081
+
+
 spring:
   mvc:
 #    view:
@@ -82,3 +86,11 @@ ftp:
   #logging:
   #  file: logging.log
   #  path: /
+
+
+file:
+  staticAccessPath: /upload/**
+  ##linux path
+#  uploadFolder: /share/homes/onlyForFtp/upload/
+  ##windows path
+  uploadFolder: E://Code/git/springboot_community/target/classes/static/images/uploadImg/

@@ -2,6 +2,7 @@ package xyz.murasakichigo.community.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -51,7 +52,7 @@ public class QuestionController {
             @RequestParam(name = "description") String description,
 //            @RequestParam(name = "tag") String tag,
             @CookieValue(value = "token")String token,
-            HttpServletRequest request, MultipartFile upload)  {
+            MultipartFile upload)  {
         String tag = "test";
         CommunityQuestion communityQuestion = new CommunityQuestion();
         communityQuestion.setTitle(title);
@@ -66,11 +67,10 @@ public class QuestionController {
         /*获取最后上传的问题id*/
         Integer maxIssueId = questionMapper.findMaxIssueId();
 
-        /*如果upload不为空则上传图片附件至FTP服务器*/
+        /*如果upload不为空则上传*/
         if (!upload.isEmpty()) {
-
-            uploadToServer(upload,request,maxIssueId);
-//            uploadToFtp(upload,request,maxIssueId);
+            uploadToServer(upload,maxIssueId);          /*上传至本地服务器*/
+//            uploadToFtp(upload,request,maxIssueId);   /*上传至ftp服务器*/
         }
 
         /*重定向至问题*/
@@ -79,12 +79,13 @@ public class QuestionController {
 
     @Autowired
     IQuestionImgMapper questionImgMapper;
+    @Value("${file.uploadFolder}")
+    private String uploadFolder;
 
-    private void uploadToServer(MultipartFile upload, HttpServletRequest request, Integer maxIssueId) {
+    private void uploadToServer(MultipartFile upload, Integer maxIssueId) {
         String uploadedFileName =UUID.randomUUID() + "_" +upload.getOriginalFilename();
         try {
-            upload.transferTo(new File(("E:\\Code\\git\\springboot_community\\src\\main\\resources\\static\\images\\uploadImg\\"+uploadedFileName)));
-//                upload.transferTo(new File(("//share/homes/onlyForFtp/upload")));   /*预留为linux的路径*/
+            upload.transferTo(new File((uploadFolder+uploadedFileName)));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -126,7 +127,7 @@ public class QuestionController {
                             HttpServletRequest request) {
         /*验证是否issue作者ID与登陆者相同*/
         CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
-        if (communityUser.getId() == questionMapper.findQuestionByIssueId(id).getAuthor_user_id()) {
+        if (communityUser.getId().equals(questionMapper.findQuestionByIssueId(id).getAuthor_user_id())) {
             CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
             request.getSession().setAttribute("questionByIssueId",questionByIssueId);
             return "issueEdit";
@@ -169,7 +170,7 @@ public class QuestionController {
 //        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
 
         /*累加阅读数*/
-        accumulateView(question,id,request);
+        accumulateView(question,id);
 
         /*显示图片*/
         String imgAddr = questionImgMapper.findQuestionImgById(Integer.valueOf(id));
@@ -218,16 +219,14 @@ public class QuestionController {
 
 
 //    ================================================================================================
-    void accumulateView(CommunityQuestion question, String id, HttpServletRequest request) {
+    private void accumulateView(CommunityQuestion question, String id) {
         /*添加判断：如果ip不累计访问；暂时省略;应该存在事务管理，同时有多个访问时候；*/
-        if (1 == 1) {
-            Integer view_count = question.getView_count();
-            if (view_count == null) {
-                view_count = 0;
-            }
-            int view = view_count + 1;
-            questionMapper.updateQuestionView(view,id);
+        Integer view_count = question.getView_count();
+        if (view_count == null) {
+            view_count = 0;
         }
+        int view = view_count + 1;
+        questionMapper.updateQuestionView(view,id);
 
     }
 }
