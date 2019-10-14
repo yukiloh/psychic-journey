@@ -8,6 +8,8 @@ import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.mapper.IIpMapper;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class RedisUtil {
 
@@ -49,27 +51,42 @@ public class RedisUtil {
     private IIpMapper ipMapper;
 
     public Integer findIPByRedis(String ip){
-        if (ip != "0:0:0:0:0:0:0:1" && ip != "127.0.0.1") {
+        /*如果ip存在于白名单内则不进行验证*/
+        if (notInWhiteList(ip)) {
             redisTemplate.setKeySerializer(new StringRedisSerializer());
             Integer ipCounts = (Integer)redisTemplate.opsForValue().get(ip);
 
 
             if (ipCounts != null) {
                 ipCounts++;
-                redisTemplate.opsForValue().set(ip,ipCounts);
+                redisTemplate.opsForValue().set(ip,ipCounts,30,TimeUnit.MINUTES);   /*设置存活时间30分钟*/
                 return ipCounts;
             }else {
                 /*如首次访问则（检查并）存入数据库作为备份*/
                 Integer count = ipMapper.findCountByIp(ip);
-                if (count == null) {
+                if (count == null || count == 0) {
                     ipMapper.createIp(ip);
                 }
                 ipCounts = 1;
-                redisTemplate.opsForValue().set(ip,ipCounts);
+                redisTemplate.opsForValue().set(ip,ipCounts,30,TimeUnit.MINUTES);   /*2处都要设置存活时间，否则会后者会被覆盖*/
+
                 return ipCounts;
             }
         }else return 0;
 
     }
+
+    /*白名单*/
+    private String[] whiteList = {"0:0:0:0:0:0:0:1","127.0.0.1","192.168.1.2"};
+    private boolean notInWhiteList(String ip) {
+        for (String checking : whiteList) {
+            if (checking.equals(ip)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
 }

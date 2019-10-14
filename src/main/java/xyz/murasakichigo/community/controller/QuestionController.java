@@ -14,7 +14,6 @@ import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.utils.FtpUtil;
-import xyz.murasakichigo.community.utils.RedisUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;

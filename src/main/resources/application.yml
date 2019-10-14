@@ -63,7 +63,6 @@ spring:
         max-wait: -1    # 连接超时,负值为无限制
     timeout: 100          # 等待超时
 
-
 #github服务器端的配置
 github:
   client_id: Iv1.2299807260a02e0e
