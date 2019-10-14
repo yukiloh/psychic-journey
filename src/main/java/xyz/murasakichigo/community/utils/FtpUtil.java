@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 
+
 @Component
 @PropertySource("classpath:application.yml")    /*指定读取的文件路径和名称*/
 public class FtpUtil {

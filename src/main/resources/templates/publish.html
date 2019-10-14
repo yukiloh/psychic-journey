@@ -51,7 +51,7 @@
             <div th:text="${session.question.getDescription()}"></div><br>
             <!--显示图片-->
             <div th:if="${session.imgAddr != null}">
-                <img th:src="'/upload/'+${session.imgAddr}" width="350" class="img-thumbnail"/>
+                <img th:src="'/upload/'+${session.imgAddr}" width="350" class="img-thumbnail "/>
             </div>
             <!--显示tag-->
 <!--            <div class="label label-info middle-font-size" th:text="${session.question.getTag()}"></div>-->
@@ -59,10 +59,11 @@
             <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
             <div>
                 <span th:if="${session.communityUser != null}"><br>
+                    <!--实际页面还是会留有span标签，考虑使用hidden-->
                     <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
                 </span>
                 <span th:if="${session.communityUser != null}">
-                    <a href="#">删除问题（功能未开放）</a>
+                    <a  href="#" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '删除问题（功能未开放）':''}"></a>
                 </span>
             </div>
 
