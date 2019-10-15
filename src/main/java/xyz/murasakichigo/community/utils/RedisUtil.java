@@ -77,7 +77,7 @@ public class RedisUtil {
     }
 
     /*白名单*/
-    private String[] whiteList = {"0:0:0:0:0:0:0:1","127.0.0.1","192.168.1.2"};
+    private String[] whiteList = {"0:0:0:0:0:0:0:1","127.0.0.1"};
     private boolean notInWhiteList(String ip) {
         for (String checking : whiteList) {
             if (checking.equals(ip)) {
