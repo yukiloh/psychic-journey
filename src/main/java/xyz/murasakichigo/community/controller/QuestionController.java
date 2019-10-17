@@ -1,6 +1,7 @@
 package xyz.murasakichigo.community.controller;
 
 
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -50,16 +51,24 @@ public class QuestionController {
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
 //            @RequestParam(name = "tag") String tag,
-            @CookieValue(value = "token")String token,
+//            @CookieValue(value = "token")String token,
             MultipartFile upload)  {
         String tag = "test";
         CommunityQuestion communityQuestion = new CommunityQuestion();
         communityQuestion.setTitle(title);
         communityQuestion.setDescription(description);
         communityQuestion.setTag(tag);
-        Integer id = userMapper.findUserByToken(token).getId(); /*获取id*/
-        communityQuestion.setAuthor_user_id(id);
-        communityQuestion.setAuthor_name(userMapper.findUserById(id).getUsername());    /*通过id查找userName*/
+
+        /*通过shiro获取user*/
+        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+        communityQuestion.setAuthor_user_id(user.getId());
+        communityQuestion.setAuthor_name(user.getUsername());
+
+        /*已弃用token，改用从shiro获取user*/
+//        Integer id = userMapper.findUserByToken(token).getId(); /*获取id*/
+//        communityQuestion.setAuthor_user_id(id);
+//        communityQuestion.setAuthor_name(userMapper.findUserById(id).getUsername());    /*通过id查找userName*/
+
         communityQuestion.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
         communityQuestion.setTag(tag);
         questionMapper.createIssue(communityQuestion);

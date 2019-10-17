@@ -28,10 +28,9 @@ public class SessionInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 //        System.out.println("checking cookie");
-
         Boolean flag = checkAccessCounts(request);
-        if (flag == true){
-            checkCookie(request);
+        if (flag){
+//            checkCookie(request);
             return true;
         }else {
             System.out.println("over than max load times");

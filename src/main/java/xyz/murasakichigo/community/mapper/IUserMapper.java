@@ -35,5 +35,6 @@ public interface IUserMapper {
     @Delete("delete from user_table where id = #{id}")
     void deleteUserById(Integer id);
 
-
+    @Select("SELECT * FROM user_table where username = #{username}")
+    CommunityUser findUserByUsername(String username);
 }

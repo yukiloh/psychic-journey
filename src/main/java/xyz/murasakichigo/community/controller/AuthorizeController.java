@@ -1,5 +1,8 @@
 package xyz.murasakichigo.community.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +14,7 @@ import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.provider.GithubProvider;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
@@ -34,8 +38,8 @@ public class AuthorizeController {
     /*用于验证账户，成功后会创建/更新本地数据库的Token和登录时间*/
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,          /*需要交换访问令牌的临时用户*/
-                           @RequestParam(name = "state") String state,      /*本地服务器生成的匹配验证码*/
-                           HttpServletResponse response) {
+                           @RequestParam(name = "state") String state      /*本地服务器生成的匹配验证码*/
+                           /*,HttpServletResponse response*/) {
         /*用于验证state；应置于拦截器内*/
 //        String localState = "1";
 //        if (localState.equals(state)) {System.out.println("state OK!");}
@@ -46,7 +50,6 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
         accessTokenDTO.setClient_id(accessTokenDTO.getClient_id());
         accessTokenDTO.setClient_secret(accessTokenDTO.getClient_secret());
-
 
         /*传入dto,获取accessToken*/
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);     /*C + A + v: 快速生成变量*/
@@ -82,14 +85,18 @@ public class AuthorizeController {
                 communityUser = new CommunityUser();
                 communityUser.setGithub_account_id(Long.toString(githubUser.getId()));    /*设置aid*/
                 communityUser.setUsername(githubUser.getLogin());                         /*设置name*/
+                communityUser.setPassword("githubUser");                         /*设置password*/
                 communityUser.setToken(token);                                      /*设置token*/
                 communityUser.setGmt_create(datetime);                              /*生成时间*/
                 communityUser.setGmt_last_login(datetime);                         /*最近登陆*/
                 communityUser.setAvatar_url(githubUser.getAvatar_url());            /*头像*/
                 userMapper.createUser(communityUser);
             }
-            /*手动赋予cookie*/  /*此链接是从/callback返回,也就是说只有登陆的时候才会获取cookie*/
-            response.addCookie(new Cookie("token", token));
+            /*已弃用，更换为shiro认证*/
+//            /*手动赋予cookie*/  /*此链接是从/callback返回,也就是说只有登陆的时候才会获取cookie*/
+//            response.addCookie(new Cookie("token", token));
+            /*通过shiro进行user认证*/
+            GitHubAccountLoginByShiro(communityUser.getUsername());
 
             /*无论成功(携带session)与否重定向 至/login*/
             return "redirect:/homepage";
@@ -99,10 +106,29 @@ public class AuthorizeController {
         }
     }
 
-    /*验证多账号*/
+    private void GitHubAccountLoginByShiro(String username) {
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username,"githubUser");
+        subject.login(token);
+    }
+
+    /*test账号*/
     @GetMapping("/special")
-    public String specialLogin(HttpServletResponse response){
-        response.addCookie(new Cookie("token","e91a9f6b-02b1-4ea3-a4e9-908340e2c125"));
+    public String specialLogin(HttpServletRequest request){
+        /*使用shiro登陆*/
+        testAccountLoginByShiro("tester01");
+
+        /*已弃用，改用shiro登陆*/
+//        response.addCookie(new Cookie("token","e91a9f6b-02b1-4ea3-a4e9-908340e2c125"));
+
+        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+        request.getSession().setAttribute("communityUser",user);
         return "redirect:/homepage";
+    }
+
+    private void testAccountLoginByShiro(String username) {
+        Subject subject = SecurityUtils.getSubject();
+        UsernamePasswordToken token = new UsernamePasswordToken(username,"testaccountpassword");
+        subject.login(token);
     }
 }

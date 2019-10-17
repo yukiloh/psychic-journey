@@ -13,21 +13,21 @@ public class webConfig implements WebMvcConfigurer {
     /*将session拦截器交给spring管理*/
     @Autowired
     private SessionInterceptor sessionInterceptor;
-    @Autowired
-    private CommunityUserInterceptor communityUserInterceptor;
+//    @Autowired
+//    private CommunityUserInterceptor communityUserInterceptor;
 
     /*拦截器*/
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         /*自定义一个会话拦截器SessionInterceptor*/
         registry.addInterceptor(sessionInterceptor).
-                addPathPatterns("/**").                                             /*拦截所有*/
+                addPathPatterns("/**").                           /*拦截所有*/
                 excludePathPatterns("/logout","/error");          /*放行路径*/
 
         /*可以添加多个registry.addInterceptor()*/
         /*拦截profile下的路径，仅验证cUser*/
-        registry.addInterceptor(communityUserInterceptor).addPathPatterns("/profile","/profile/**").
-                excludePathPatterns("/logout","/error");
+//        registry.addInterceptor(communityUserInterceptor).addPathPatterns("/profile","/profile/**").
+//                excludePathPatterns("/logout","/error");
 
 
     }

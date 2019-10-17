@@ -136,6 +136,19 @@
             <version>3.6</version>
         </dependency>
 
+
+        <!-- shiro-spring -->
+        <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-spring</artifactId>
+            <version>1.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -144,8 +157,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
-
-
         </plugins>
     </build>
 

@@ -1,17 +1,28 @@
 package xyz.murasakichigo.community.controller;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
+import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.dto.VerificationQuestion;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
+import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.mapper.IVerificationQuestionMapper;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Random;
 
 /*使用thymeleaf解析一个欢迎页面*/
 /*记得路径必须与启动类相同！！*/  /*不可用@RestController，会自动添加@ResponseBody导致页面解析错误*/
@@ -50,11 +61,55 @@ public class MainController {
         return "homepage";
     }
 
+
+    @Autowired
+    private IVerificationQuestionMapper verificationQuestionMapper;
     /*登陆页面*/
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        Integer integer = verificationQuestionMapper.countVerificationQuestion();
+        int id = new Random().nextInt(integer + 1);
+        VerificationQuestion question = verificationQuestionMapper.findVerificationQuestionById(id);
+        model.addAttribute("question",question.getQuestion());
+        model.addAttribute("answer",question.getAnswer());
+
+
+
         return "login";
     }
+
+
+
+    @Autowired
+    IUserMapper userMapper;
+    /*验证登陆信息*/
+    @PostMapping("/login.do")
+    public String toLogin(String username,String password,Model model,HttpServletRequest request) {
+        /*subject可以理解为"对象",抽象概念,会与系统进行交互*/
+        Subject subject = SecurityUtils.getSubject();
+
+        /*根据传入的name和password封装为一个subject*/
+        UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+
+        /*执行登陆方法,通过try catch的方法进行判断*/
+        try {
+            /*一旦执行login必定会执行realm中的认证操作doGetAuthenticationInfo*/
+            subject.login(token);
+
+            /*获取当前user*/
+            CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+            request.getSession().setAttribute("communityUser",user);    /*存user*/
+            return "redirect:/homepage";
+        } catch (UnknownAccountException e) {
+            model.addAttribute("msg", "用户名不存在");
+            return "login";
+        } catch (IncorrectCredentialsException e) {
+            System.out.println("密码错误");
+            model.addAttribute("msg", "密码错误");
+            return "login";
+        }
+    }
+
 
     /*登出*/
     @GetMapping("/logout")
@@ -83,7 +138,7 @@ public class MainController {
         else if (Integer.valueOf(page) < 1){
             page = "1";
         }
-        int thisPage = Integer.valueOf(page).intValue();
+        int thisPage = Integer.valueOf(page);
 
         int i = (thisPage-1)*10;
         List<CommunityQuestion> questionList = questionMapper.findQuestionByPage(i);
