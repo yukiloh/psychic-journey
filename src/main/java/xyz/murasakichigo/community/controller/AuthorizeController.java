@@ -39,7 +39,7 @@ public class AuthorizeController {
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,          /*需要交换访问令牌的临时用户*/
                            @RequestParam(name = "state") String state      /*本地服务器生成的匹配验证码*/
-                           /*,HttpServletResponse response*/) {
+                           ,HttpServletRequest request) {
         /*用于验证state；应置于拦截器内*/
 //        String localState = "1";
 //        if (localState.equals(state)) {System.out.println("state OK!");}
@@ -98,6 +98,9 @@ public class AuthorizeController {
             /*通过shiro进行user认证*/
             GitHubAccountLoginByShiro(communityUser.getUsername());
 
+
+            CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+            request.getSession().setAttribute("communityUser",user);
             /*无论成功(携带session)与否重定向 至/login*/
             return "redirect:/homepage";
         } else {
