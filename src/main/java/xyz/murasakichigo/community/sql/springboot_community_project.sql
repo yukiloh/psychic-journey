@@ -12,21 +12,25 @@ CREATE TABLE ip_table
 );
 
 -- auto-generated definition
-CREATE TABLE quest_table
+-- updated：2019年10月17日
+create table if not exists springboot_community_project.quest_table
 (
-    id             INT AUTO_INCREMENT
-        PRIMARY KEY,
-    title          VARCHAR(50)  NULL,
-    description    TEXT         NULL,
-    gmt_create     DATETIME     NULL,
-    gmt_modified   DATETIME     NULL,
-    author_user_id INT          NULL,
-    comment_count  INT          NULL,
-    view_count     INT          NULL,
-    like_count     INT          NULL,
-    tag            VARCHAR(256) NULL,
-    author_name    VARCHAR(20)  NULL
-);
+	id int auto_increment
+		primary key,
+	title varchar(50) null,
+	description mediumtext null,
+	gmt_create varchar(30) null comment '使用datetime会导致出现毫秒，但是后端没有提供毫秒值所以会显示为0，最终前端接收到一个HH:MM:SS.0的数据',
+	gmt_modified varchar(30) null,
+	author_user_id int null,
+	comment_count int null,
+	view_count int null,
+	like_count int null,
+	tag varchar(256) null,
+	author_name varchar(20) null
+)
+comment 'it should be ''question''' collate=utf8mb4_bin;
+
+
 
 -- auto-generated definition
 CREATE TABLE reply_table
@@ -55,10 +59,23 @@ CREATE TABLE user_table
 );
 
 -- 用于储存上传图片的地址
-create table springboot_community_project.question_img_table
+create table if not exists springboot_community_project.question_img_table
 (
-    question_id   int default 0 not null
-        primary key,
-    question_addr varchar(50)   null
+	id int auto_increment
+		primary key,
+	question_id int null,
+	question_addr varchar(100) null
 );
+
+-- 储存验证信息
+create table if not exists springboot_community_project.verification_table
+(
+	id int auto_increment
+		primary key,
+	question varchar(100) null,
+	answer varchar(50) null
+)
+charset=utf8;
+
+
 

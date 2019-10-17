@@ -47,63 +47,75 @@
 
 </head>
 
+<!--答案看这里-->
 <body>
-<div th:if="${answer != null}">
+<div th:if="${answer != null && question != null}">
     <!--这是答案-->
     <p hidden id="correct_answer" th:text="${answer}"></p>
+    <!--这是题目-->
+    <p hidden id="question" th:text="${question}"></p>
 </div>
 
 
 <!--使用thymeleaf的引入-->
 <div th:insert="~{navBar::navBar}"></div>
 
+
 <div class="container-fluid mainCss">
     <div class="row">
-        <div class="col-xs-8 col-md-8" >
-            <h3>后期完善页面效果</h3><hr>
+        <div class="col-md-push-4 col-md-4" >
+            <h3>用户登陆</h3><hr>
+            <div class="container-fluid">
+                <div class="center-block">
+                    <form action="/login.do" method="post">
+                        <table border="0">
+                            <tr>
+                                <td style="text-align:center"><font size="3" >用户名</font></td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td ><input type="text" class="form-control" name="username"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align:center" > <font size="3" >密码</font></td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td ><input type="password" class="form-control " name="password"></td>
+                            </tr>
+                            <tr th:if="${question != null}">
+                                <td style="text-align:center" >
+                                    <button type="button" class="btn btn-danger" id="show_question">
+                                        <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>验证问题
+                                    </button>
+                                </td>
+                                <td>&nbsp;&nbsp;</td>
+                                <td >
+                                    <input id="input" class="form-control leftMove" value="">
+                                </td>
+                                <td >
+                                    <span id="hint" style="color: darkred">&nbsp&nbsp&nbsp想不出来按F12</span>
 
-            <div>
-                <h4>用户登陆</h4>
-                <form action="/login.do" method="post">
-                    <table border="0">
-                        <tr>
-                            <td>用户名</td>
-                            <td><input type="text" name="username"><br></td>
-                        </tr>
-                        <tr>
-                            <td>密码</td>
-                            <td><input type="password" name="password"></td>
-                        </tr>
-                        <tr th:if="${question != null}">
-                            <td><p id="question" th:text="${question}"></p></td>
-                            <td><input id="input" value=""></td>
-                            <td><span id="hint" style="color: darkred"></span></td>
-                        </tr>
-                    </table>
-                    <br>
-                    <div th:if="${answer != null}"><button type="submit" class="btn btn-info" id= "submit" disabled>提交</button></div>
-                    <div th:if="${answer == null}"><button type="submit" class="btn btn-info"  id="submit2">提交</button></div>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
+                        <div th:if="${answer != null}"><button type="submit" class="btn btn-info" id= "submit" disabled>提交</button></div>
+                        <div th:if="${answer == null}"><button type="submit" class="btn btn-info"  id="submit2">提交</button></div>
 
-                </form>
-                <span th:text="${msg}" style="color: darkred"></span>
-            </div><br>
-            <div>
-                <!--通过读取messages.prop中的uri实现github user认证-->
-                <a th:href="'https://github.com/login/oauth/authorize?client_id=Iv1.2299807260a02e0e&redirect_uri='+#{github.redirectUri}+'&scope=user&state=1'">GitHub账号登陆</a><br>
-            </div><br>
-            <div>
-                <a href="/special">使用test01账号登陆</a>
+                    </form>
+                    <span th:text="${msg}" style="color: darkred"></span>
+                </div><br>
+                <div>
+                    <!--通过读取messages.prop中的uri实现github user认证-->
+                    <a th:href="'https://github.com/login/oauth/authorize?client_id=Iv1.2299807260a02e0e&redirect_uri='+#{github.redirectUri}+'&scope=user&state=1'">GitHub账号登陆</a><br>
+                </div><br>
+                <div>
+                    <a href="/special">使用测试账号登陆（免去注册）</a>
+                </div>
+                <br>
+                <br>
+
             </div>
-            <br>
-            <br>
-
         </div>
     </div>
 </div>
-
-
-
-
 
 <script>
     $(function () {
@@ -112,18 +124,28 @@
                 var answer = $("#input").val();
                 var correct_answer = $("#correct_answer").html();
                 // alert(correct_answer);           /*验证获取到correct_answer(从p标签)*/
-                var result = answer == correct_answer ? true : false;
-                if (result == true) {
+                var result = answer === correct_answer;
+                if (result) {
                     // alert(result == true ? '答对啦!':'再来一次');
                     $("#hint").html("回答正确");
-                    $("#submit").removeAttr("disabled");
+                    $("#submit").attr("disabled",false);
+                    // $("#submit").removeAttr("disabled"); /*设置attr的2种方式*/
                 }else {
-                    $("#hint").html("&nbsp你是猪吧¿");
+                    $("#hint").html("&nbsp&nbsp&nbsp你是猪吧¿");
+                    $("#submit").attr("disabled",true);
                     // alert("你是猪吧")
                 }
 
             });
         })
+    })
+
+    $(function () {
+        $("#show_question").click(function () {
+            var question = $("#question").html();
+            alert(question)
+        })
+
     })
 </script>
 
