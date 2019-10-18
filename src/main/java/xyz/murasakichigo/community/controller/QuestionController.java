@@ -217,7 +217,17 @@ public class QuestionController {
         return "redirect:/publish/issue"+parent_id;
     }
 
+    @GetMapping("/profile/delReply/{parentId}/{replyId}")
+    public String delReply(@PathVariable String replyId,@PathVariable String parentId){
+        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+        if (user.getId() == replyMapper.findCriticIdByReplyId(replyId)) {   /*验证*/
+            replyMapper.deleteReply(replyId);
+            return "redirect:/publish/issue"+parentId;
+        }else return "error";
 
+    }
+
+//    ================================================================================================
     /*问题搜索*/
     @GetMapping("/search")
     public String search(HttpServletRequest request,@RequestParam(name = "keyword") String keyword) {
@@ -233,7 +243,7 @@ public class QuestionController {
 
 //    ================================================================================================
     private void accumulateView(CommunityQuestion question, String id) {
-        /*添加判断：如果ip不累计访问；暂时省略;应该存在事务管理，同时有多个访问时候；*/
+        /*后期添加判断：同个ip至累计5次访问；*/
         Integer view_count = question.getView_count();
         if (view_count == null) {
             view_count = 0;

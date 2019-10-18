@@ -103,7 +103,17 @@
                                     </a>
                                 </div>
                                 <div class="media-body">
-                                    <div ><strong><p class="media-heading nobr" th:text="${reply.getUsername()}+'：'"></p></strong><p class="nobr" th:text="${reply.getReply_description()+'&nbsp;&nbsp;'}"></p><p class="nobr grey_font" th:text="${'('+reply.getGmt_reply_create()+')'}"></p></div>
+                                    <div >
+                                        <strong><p class="media-heading nobr" th:text="${reply.getUsername()}+'：'"></p></strong>
+                                        <p class="nobr" th:text="${reply.getReply_description()+'&nbsp;&nbsp;'}"></p>
+                                        <p class="nobr grey_font" th:text="${'('+reply.getGmt_reply_create()+')'}"></p>
+                                        <div th:if="${session.communityUser != null}" class="pull-right">
+                                            <p th:if="${reply.getCritic_id()==session.communityUser.getId()}"><a style="font-size: 80%" th:href="'/profile/delReply/'+${reply.getParent_id()}+'/'+${reply.getReply_id()}">删除</a></p>
+                                        </div>
+                                        <div th:if="${session.communityUser == null}" class="pull-right">
+                                            <p></p>
+                                        </div>
+                                    </div>
                                 </div>
                             </li>
                         </ul>
