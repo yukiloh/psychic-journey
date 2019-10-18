@@ -70,11 +70,15 @@
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
+                    <li th:class="${(session.page)-4 >= 1 ? '':'hidden'} "><a th:href="@{'profile?page='+${(session.page)-4}}" th:text="${(session.page)-4}"></a></li>
+                    <li th:class="${(session.page)-3 >= 1 ? '':'hidden'} "><a th:href="@{'profile?page='+${(session.page)-3}}" th:text="${(session.page)-3}"></a></li>
                     <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'profile?page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
                     <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'profile?page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
                     <li th:class="'active'"><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
                     <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
                     <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
+                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
+                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
 
 <!--                    1.0版本的分页栏，收藏用-->
 <!--

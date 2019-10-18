@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import xyz.murasakichigo.community.dto.CommunityQuestion;
 import xyz.murasakichigo.community.dto.CommunityUser;
@@ -18,10 +17,9 @@ import xyz.murasakichigo.community.dto.VerificationQuestion;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.mapper.IVerificationQuestionMapper;
+import xyz.murasakichigo.community.utils.CountPaging;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Random;
 
@@ -143,21 +141,10 @@ public class MainController {
     /*返回前端基于当前页面数的列表*/
     private void showPage(HttpServletRequest request,String page){
         Integer questionCount = questionMapper.countQuestion();
-        Integer maxPage = (questionCount/10)+1 ;
-
-        if(Integer.valueOf(page) > maxPage) {
-            page = maxPage.toString();
-        }
-        else if (Integer.valueOf(page) < 1){
-            page = "1";
-        }
-        int thisPage = Integer.valueOf(page);
-
-        int i = (thisPage-1)*10;
-        List<CommunityQuestion> questionList = questionMapper.findQuestionByPage(i);
-
+        int[] result = new CountPaging().countPaging(questionCount, page);
+        List<CommunityQuestion> questionList = questionMapper.findQuestionByPage(result[2]);
         request.getSession().setAttribute("questionList",questionList);
-        request.getSession().setAttribute("page",thisPage);
-        request.getSession().setAttribute("maxPage",maxPage);
+        request.getSession().setAttribute("page",result[1]);
+        request.getSession().setAttribute("maxPage",result[0]);
     }
 }

@@ -57,60 +57,48 @@
                     </div>
                 </div>
             </div>
+
             <!--分页-->
-<!--
             <nav aria-label="Page navigation" class="navbar-right right-push">
                 <ul class="pagination">
                     <li>
-                        <a th:href="@{'profile?page='+${1}}">
+                        <a th:href="@{'search?keyword='+${session.keyword}+'&page='+${1}}">
                             <span aria-hidden="true">TOP</span>
                         </a>
                     </li>
-                    <li>        &lt;!&ndash;使用二元+th：href，决定分页逻辑&ndash;&gt;
-                        <a th:href="@{'profile?page='+${(session.page)-1 >=1 ? (session.page)-1:1}}" aria-label="Previous">
+                    <li>        <!--使用二元+th：href，决定分页逻辑-->
+                        <a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-1 >=1 ? (session.page)-1:1}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'profile?page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
-                    <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'profile?page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
-                    <li th:class="'active'"><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
-                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
-                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
-
-&lt;!&ndash;                    1.0版本的分页栏，收藏用&ndash;&gt;
-&lt;!&ndash;
-                    <li th:class="${session.page == session.page ? 'active':''} "><a th:href="@{'profile?page='+${session.page}}" th:text="${session.page}"></a></li>
-                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
-                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
-                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
-                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'profile?page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
-&ndash;&gt;
+                    <li th:class="${(session.page)-4 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-4}}" th:text="${(session.page)-4}"></a></li>
+                    <li th:class="${(session.page)-3 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-3}}" th:text="${(session.page)-3}"></a></li>
+                    <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
+                    <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
+                    <li th:class="'active'"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page}}" th:text="${session.page}"></a></li>
+                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
+                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
+                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
+                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
 
                     <li >
-                        <a th:href="@{'profile?page='+${(session.page)+1 <= session.maxPage ? (session.page)+1:(session.maxPage)}}" aria-label="Next">
+                        <a th:href="@{'search??keyword='+${session.keyword}+'&page='+${(session.page)+1 <= session.maxPage ? (session.page)+1:(session.maxPage)}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li>
-                        <a th:href="@{'profile?page='+${session.maxPage}}">
+                        <a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.maxPage}}">
                             <span aria-hidden="true">END</span>
                         </a>
                     </li>
                 </ul>
             </nav>
--->
 
 
         </div>
 
-<!--
-        <div class="col-md-4"> <br><br><br>
-            <div class="list-group col-lg-6">
-                <a  href="/profile" class="list-group-item active btn"><span class="glyphicon glyphicon-unchecked ">&nbsp;我的提问</span>  </a>
-                <a  href="/profile/myAnswer" class="list-group-item  btn disabled"><span class="glyphicon glyphicon-new-window">&nbsp;我的回复</span>  </a>
-            </div>
-        </div>
--->
+<!--右边部分-->
+
     </div>
 </div>
 

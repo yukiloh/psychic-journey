@@ -14,6 +14,7 @@ import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.utils.CountPaging;
 import xyz.murasakichigo.community.utils.FtpUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -220,8 +221,12 @@ public class QuestionController {
     /*问题搜索*/
     @GetMapping("/search")
     public String search(HttpServletRequest request,@RequestParam(name = "keyword") String keyword) {
-        List<CommunityQuestion> questionList = questionMapper.findKeyword(keyword);
-        request.getSession().setAttribute("questionList",questionList);
+        /*展示搜索页面内容*/
+        String page = request.getParameter("page");
+        if (page == null || page.length() == 0) {
+            page = "1";
+        }
+        showSearchPage(request,page,keyword);
         return "search";
     }
 
@@ -236,5 +241,15 @@ public class QuestionController {
         int view = view_count + 1;
         questionMapper.updateQuestionView(view,id);
 
+    }
+
+    private void showSearchPage(HttpServletRequest request, String page, String keyword){
+        Integer questionCount = questionMapper.countQuestionByKeyword(keyword);
+        int[] result = new CountPaging().countPaging(questionCount, page);
+        List<CommunityQuestion> questionList = questionMapper.findQuestionByKeyword(keyword,result[2]);
+        request.getSession().setAttribute("questionList",questionList);
+        request.getSession().setAttribute("page",result[1]);
+        request.getSession().setAttribute("maxPage",result[0]);
+        request.getSession().setAttribute("keyword",keyword);
     }
 }

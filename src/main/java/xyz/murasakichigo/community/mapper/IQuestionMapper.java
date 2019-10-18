@@ -52,8 +52,15 @@ public interface IQuestionMapper {
     @Select("select * from quest_table t where t.title like '%' #{keyword} '%'")
     List<CommunityQuestion> findKeyword(String keyword);
 
+    @Select("SELECT COUNT(id) FROM quest_table t where t.title like '%' #{keyword} '%'")
+    Integer countQuestionByKeyword(String keyword);
+
+
     @Select("select max(id) from quest_table;")
     Integer findMaxIssueId();
+
+    @Select("select * from quest_table t where t.title like '%' #{keyword} '%'  order by id desc limit #{page},10")
+    List<CommunityQuestion> findQuestionByKeyword(String keyword, int page);
 }
 
 
