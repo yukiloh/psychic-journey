@@ -28,8 +28,6 @@ import java.util.UUID;
 @Controller
 public class QuestionController {
 
-    @Autowired
-    private IUserMapper userMapper;
 
     @Autowired
     private IQuestionMapper questionMapper;
@@ -37,8 +35,8 @@ public class QuestionController {
     @Autowired
     private IReplyMapper replyMapper;
 
-    @Autowired
-    private FtpUtil ftpUtil;
+//    @Autowired
+//    private FtpUtil ftpUtil;
 
     /*进入提交问题页面*/
     @GetMapping("/profile/newIssue")
@@ -88,6 +86,7 @@ public class QuestionController {
 
     @Autowired
     IQuestionImgMapper questionImgMapper;
+
     @Value("${file.uploadFolder}")
     private String uploadFolder;
 
@@ -220,7 +219,7 @@ public class QuestionController {
     @GetMapping("/profile/delReply/{parentId}/{replyId}")
     public String delReply(@PathVariable String replyId,@PathVariable String parentId){
         CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
-        if (user.getId() == replyMapper.findCriticIdByReplyId(replyId)) {   /*验证*/
+        if (user.getId().equals(replyMapper.findCriticIdByReplyId(replyId))) {   /*验证*/
             replyMapper.deleteReply(replyId);
             return "redirect:/publish/issue"+parentId;
         }else return "error";
