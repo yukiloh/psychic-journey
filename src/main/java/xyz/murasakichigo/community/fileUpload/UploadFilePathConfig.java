@@ -1,4 +1,4 @@
-package xyz.murasakichigo.community.intercepor;
+package xyz.murasakichigo.community.fileUpload;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

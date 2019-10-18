@@ -90,17 +90,16 @@
                                     <input id="input" class="form-control leftMove" value="">
                                 </td>
                                 <td >
-                                    <span id="hint" style="color: darkred">&nbsp&nbsp&nbsp想不出来按F12</span>
+                                    <span>&nbsp&nbsp&nbsp</span><span id="hint" style="color: darkred" hidden>想不出来按F12</span>
 
                                 </td>
                             </tr>
                         </table>
                         <br>
                         <div th:if="${answer != null}"><button type="submit" class="btn btn-info" id= "submit" disabled>提交</button></div>
-                        <div th:if="${answer == null}"><button type="submit" class="btn btn-info"  id="submit2">提交</button></div>
+                        <div th:if="${answer == null}"><button type="submit" class="btn btn-info"  id="submit2">提交</button><span>&nbsp;&nbsp;&nbsp;</span><span th:text="${msg}" style="color: darkred"></span></div>
 
                     </form>
-                    <span th:text="${msg}" style="color: darkred"></span>
                 </div><br>
                 <div>
                     <!--通过读取messages.prop中的uri实现github user认证-->
@@ -131,7 +130,7 @@
                     $("#submit").attr("disabled",false);
                     // $("#submit").removeAttr("disabled"); /*设置attr的2种方式*/
                 }else {
-                    $("#hint").html("&nbsp&nbsp&nbsp你是猪吧¿");
+                    $("#hint").html("你是猪吧¿");
                     $("#submit").attr("disabled",true);
                     // alert("你是猪吧")
                 }
@@ -144,6 +143,7 @@
         $("#show_question").click(function () {
             var question = $("#question").html();
             alert(question)
+            $("#hint").attr("hidden",false)
         })
 
     })

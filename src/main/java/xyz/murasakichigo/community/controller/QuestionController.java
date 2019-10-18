@@ -101,31 +101,31 @@ public class QuestionController {
         /*将文件名更新至数据库*/
         questionImgMapper.createQuestionImgAddr(maxIssueId,uploadedFileName);
     }
-
-    /*上传至FTP*/
-    private void uploadToFtp(MultipartFile upload, HttpServletRequest request, Integer maxIssueId) {
-        String realPath = request.getServletContext().getRealPath("/");
-        String originalFilename = upload.getOriginalFilename();        /*使用upload（MultipartFile）获取文件名*/
-        String name = UUID.randomUUID() + "_" + originalFilename;       /*使用upload中的transferTo存储文件*/
-        File file = new File(realPath, name);
-
-        try {
-            upload.transferTo(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        /*上传至ftp服务器*/   /*并更新img数据库*/
-        if (ftpUtil.uploadToFtp(file,maxIssueId)){
-//            System.out.println("上传至ftp服务器！");
-        }else {
-//            System.out.println("上传至ftp服务器失败!");
-        }
-        if (file.delete()) {
-//            System.out.println("本地文件删除成功");
-        }else {
-//            System.out.println("本地文件删除失败");
-        }
-    }
+        /*已弃用,无法解决读取问题,更换为本地上传*/
+//    /*上传至FTP*/
+//    private void uploadToFtp(MultipartFile upload, HttpServletRequest request, Integer maxIssueId) {
+//        String realPath = request.getServletContext().getRealPath("/");
+//        String originalFilename = upload.getOriginalFilename();        /*使用upload（MultipartFile）获取文件名*/
+//        String name = UUID.randomUUID() + "_" + originalFilename;       /*使用upload中的transferTo存储文件*/
+//        File file = new File(realPath, name);
+//
+//        try {
+//            upload.transferTo(file);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        /*上传至ftp服务器*/   /*并更新img数据库*/
+//        if (ftpUtil.uploadToFtp(file,maxIssueId)){
+////            System.out.println("上传至ftp服务器！");
+//        }else {
+////            System.out.println("上传至ftp服务器失败!");
+//        }
+//        if (file.delete()) {
+////            System.out.println("本地文件删除成功");
+//        }else {
+////            System.out.println("本地文件删除失败");
+//        }
+//    }
 
 
     //===================================================================

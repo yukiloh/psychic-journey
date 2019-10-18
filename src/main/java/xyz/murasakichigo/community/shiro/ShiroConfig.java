@@ -3,13 +3,17 @@ package xyz.murasakichigo.community.shiro;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
+import org.apache.shiro.web.filter.authc.LogoutFilter;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 import org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
+import xyz.murasakichigo.community.intercepor.LogoutFormAuthenticationFilter;
 
+import javax.servlet.Filter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Configuration
@@ -42,6 +46,8 @@ public class ShiroConfig {
 
         /*添加anon,指定不拦截的页面*/
 //        filterChainDefinitionMap.put("/user/forgetPassword","anon");
+        filterChainDefinitionMap.put("/logout","logout");
+
 
         /*设置登陆页面,进入需认证的authc页面失败后会跳转至登陆页面*/
         shiroFilterFactoryBean.setLoginUrl("/login");
@@ -49,11 +55,17 @@ public class ShiroConfig {
         /*设置perms页面,授权perms失败后会跳转至此*/
         shiroFilterFactoryBean.setUnauthorizedUrl("/error");
 
+        /*自定义一个filter的map*/
+        Map<String, Filter> filtersMap = new LinkedHashMap<>();
+        /*放入自定义的logout过滤器*/
+        filtersMap.put ("logout",new LogoutFormAuthenticationFilter());
+
+        /*将自定义的filter设置入shiro的filters*/
+        shiroFilterFactoryBean.setFilters(filtersMap);
         /*最后将设置的map集合set进filter,并返回bean*/
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChainDefinitionMap);
         return shiroFilterFactoryBean;
     }
-
 //   ===================================================================================================================
     /*shiro使用开启注解进行验证的方式*/
 

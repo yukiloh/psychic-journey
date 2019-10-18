@@ -90,5 +90,7 @@ file:
   ##linux path    ①主机；②docker；
 #  uploadFolder: /share/homes/onlyForFtp/upload/
   uploadFolder: /home/share/upload/
-  ##windows path
+  ##windows path desktop
 #  uploadFolder: E://Code/git/springboot_community/target/classes/static/images/uploadImg/
+  ##windows path note
+#  uploadFolder: D://Code/JAVA/SpringBoot_Project_Community/target/classes/static/images/uploadImg/

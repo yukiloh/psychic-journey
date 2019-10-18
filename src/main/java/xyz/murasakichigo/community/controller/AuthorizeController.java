@@ -56,7 +56,7 @@ public class AuthorizeController {
         /*传入token,获取user*/
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
-        /*项目概述:用于验证登陆github账户,可以获取GithubUser中的所有信息(本案例获取了login(用户名) id 更新时间)
+        /*用于验证登陆github账户,可以获取GithubUser中的所有信息(本案例获取了login(用户名) id 更新时间)
          * 步骤:
          * 1.参照github提供的api,需要本地服务器提供连接,内容包含:
          *   client_id:传入服务器id   redirect_uri= 获取返回的登陆页面 scope:获取user信息  state: 生成随机字符串,防止跨站攻击
@@ -97,20 +97,18 @@ public class AuthorizeController {
 //            response.addCookie(new Cookie("token", token));
             /*通过shiro进行user认证*/
             GitHubAccountLoginByShiro(communityUser.getUsername());
-
-
-            CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
-            request.getSession().setAttribute("communityUser",user);
+            request.getSession().setAttribute("communityUser",communityUser);
             /*无论成功(携带session)与否重定向 至/login*/
             return "redirect:/homepage";
         } else {
             System.out.println("can not find user！");
-            return "redirect:/homepage";
+            return "redirect:/loginFailed";
         }
     }
 
     private void GitHubAccountLoginByShiro(String username) {
         Subject subject = SecurityUtils.getSubject();
+        /*设置密码因为实际上shiro登陆还是需要传入password*/
         UsernamePasswordToken token = new UsernamePasswordToken(username,"githubUser");
         subject.login(token);
     }
