@@ -29,6 +29,9 @@ public interface IUserMapper {
     @Insert("insert into user_table (username,github_account_id,token,gmt_create,avatar_url) value (#{username},#{github_account_id},#{token},#{gmt_create},#{avatar_url})")
     void createUser(CommunityUser user);
 
+    @Insert("insert into user_table (username,password,gmt_create) value (#{username},#{password},#{gmt_create})")
+    void createSignInUser(CommunityUser user);
+
     @Update("update user_table set username = #{username},github_account_id = #{github_account_id},token = #{token},gmt_modified = #{gmt_modified},gmt_last_login = #{gmt_last_login},avatar_url = #{avatar_url} where id = #{id}")
     void updateUser(CommunityUser user);
 
@@ -37,4 +40,7 @@ public interface IUserMapper {
 
     @Select("SELECT * FROM user_table where username = #{username}")
     CommunityUser findUserByUsername(String username);
+
+    @Select("SELECT COUNT(id) FROM user_table where username = #{username}")
+    Integer countUserByUsername(String username);
 }

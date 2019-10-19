@@ -20,6 +20,7 @@ import xyz.murasakichigo.community.mapper.IVerificationQuestionMapper;
 import xyz.murasakichigo.community.utils.CountPaging;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Random;
 
@@ -66,14 +67,7 @@ public class MainController {
     /*登陆页面*/
     @GetMapping("/login")
     public String login(Model model) {
-        Integer integer = verificationQuestionMapper.countVerificationQuestion();
-        int id = new Random().nextInt(integer + 1);
-        VerificationQuestion question = verificationQuestionMapper.findVerificationQuestionById(id);
-        model.addAttribute("question",question.getQuestion());
-        model.addAttribute("answer",question.getAnswer());
-
-
-
+        setVerificationQuestion(model);
         return "login";
     }
 
@@ -136,6 +130,48 @@ public class MainController {
         return "redirect:/loginFailed";
     }
 
+    /*注册*/
+    @GetMapping("/signin")
+    public String signin(Model model) {
+        setVerificationQuestion(model);
+        return "signin";
+    }
+
+    /*验证注册*/
+    @PostMapping("/signin.do")
+    public String toSignin(String username,String password,Model model,HttpServletRequest request) {
+        if (!username.isEmpty() && !password.isEmpty() && username.length() > 3 && password.length() > 5 ) {
+            if(userMapper.countUserByUsername(username) == 0){
+                CommunityUser user = new CommunityUser();
+                user.setUsername(username);
+                user.setPassword(password);
+                user.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+                userMapper.createSignInUser(user);
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                Subject subject = SecurityUtils.getSubject();
+                UsernamePasswordToken token = new UsernamePasswordToken(username, password);
+                subject.login(token);
+                CommunityUser communityUser = (CommunityUser) subject.getPrincipal();
+                request.getSession().setAttribute("communityUser",communityUser);
+                return "redirect:/homepage";
+            }else {
+                model.addAttribute("msg","用户名已存在");
+                return "signin";
+            }
+        }else {
+            model.addAttribute("msg","输入信息有误，可能用户名或密码过短");
+            return "signin";
+        }
+
+
+    }
+
 
 //    ================================================================================================================
     /*返回前端基于当前页面数的列表*/
@@ -146,5 +182,13 @@ public class MainController {
         request.getSession().setAttribute("questionList",questionList);
         request.getSession().setAttribute("page",result[1]);
         request.getSession().setAttribute("maxPage",result[0]);
+    }
+
+    private void setVerificationQuestion(Model model){
+        Integer integer = verificationQuestionMapper.countVerificationQuestion();
+        int id = new Random().nextInt(integer + 1);
+        VerificationQuestion question = verificationQuestionMapper.findVerificationQuestionById(id);
+        model.addAttribute("question",question.getQuestion());
+        model.addAttribute("answer",question.getAnswer());
     }
 }

@@ -69,7 +69,4 @@ public class TestForNoSpringboot {
     }
 
 
-    public static void main(String[] args) {
-
-    }
 }

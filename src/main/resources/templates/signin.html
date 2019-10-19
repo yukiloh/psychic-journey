@@ -64,10 +64,10 @@
 <div class="container-fluid mainCss">
     <div class="row">
         <div class="col-md-push-4 col-md-4" >
-            <h3>用户登陆</h3><hr>
+            <h3>用户注册</h3><hr>
             <div class="container-fluid">
                 <div class="center-block">
-                    <form action="/login.do" method="post">
+                    <form action="/signin.do" method="post">
                         <table border="0">
                             <tr>
                                 <td style="text-align:center"><font size="3" >用户名</font></td>
@@ -79,6 +79,11 @@
                                 <td>&nbsp;&nbsp;</td>
                                 <td ><input type="password" class="form-control " name="password"></td>
                             </tr>
+<!--                            <tr>-->
+<!--                                <td style="text-align:center" > <font size="3" >邮箱</font></td>-->
+<!--                                <td>&nbsp;&nbsp;</td>-->
+<!--                                <td ><input type="email" class="form-control " name="email"></td>-->
+<!--                            </tr>-->
                             <tr th:if="${question != null}">
                                 <td style="text-align:center" >
                                     <button type="button" class="btn btn-danger" id="show_question">
@@ -102,18 +107,11 @@
                     </form>
                 </div><br>
                 <div>
-                    <a href="/signin">注册</a>
-                </div><br>
-                <div>
                     <!--通过读取messages.prop中的uri实现github user认证-->
                     <a th:href="'https://github.com/login/oauth/authorize?client_id=Iv1.2299807260a02e0e&redirect_uri='+#{github.redirectUri}+'&scope=user&state=1'">GitHub账号登陆</a><br>
-                </div><br>
-                <div>
-                    <a href="/special">使用测试账号登陆（免去注册）</a>
                 </div>
                 <br>
                 <br>
-
             </div>
         </div>
     </div>
