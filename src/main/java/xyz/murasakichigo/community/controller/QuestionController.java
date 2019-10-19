@@ -13,9 +13,7 @@ import xyz.murasakichigo.community.dto.ReplyDTO;
 import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
 import xyz.murasakichigo.community.mapper.IQuestionMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
-import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.utils.CountPaging;
-import xyz.murasakichigo.community.utils.FtpUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -41,7 +39,7 @@ public class QuestionController {
     /*进入提交问题页面*/
     @GetMapping("/profile/newIssue")
     public String newIssue() {
-        return "newIssue";
+        return "questionPublish";
     }
 
     /*使用post接收*/
@@ -81,7 +79,7 @@ public class QuestionController {
         }
 
         /*重定向至问题*/
-        return "redirect:/publish/issue"+maxIssueId;
+        return "redirect:/publish/question/"+maxIssueId;
     }
 
     @Autowired
@@ -130,7 +128,7 @@ public class QuestionController {
 
     //===================================================================
     /*进入问题修改*/
-    @GetMapping("/profile/issueEdit/{id}")
+    @GetMapping("/profile/questionEdit/{id}")
     public String issueEdit(@PathVariable String id,
                             HttpServletRequest request) {
         /*验证是否issue作者ID与登陆者相同*/
@@ -138,14 +136,14 @@ public class QuestionController {
         if (communityUser.getId().equals(questionMapper.findQuestionByIssueId(id).getAuthor_user_id())) {
             CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
             request.getSession().setAttribute("questionByIssueId",questionByIssueId);
-            return "issueEdit";
+            return "questionEdit";
         }else {
             return "error";
         }
     }
 
     /*修改问题后submit按钮*/
-    @PostMapping("/profile/issueUpdate")
+    @PostMapping("/profile/questionUpdate")
     public String postQuestion(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "id") Integer id,
@@ -170,12 +168,13 @@ public class QuestionController {
 //    @Autowired
 //    private RedisUtil redisUtil;
 
-    @GetMapping("/publish/issue{id}")
+    @GetMapping("/publish/question/{id}")
     public String findQuestionByIssueId(HttpServletRequest request,
                                         /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
         CommunityQuestion question = questionMapper.findQuestionByIssueId(id);        /*直接调用数据库*/
 //        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
+        request.getSession().setAttribute("question",question);
 
         /*累加阅读数*/
         accumulateView(question,id);
@@ -190,9 +189,8 @@ public class QuestionController {
         List<ReplyDTO> replyDTOList = replyMapper.findReplyByIssueId(id);
         if (replyDTOList != null) {
             request.getSession().setAttribute("replyList", replyDTOList);
-            request.getSession().setAttribute("question",question);
         }
-        return "publish";
+        return "questionPage";
    }
 
 
@@ -209,11 +207,12 @@ public class QuestionController {
         replyDTO.setCritic_id(Integer.valueOf(critic_id));
         replyDTO.setParent_id(Integer.valueOf(parent_id));
         replyDTO.setReply_description(description);
+
         replyDTO.setGmt_reply_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
         replyMapper.createReply(replyDTO);
 
         /*应该是重定向至成功页面,然后返回到问题浏览的...*/
-        return "redirect:/publish/issue"+parent_id;
+        return "redirect:/publish/question/"+parent_id;
     }
 
     @GetMapping("/profile/delReply/{parentId}/{replyId}")
@@ -221,7 +220,7 @@ public class QuestionController {
         CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
         if (user.getId().equals(replyMapper.findCriticIdByReplyId(replyId))) {   /*验证*/
             replyMapper.deleteReply(replyId);
-            return "redirect:/publish/issue"+parentId;
+            return "redirect:/publish/question/"+parentId;
         }else return "error";
 
     }

@@ -11,7 +11,7 @@
     <title>问题</title>
 
     <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../static/css/myCss.css">
+    <link rel="stylesheet" href="../../static/css/myCss.css">
 
     <script src="https://cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -60,7 +60,7 @@
             <div>
                 <span th:if="${session.communityUser != null}"><br>
                     <!--实际页面还是会留有span标签，考虑使用hidden-->
-                    <a  th:href="'/profile/issueEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
+                    <a  th:href="'/profile/questionEdit/'+${session.question.getId()}" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
                 </span>
                 <span th:if="${session.communityUser != null}">
                     <a  href="#" th:text="${(session.question.getAuthor_user_id()) == (session.communityUser.getId()) ? '删除问题（功能未开放）':''}"></a>
@@ -107,12 +107,16 @@
                                         <strong><p class="media-heading nobr" th:text="${reply.getUsername()}+'：'"></p></strong>
                                         <p class="nobr" th:text="${reply.getReply_description()+'&nbsp;&nbsp;'}"></p>
                                         <p class="nobr grey_font" th:text="${'('+reply.getGmt_reply_create()+')'}"></p>
-                                        <div th:if="${session.communityUser != null}" class="pull-right">
-                                            <p th:if="${reply.getCritic_id()==session.communityUser.getId()}"><a style="font-size: 80%" th:href="'/profile/delReply/'+${reply.getParent_id()}+'/'+${reply.getReply_id()}">删除</a></p>
+                                        <div class="nobr" th:if="${session.communityUser != null}">
+                                            <div class="nobr" th:if="${reply.getCritic_id()==session.communityUser.getId()}">&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a class="nobr attachmentFont" th:href="'/profile/delReply/'+${reply.getParent_id()}+'/'+${reply.getReply_id()}">删除回复</a>
+                                            </div>
                                         </div>
-                                        <div th:if="${session.communityUser == null}" class="pull-right">
-                                            <p></p>
-                                        </div>
+
+<!--                                        <div th:if="${session.communityUser != null}" >-->
+<!--                                            <p th:if="${reply.getCritic_id()==session.communityUser.getId()}"><a style="font-size: 80%" th:href="'/profile/delReply/'+${reply.getParent_id()}+'/'+${reply.getReply_id()}">&nbsp;&nbsp;&nbsp;&nbsp;删除</a></p>-->
+<!--                                        </div>-->
+<!--                                        <div th:if="${session.communityUser == null}" ></div>-->
                                     </div>
                                 </div>
                             </li>
