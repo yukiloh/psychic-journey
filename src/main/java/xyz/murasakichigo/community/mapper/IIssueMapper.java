@@ -1,10 +1,7 @@
 package xyz.murasakichigo.community.mapper;
 
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 import xyz.murasakichigo.community.model.CommunityIssue;
 
@@ -38,9 +35,13 @@ public interface IIssueMapper {
     @Select("SELECT COUNT(id) FROM issue_table where author_user_id = #{id}")
     Integer countProfileIssue(Integer id);
 
-    /*通过问题id查找*/
+    /*通过问题id查找问题*/
+    @Select("select author_user_id from issue_table where id = #{id} ")
+    Integer findUserIdByIssueId(String id);
+
+    /*通过问题id查找用户*/
     @Select("select * from issue_table where id = #{id} ")
-    CommunityIssue findIssueByIssueId(String id);
+    CommunityIssue findIssueByUserId(String id);
 
     @Update("UPDATE `springboot_community_project`.`issue_table` t SET t.`title` = #{title},t.`description` = #{description},t.`gmt_modified` = #{gmt_modified} WHERE t.`id` = #{id}")
     void updateIssue(CommunityIssue issue);
@@ -60,6 +61,10 @@ public interface IIssueMapper {
 
     @Select("select * from issue_table t where t.title like '%' #{keyword} '%'  order by id desc limit #{page},10")
     List<CommunityIssue> findIssueByKeyword(String keyword, int page);
+
+    /*删除问题*/
+    @Delete("DELETE FROM issue_table WHERE id = #{id}")
+    void deleteIssueByIssueId(String id);
 }
 
 

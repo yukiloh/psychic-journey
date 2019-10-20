@@ -24,4 +24,9 @@ public interface IReplyMapper {
     @Delete("DELETE FROM reply_table WHERE reply_id = #{id}")
     void deleteReply(String id);
 
+    /*根据parent_id删除回复*/
+    @Delete("DELETE FROM reply_table WHERE parent_id = #{id}")
+    void deleteReplyByParentId(String id);
+
+
 }

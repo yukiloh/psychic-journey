@@ -3,6 +3,7 @@ package xyz.murasakichigo.community.mapper;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -14,4 +15,7 @@ public interface IIssueImgMapper {
 
     @Select("select issue_addr from issue_img_table where issue_id = #{issue_id} ")
     String findIssueImgById(Integer issue_id);
+
+    @Update("UPDATE issue_img_table  SET isDeleted = 1 WHERE issue_id = #{id}")
+    void markDeletedImg(String id);
 }

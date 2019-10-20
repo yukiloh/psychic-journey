@@ -25,9 +25,6 @@
         2.$(    function(){...}  )      也被称为jq的入口函数 -->
     <!--jq入口函数的示例-->
 
-
-
-
 </head>
 
 <body>
@@ -42,7 +39,9 @@
 
 
 <script>
-
+    var url = window.location.pathname;
+    var uriLis = url.split('/');
+    alert(uriLis.pop());
 
 
 

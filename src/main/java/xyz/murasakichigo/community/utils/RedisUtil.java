@@ -7,6 +7,7 @@ import xyz.murasakichigo.community.model.CommunityIssue;
 import xyz.murasakichigo.community.mapper.IIpMapper;
 import xyz.murasakichigo.community.mapper.IIssueMapper;
 
+import java.text.SimpleDateFormat;
 import java.util.concurrent.TimeUnit;
 
 @Component
@@ -38,7 +39,7 @@ public class RedisUtil {
                 /*单例双锁;可能会出现object对象失效，所以再次获取对象；多线程中对象是不可靠的*/
                 communityIssue = (CommunityIssue) redisTemplate.opsForValue().get("communityIssue"+id);
                 if (communityIssue == null) {
-                    communityIssue = questionMapper.findIssueByIssueId(id);
+                    communityIssue = questionMapper.findIssueByUserId(id);
 //                    System.out.println("find by sql");
                     redisTemplate.opsForValue().set("communityIssue"+id, communityIssue);        /*存储redis的key*/
                 }
@@ -67,7 +68,7 @@ public class RedisUtil {
                 /*如首次访问则（检查并）存入数据库作为备份*/
                 Integer count = ipMapper.findCountByIp(ip);
                 if (count == null || count == 0) {
-                    ipMapper.createIp(ip);
+                    ipMapper.createIp(ip,new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
                 }
                 ipCounts = 1;
                 redisTemplate.opsForValue().set(ip,ipCounts,30,TimeUnit.MINUTES);   /*2处都要设置存活时间，否则会后者会被覆盖*/

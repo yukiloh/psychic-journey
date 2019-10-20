@@ -62,9 +62,6 @@
                     <!--实际页面还是会留有span标签，考虑使用hidden-->
                     <a th:href="'/profile/issueEdit/'+${session.issue.getId()}" th:text="${(session.issue.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑':''}"></a>
                 </span>
-                <span th:if="${session.communityUser != null}">
-                    <a  href="#" th:text="${(session.issue.getAuthor_user_id()) == (session.communityUser.getId()) ? '删除问题（功能未开放）':''}"></a>
-                </span>
             </div>
 
             <br>

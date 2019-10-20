@@ -18,14 +18,36 @@
     <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <link rel="stylesheet" href="../../static/css/myCss.css">
+
+
+    <script>
+        /*地址参考:  /profile/issueEdit/95  */
+
+        /*获取地址*/
+        var url = window.location.pathname;
+        var uriLis = url.split('/');
+        var id = uriLis.pop();  /*获取id*/
+
+        function firm() {
+            //利用对话框返回的值 （true 或者 false）
+            if (confirm("你确定删除吗？")) {
+                alert("昔我往矣，杨柳依依");
+                window.location.replace("/profile/issueEdit/delete/"+id);
+            }
+            else {
+                alert("明智之举");
+            }
+        }
+    </script>
 </head>
 <body>
 <div th:insert="~{navBar::navBar}"></div>
 
 <div class="container-fluid mainCss">
     <div class="row">
-        <form method="post" action="/profile/issueUpdate">
-            <div class="col-md-8">
+
+        <div class="col-md-8">
+            <form method="post" action="/profile/issueUpdate">
                 <div>
 
                     <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>编辑</strong></span></h3>
@@ -35,25 +57,27 @@
                     <h4>
                         <strong>问题标题</strong><br>
                     </h4>
-                    <input type="text" class="form-control" name="title" th:value="${session.issue.getTitle()}">
+                    <input type="text" class="form-control" name="title"  placeholder="你的问题..." th:value="${session.issue.getTitle()}">
                 </div>
                 <input class="hidden" name="id" id="id"  th:value="${session.issue.getId()}">
                 <br>
                 <div>
                     <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.issue.getDescription()}"></textarea>
                 </div><br>
-                <div>
+                <div class="nobr">
                     <button type="submit" class="btn btn-info " >提交</button>
+                    <button type="button" id="deleteIssue" onclick = "firm()" href="https://www.baidu.com/" class="btn btn-danger pull-right" >删除问题</button>
                     <!--隐藏上传按钮-->
 <!--                    <span>-->
 <!--                        &lt;!&ndash;上传功能暂时禁用&ndash;&gt;-->
 <!--                        <button type="button" class="btn btn-default btn disabled">上传附件</button>-->
 <!--                        <span class="attachmentFont">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;允许格式：....</span>-->
 <!--                    </span>-->
-                </div><br>
-            </div>
-        </form>
+                </div>
 
+                <br>
+            </form>
+        </div>
         <div class="col-md-4"><br><br><br>
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -92,6 +116,38 @@
         </div>
     </div>
 
+
+<script>
+
+
+
+    $(function () {
+
+            // $(function () {
+            //     var answer = $("#input").val();
+            //     var correct_answer = $("#correct_answer").html();
+            //     // alert(correct_answer);           /*验证获取到correct_answer(从p标签)*/
+            //     var result = answer === correct_answer;
+            //     if (result) {
+            //         // alert(result == true ? '答对啦!':'再来一次');
+            //         $("#hint").html("回答正确");
+            //         $("#submit").attr("disabled",false);
+            //         // $("#submit").removeAttr("disabled"); /*设置attr的2种方式*/
+            //     }else {
+            //         $("#hint").html("你是猪吧¿");
+            //         $("#submit").attr("disabled",true);
+            //         // alert("你是猪吧")
+            //     }
+            //
+            // });
+        // })
+    })
+
+    function openResult(){    /* 绑定事件 */
+
+    }
+
+</script>
 
 </body>
 </html>

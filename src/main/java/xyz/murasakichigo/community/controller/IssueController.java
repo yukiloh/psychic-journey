@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.murasakichigo.community.model.CommunityIssue;
-import xyz.murasakichigo.community.model.CommunityUser;
-import xyz.murasakichigo.community.model.CommunityReply;
 import xyz.murasakichigo.community.mapper.IIssueImgMapper;
 import xyz.murasakichigo.community.mapper.IIssueMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
+import xyz.murasakichigo.community.model.CommunityIssue;
+import xyz.murasakichigo.community.model.CommunityReply;
+import xyz.murasakichigo.community.model.CommunityUser;
 import xyz.murasakichigo.community.utils.CountPageUtil;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +28,6 @@ import java.util.UUID;
 @Controller
 public class IssueController {
 
-
     private final IIssueMapper issueMapper;
     private final IReplyMapper replyMapper;
 
@@ -38,10 +37,38 @@ public class IssueController {
         this.issueImgMapper = issueImgMapper;
     }
 
-//    @Autowired
-//    private FtpUtil ftpUtil;
+//    ================================================================================================
+    /*进入单个issue页面*/
 
-    /*进入提交问题页面*/
+//    @Autowired
+//    private RedisUtil redisUtil;
+
+    @GetMapping("/publish/issue/{id}")
+    public String findIssueByIssueId(HttpServletRequest request,
+            /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
+                                     @PathVariable String id) {
+        CommunityIssue issue = issueMapper.findIssueByUserId(id);        /*直接调用数据库*/
+//        CommunityIssue issue = redisUtil.findQIssueByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
+        request.getSession().setAttribute("issue", issue);
+
+        /*累加阅读数*/
+        accumulateView(issue,id);
+
+        /*显示图片*/
+        String imgAddr = issueImgMapper.findIssueImgById(Integer.valueOf(id));
+        if (!"null".equals(imgAddr)) {
+            request.getSession().setAttribute("imgAddr",imgAddr);
+        }
+
+        /*读取回复*/
+        List<CommunityReply> communityReplyList = replyMapper.findReplyByIssueId(id);
+        if (communityReplyList != null) {
+            request.getSession().setAttribute("replyList", communityReplyList);
+        }
+        return "issuePage";
+    }
+
+    /*提交问题*/
     @GetMapping("/profile/newIssue")
     public String newIssue() {
         return "issuePublish";
@@ -91,7 +118,8 @@ public class IssueController {
 
     @Value("${file.uploadFolder}")
     private String uploadFolder;
-
+//    @Autowired
+//    private FtpUtil ftpUtil;
     private void uploadToServer(MultipartFile upload, Integer maxIssueId) {
         String uploadedFileName =UUID.randomUUID() + "_" +upload.getOriginalFilename();
         try {
@@ -131,14 +159,14 @@ public class IssueController {
 
 
     //===================================================================
-    /*进入问题修改*/
+    /*问题修改*/
     @GetMapping("/profile/issueEdit/{id}")
     public String issueEdit(@PathVariable String id,
                             HttpServletRequest request) {
         /*验证是否issue作者ID与登陆者相同*/
         CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
-        if (communityUser.getId().equals(issueMapper.findIssueByIssueId(id).getAuthor_user_id())) {
-            CommunityIssue issue = issueMapper.findIssueByIssueId(id);
+        if (communityUser.getId().equals(issueMapper.findIssueByUserId(id).getAuthor_user_id())) {
+            CommunityIssue issue = issueMapper.findIssueByUserId(id);
             request.getSession().setAttribute("issue",issue);
             return "issueEdit";
         }else {
@@ -146,7 +174,7 @@ public class IssueController {
         }
     }
 
-    /*修改问题后submit按钮*/
+    /*修改后submit按钮*/
     @PostMapping("/profile/issueUpdate")
     public String postIssue(
             @RequestParam(name = "title") String title,
@@ -166,37 +194,38 @@ public class IssueController {
         return "redirect:/homepage";
     }
 
-//    ================================================================================================
-    /*进入单个issue页面*/
 
-//    @Autowired
-//    private RedisUtil redisUtil;
+    /*删除问题*/
+    @GetMapping("/profile/issueEdit/delete/{id}")
+    public String issueDelete(@PathVariable String id){
+        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+        if (user.getId().equals(issueMapper.findUserIdByIssueId(id))) {
+            System.out.println("get user");
+            issueMapper.deleteIssueByIssueId(id);
+            System.out.println("del issue");
+            replyMapper.deleteReplyByParentId(id);
+            System.out.println("del reply");
+            issueImgMapper.markDeletedImg(id);  /*标记被删除的问题*/
+            System.out.println("mark img");
+            return "redirect:/homepage";
+        }else return "error";
 
-    @GetMapping("/publish/issue/{id}")
-    public String findIssueByIssueId(HttpServletRequest request,
-                                        /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
-                                        @PathVariable String id) {
-        CommunityIssue issue = issueMapper.findIssueByIssueId(id);        /*直接调用数据库*/
-//        CommunityIssue issue = redisUtil.findQIssueByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
-        request.getSession().setAttribute("issue", issue);
 
-        /*累加阅读数*/
-        accumulateView(issue,id);
+//        return "redirect:/homepage";
+    }
 
-        /*显示图片*/
-        String imgAddr = issueImgMapper.findIssueImgById(Integer.valueOf(id));
-        if (!"null".equals(imgAddr)) {
-            request.getSession().setAttribute("imgAddr",imgAddr);
-        }
-
-        /*读取回复*/
-        List<CommunityReply> communityReplyList = replyMapper.findReplyByIssueId(id);
-        if (communityReplyList != null) {
-            request.getSession().setAttribute("replyList", communityReplyList);
-        }
-        return "issuePage";
-   }
-
+//    @PostMapping("/profile/issueEdit/delete.do")
+//    public String IssueDeleteDo(@RequestParam(name = "id") String id){
+//        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+//        if (user.getId().equals(issueMapper.findUserIdByIssueId(id))) {
+//            issueMapper.deleteIssueByIssueId(id);
+//            replyMapper.deleteReplyByParentId(id);
+//            issueImgMapper.markDeletedImg(id);  /*标记被删除的问题*/
+//
+//            return "redirect:/homepage";
+//        }else return "error";
+//
+//    }
 
 //    ================================================================================================
     /*回复按钮*/

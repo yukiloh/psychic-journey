@@ -91,6 +91,6 @@ file:
 #  uploadFolder: /share/homes/onlyForFtp/upload/
   uploadFolder: /home/share/upload/
   ##windows path desktop
-#  uploadFolder: E://Code/git/springboot_community/target/classes/static/images/uploadImg/
+#  uploadFolder: E://Code/Java/SpringBoot_Project_Community/target/classes/static/images/
   ##windows path note
 #  uploadFolder: D://Code/JAVA/SpringBoot_Project_Community/target/classes/static/images/uploadImg/
