@@ -32,7 +32,7 @@
                 <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>我的问题</strong></span></h3>
             </div>
             <hr>
-            <div th:each="question:${session.questions}">
+            <div th:each="question:${session.issueList}">
                 <div class="media">
                     <div class="media-left">
                         <div href="#">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="media-body">
-                        <a th:href="${'/publish/issue'}+${question.getId()}">
+                        <a th:href="${'/publish/issue/'}+${question.getId()}">
                             <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
 
                         </a>

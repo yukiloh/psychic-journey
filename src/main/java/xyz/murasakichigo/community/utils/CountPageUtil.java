@@ -1,7 +1,8 @@
 package xyz.murasakichigo.community.utils;
 
-public class CountPaging {
+public class CountPageUtil {
 
+    /*用于计算分页的方法*/
     public int[] countPaging(Integer questionCount,String page){
         int maxPage = (questionCount/10)+1 ;
         if(Integer.valueOf(page) > maxPage) {
@@ -12,8 +13,7 @@ public class CountPaging {
         }
         Integer thisPage = Integer.valueOf(page);
         int queryPage = (thisPage-1)*10;
-        int[] result= {maxPage,thisPage,queryPage};
-        return result;
+        return new int[]{maxPage,thisPage,queryPage};
 
     }
 }

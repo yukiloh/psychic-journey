@@ -2,9 +2,8 @@ package xyz.murasakichigo.community.mapper;
 
 
 import org.apache.ibatis.annotations.*;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
-import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.model.CommunityUser;
 
 import java.util.List;
 /*ctrl+alt+O: 自动移除无用的import*/

@@ -5,19 +5,18 @@ import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import xyz.murasakichigo.community.dto.CommunityQuestion;
-import xyz.murasakichigo.community.dto.CommunityUser;
-import xyz.murasakichigo.community.dto.VerificationQuestion;
-import xyz.murasakichigo.community.mapper.IQuestionMapper;
+import xyz.murasakichigo.community.model.CommunityIssue;
+import xyz.murasakichigo.community.model.CommunityUser;
+import xyz.murasakichigo.community.model.VerificationQuestion;
+import xyz.murasakichigo.community.mapper.IIssueMapper;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.mapper.IVerificationQuestionMapper;
-import xyz.murasakichigo.community.utils.CountPaging;
+import xyz.murasakichigo.community.utils.CountPageUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -29,6 +28,11 @@ import java.util.Random;
 @Controller
 public class MainController {
 
+    public MainController(IIssueMapper issueMapper, IVerificationQuestionMapper verificationQuestionMapper, IUserMapper userMapper) {
+        this.issueMapper = issueMapper;
+        this.verificationQuestionMapper = verificationQuestionMapper;
+        this.userMapper = userMapper;
+    }
 
     /*springboot提供的标准greeting演示*/
     @GetMapping("/greeting")        /*@GetMapping = @RequestMapping(method = RequestMethod.GET)*/
@@ -46,8 +50,7 @@ public class MainController {
         return "index";
     }
 
-    @Autowired
-    private IQuestionMapper questionMapper;
+    private final IIssueMapper issueMapper;
 
     /*主页（应该命名为homepage）；会判断是否携带token，是则直接调用数据库；应该交由拦截器*/
     @GetMapping("/homepage")
@@ -62,8 +65,7 @@ public class MainController {
     }
 
 
-    @Autowired
-    private IVerificationQuestionMapper verificationQuestionMapper;
+    private final IVerificationQuestionMapper verificationQuestionMapper;
     /*登陆页面*/
     @GetMapping("/login")
     public String login(Model model) {
@@ -73,8 +75,7 @@ public class MainController {
 
 
 
-    @Autowired
-    IUserMapper userMapper;
+    private final IUserMapper userMapper;
     /*验证登陆信息*/
     @PostMapping("/login.do")
     public String toLogin(String username,String password,Model model,HttpServletRequest request) {
@@ -176,10 +177,10 @@ public class MainController {
 //    ================================================================================================================
     /*返回前端基于当前页面数的列表*/
     private void showPage(HttpServletRequest request,String page){
-        Integer questionCount = questionMapper.countQuestion();
-        int[] result = new CountPaging().countPaging(questionCount, page);
-        List<CommunityQuestion> questionList = questionMapper.findQuestionByPage(result[2]);
-        request.getSession().setAttribute("questionList",questionList);
+        Integer issueCount = issueMapper.countIssue();
+        int[] result = new CountPageUtil().countPaging(issueCount, page);
+        List<CommunityIssue> issueList = issueMapper.findIssueByPage(result[2]);
+        request.getSession().setAttribute("issueList",issueList);
         request.getSession().setAttribute("page",result[1]);
         request.getSession().setAttribute("maxPage",result[0]);
     }

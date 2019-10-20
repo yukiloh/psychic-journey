@@ -1,8 +1,8 @@
-package xyz.murasakichigo.community.dto;
+package xyz.murasakichigo.community.model;
 
 import java.io.Serializable;
 
-public class CommunityQuestion implements Serializable {
+public class CommunityIssue implements Serializable {
    private  Integer id;
    private  String title;
    private  String author_name;
@@ -17,7 +17,7 @@ public class CommunityQuestion implements Serializable {
 
     @Override
     public String toString() {
-        return "CommunityQuestion{" +
+        return "CommunityIssue{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +

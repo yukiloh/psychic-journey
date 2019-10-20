@@ -1,6 +1,5 @@
 package xyz.murasakichigo.community.intercepor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -11,8 +10,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class webConfig implements WebMvcConfigurer {
 
     /*将session拦截器交给spring管理*/
-    @Autowired
-    private RedisIpCheckerInterceptor redisIpCheckerInterceptor;
+    private final RedisIpCheckerInterceptor redisIpCheckerInterceptor;
+
+    public webConfig(RedisIpCheckerInterceptor redisIpCheckerInterceptor) {
+        this.redisIpCheckerInterceptor = redisIpCheckerInterceptor;
+    }
 
 //    @Autowired
 //    private CommunityUserInterceptor communityUserInterceptor;

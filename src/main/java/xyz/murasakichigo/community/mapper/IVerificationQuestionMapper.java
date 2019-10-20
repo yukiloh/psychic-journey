@@ -3,7 +3,7 @@ package xyz.murasakichigo.community.mapper;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import xyz.murasakichigo.community.dto.VerificationQuestion;
+import xyz.murasakichigo.community.model.VerificationQuestion;
 
 @Mapper
 @Repository

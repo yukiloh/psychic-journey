@@ -7,7 +7,7 @@ import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import xyz.murasakichigo.community.dto.CommunityUser;
+import xyz.murasakichigo.community.model.CommunityUser;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 
 /*自定义realm，在其中重写AuthorizationInfo授权信息 和 AuthenticationInfo认证信息
@@ -22,7 +22,6 @@ public class UserRealm extends AuthorizingRealm {
 //        System.out.println("执行授权");
 
         /*创建授权信息*/
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
 
 //        /*从认证处返回的principals获取user对象*/
 //        CommunityUser user = (CommunityUser)principals.getPrimaryPrincipal();
@@ -37,7 +36,7 @@ public class UserRealm extends AuthorizingRealm {
 //        info.addRole(role);
 
         /*返回info*/
-        return info;
+        return new SimpleAuthorizationInfo();
     }
 
     @Autowired

@@ -1,22 +1,22 @@
 package xyz.murasakichigo.community.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import xyz.murasakichigo.community.dto.CommunityQuestion;
-import xyz.murasakichigo.community.dto.CommunityUser;
-import xyz.murasakichigo.community.mapper.IQuestionMapper;
-import xyz.murasakichigo.community.mapper.IUserMapper;
+import xyz.murasakichigo.community.model.CommunityIssue;
+import xyz.murasakichigo.community.model.CommunityUser;
+import xyz.murasakichigo.community.mapper.IIssueMapper;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
-public class profileController {
+public class ProfileController {
 
-    @Autowired
-    private IQuestionMapper questionMapper;
+    private final IIssueMapper issueMapper;
+
+    public ProfileController(IIssueMapper issueMapper) {
+        this.issueMapper = issueMapper;
+    }
 
 
     /*个人问题页面，如果没有获取到cUser则返回登陆页面*/
@@ -40,11 +40,11 @@ public class profileController {
 
 
     private void showPage(HttpServletRequest request,int id,int pageNumber) {
-        List<CommunityQuestion> questions = questionMapper.findQuestionById(id,(pageNumber-1)*10);
-        Integer questionCount = questionMapper.countProfileQuestion(id);
-        Integer maxPage = (questionCount/10)+1;
+        List<CommunityIssue> issueList = issueMapper.findIssueById(id,(pageNumber-1)*10);
+        Integer issueCount = issueMapper.countProfileIssue(id);
+        Integer maxPage = (issueCount/10)+1;
 
-        request.getSession().setAttribute("questions",questions);
+        request.getSession().setAttribute("issueList",issueList);
         request.getSession().setAttribute("maxPage",maxPage);
         request.getSession().setAttribute("page",pageNumber);
 

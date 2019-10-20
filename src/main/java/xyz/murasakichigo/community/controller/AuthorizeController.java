@@ -3,19 +3,16 @@ package xyz.murasakichigo.community.controller;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import xyz.murasakichigo.community.dto.AccessTokenDTO;
-import xyz.murasakichigo.community.dto.CommunityUser;
-import xyz.murasakichigo.community.dto.GithubUser;
+import xyz.murasakichigo.community.model.AccessToken;
+import xyz.murasakichigo.community.model.CommunityUser;
+import xyz.murasakichigo.community.model.GithubUser;
 import xyz.murasakichigo.community.mapper.IUserMapper;
 import xyz.murasakichigo.community.provider.GithubProvider;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -24,16 +21,15 @@ import java.util.UUID;
 public class AuthorizeController {
 
 
-//    提供一个由spring容器管理的provider,用于注入dto&token
-    @Autowired
-    private GithubProvider githubProvider;
+    private final GithubProvider githubProvider;
+    private final AccessToken accessToken;
+    private final IUserMapper userMapper;
 
-    @Autowired
-    private AccessTokenDTO accessTokenDTO;
-
-
-    @Autowired
-    private IUserMapper userMapper;
+    public AuthorizeController(AccessToken accessToken, GithubProvider githubProvider, IUserMapper userMapper) {
+        this.accessToken = accessToken;
+        this.githubProvider = githubProvider;
+        this.userMapper = userMapper;
+    }
 
     /*用于验证账户，成功后会创建/更新本地数据库的Token和登录时间*/
     @GetMapping("/callback")
@@ -45,14 +41,14 @@ public class AuthorizeController {
 //        if (localState.equals(state)) {System.out.println("state OK!");}
 
         /*封装获取的accessToken的数据*/
-        accessTokenDTO.setCode(code);
-        accessTokenDTO.setRedirect_uri(accessTokenDTO.getRedirect_uri());
-        accessTokenDTO.setState(state);
-        accessTokenDTO.setClient_id(accessTokenDTO.getClient_id());
-        accessTokenDTO.setClient_secret(accessTokenDTO.getClient_secret());
+        accessToken.setCode(code);
+        accessToken.setRedirect_uri(accessToken.getRedirect_uri());
+        accessToken.setState(state);
+        accessToken.setClient_id(accessToken.getClient_id());
+        accessToken.setClient_secret(accessToken.getClient_secret());
 
         /*传入dto,获取accessToken*/
-        String accessToken = githubProvider.getAccessToken(accessTokenDTO);     /*C + A + v: 快速生成变量*/
+        String accessToken = githubProvider.getAccessToken(this.accessToken);     /*C + A + v: 快速生成变量*/
         /*传入token,获取user*/
         GithubUser githubUser = githubProvider.getUser(accessToken);
 

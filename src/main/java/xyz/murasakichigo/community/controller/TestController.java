@@ -1,23 +1,17 @@
 package xyz.murasakichigo.community.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import xyz.murasakichigo.community.dto.CommunityUser;
-import xyz.murasakichigo.community.dto.TestDTO;
-import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
-import xyz.murasakichigo.community.utils.FtpUtil;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import xyz.murasakichigo.community.model.CommunityUser;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
 
 
 @Controller
@@ -28,18 +22,14 @@ public class TestController {
         return "test";
     }
 
-    /*@ResponseBody ReplyDTO*/
+    /*@ResponseBody CommunityReply*/
     @PostMapping("/testAjax")
     public @ResponseBody String TestAjax(@RequestBody String data
-                                         ) throws IOException {
+                                         ) {
         System.out.println("Ajax asynchronous done!");
         System.out.println(data);           /*成功获取body内容*/
             return "success";
     }
-
-
-    @Autowired
-    private IQuestionImgMapper questionImgMapper;
 
     @GetMapping("/showImg")
     public String TestFileUpload(HttpServletRequest request){
@@ -62,13 +52,13 @@ public class TestController {
 
     @GetMapping("/testGithubUserForShiro")
     public @ResponseBody String TestGithubUserForShiro(){
-        checkingGitHubAccoutnByShiro("yukiloh");
+        checkingGitHubAccountByShiro("yukiloh");
         CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
         String username = user.getUsername();
         System.out.println(username);
         return username;
     }
-    private void checkingGitHubAccoutnByShiro(String username) {
+    private void checkingGitHubAccountByShiro(String username) {
         Subject subject = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(username,"githubUser");
         subject.login(token);

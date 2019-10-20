@@ -62,7 +62,7 @@
             </div>
             <hr>
             <!--使用th:each遍历获取帖子内容-->
-            <div th:each="question:${session.questionList}">
+            <div th:each="issue:${session.issueList}">
                 <div class="media">
                     <div class="media-left">
                         <div href="#">
@@ -70,21 +70,21 @@
                         </div>
                     </div>
                     <div class="media-body">
-                        <a th:href="${'/publish/question/'}+${question.getId()}">
-                            <h4 class="media-heading" th:text="${question.getTitle()}"></h4>
+                        <a th:href="${'/publish/issue/'}+${issue.getId()}">
+                            <h4 class="media-heading" th:text="${issue.getTitle()}"></h4>
 
                         </a>
                         <div>
                             <span>作者:</span>
-                            <span th:text="${question.getAuthor_name()}"></span>
+                            <span th:text="${issue.getAuthor_name()}"></span>
                             <span>&nbsp;创建时间:</span>
-                            <span th:text="${question.getGmt_create()}"></span>
-                            <span th:if="${question.getView_count()}!=null">    <!--如果阅读数为null则不显示-->
+                            <span th:text="${issue.getGmt_create()}"></span>
+                            <span th:if="${issue.getView_count()}!=null">    <!--如果阅读数为null则不显示-->
                                 <span>&nbsp;阅读数:</span>
-                                <span th:text="${question.getView_count()}"></span>
+                                <span th:text="${issue.getView_count()}"></span>
                                 </span>
                         </div>
-                        <div id="mediaBody" th:text="${question.getDescription()}"></div>
+                        <div id="mediaBody" th:text="${issue.getDescription()}"></div>
                         <hr>
                     </div>
                 </div>

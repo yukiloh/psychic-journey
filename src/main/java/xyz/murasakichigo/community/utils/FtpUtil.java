@@ -2,13 +2,10 @@ package xyz.murasakichigo.community.utils;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
-import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
+import xyz.murasakichigo.community.mapper.IIssueImgMapper;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -28,8 +25,11 @@ public class FtpUtil {
     @Value("${ftp.password}")
     private String password;
 
-    @Autowired
-    private IQuestionImgMapper questionImgMapper;
+    private final IIssueImgMapper questionImgMapper;
+
+    public FtpUtil(IIssueImgMapper questionImgMapper) {
+        this.questionImgMapper = questionImgMapper;
+    }
 
     public boolean uploadToFtp(File file,Integer maxIssueId){
         FTPClient ftpClient = new FTPClient();
@@ -55,7 +55,7 @@ public class FtpUtil {
             FileInputStream fileInputStream = new FileInputStream(file);
             ftpClient.storeFile(file.getName(), fileInputStream);
             /*更新图片至数据库*/
-            questionImgMapper.createQuestionImgAddr(maxIssueId,file.getName());
+            questionImgMapper.createIssueImgAddr(maxIssueId,file.getName());
 
             /*关闭流*/
             fileInputStream.close();

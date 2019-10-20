@@ -2,18 +2,20 @@ package xyz.murasakichigo.community.controller;
 
 
 import org.apache.shiro.SecurityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-import xyz.murasakichigo.community.dto.CommunityQuestion;
-import xyz.murasakichigo.community.dto.CommunityUser;
-import xyz.murasakichigo.community.dto.ReplyDTO;
-import xyz.murasakichigo.community.mapper.IQuestionImgMapper;
-import xyz.murasakichigo.community.mapper.IQuestionMapper;
+import xyz.murasakichigo.community.model.CommunityIssue;
+import xyz.murasakichigo.community.model.CommunityUser;
+import xyz.murasakichigo.community.model.CommunityReply;
+import xyz.murasakichigo.community.mapper.IIssueImgMapper;
+import xyz.murasakichigo.community.mapper.IIssueMapper;
 import xyz.murasakichigo.community.mapper.IReplyMapper;
-import xyz.murasakichigo.community.utils.CountPaging;
+import xyz.murasakichigo.community.utils.CountPageUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
@@ -24,14 +26,17 @@ import java.util.UUID;
 
 /*用于提交问题的控制器*/
 @Controller
-public class QuestionController {
+public class IssueController {
 
 
-    @Autowired
-    private IQuestionMapper questionMapper;
+    private final IIssueMapper issueMapper;
+    private final IReplyMapper replyMapper;
 
-    @Autowired
-    private IReplyMapper replyMapper;
+    public IssueController(IIssueMapper issueMapper, IReplyMapper replyMapper, IIssueImgMapper issueImgMapper) {
+        this.issueMapper = issueMapper;
+        this.replyMapper = replyMapper;
+        this.issueImgMapper = issueImgMapper;
+    }
 
 //    @Autowired
 //    private FtpUtil ftpUtil;
@@ -39,38 +44,38 @@ public class QuestionController {
     /*进入提交问题页面*/
     @GetMapping("/profile/newIssue")
     public String newIssue() {
-        return "questionPublish";
+        return "issuePublish";
     }
 
     /*使用post接收*/
-    @PostMapping("/profile/questionSubmit")
-    public String postQuestion(
+    @PostMapping("/profile/issueSubmit")
+    public String postIssue(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "description") String description,
 //            @RequestParam(name = "tag") String tag,
 //            @CookieValue(value = "token")String token,
             MultipartFile upload)  {
         String tag = "test";
-        CommunityQuestion communityQuestion = new CommunityQuestion();
-        communityQuestion.setTitle(title);
-        communityQuestion.setDescription(description);
-        communityQuestion.setTag(tag);
+        CommunityIssue communityIssue = new CommunityIssue();
+        communityIssue.setTitle(title);
+        communityIssue.setDescription(description);
+        communityIssue.setTag(tag);
 
         /*通过shiro获取user*/
         CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
-        communityQuestion.setAuthor_user_id(user.getId());
-        communityQuestion.setAuthor_name(user.getUsername());
+        communityIssue.setAuthor_user_id(user.getId());
+        communityIssue.setAuthor_name(user.getUsername());
 
         /*已弃用token，改用从shiro获取user*/
 //        Integer id = userMapper.findUserByToken(token).getId(); /*获取id*/
-//        communityQuestion.setAuthor_user_id(id);
-//        communityQuestion.setAuthor_name(userMapper.findUserById(id).getUsername());    /*通过id查找userName*/
+//        communityIssue.setAuthor_user_id(id);
+//        communityIssue.setAuthor_name(userMapper.findUserById(id).getUsername());    /*通过id查找userName*/
 
-        communityQuestion.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
-        communityQuestion.setTag(tag);
-        questionMapper.createIssue(communityQuestion);
+        communityIssue.setGmt_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+        communityIssue.setTag(tag);
+        issueMapper.createIssue(communityIssue);
         /*获取最后上传的问题id*/
-        Integer maxIssueId = questionMapper.findMaxIssueId();
+        Integer maxIssueId = issueMapper.findMaxIssueId();
 
         /*如果upload不为空则上传*/
         if (!upload.isEmpty()) {
@@ -79,11 +84,10 @@ public class QuestionController {
         }
 
         /*重定向至问题*/
-        return "redirect:/publish/question/"+maxIssueId;
+        return "redirect:/publish/issue/"+maxIssueId;
     }
 
-    @Autowired
-    IQuestionImgMapper questionImgMapper;
+    private final IIssueImgMapper issueImgMapper;
 
     @Value("${file.uploadFolder}")
     private String uploadFolder;
@@ -97,7 +101,7 @@ public class QuestionController {
         }
 
         /*将文件名更新至数据库*/
-        questionImgMapper.createQuestionImgAddr(maxIssueId,uploadedFileName);
+        issueImgMapper.createIssueImgAddr(maxIssueId,uploadedFileName);
     }
         /*已弃用,无法解决读取问题,更换为本地上传*/
 //    /*上传至FTP*/
@@ -128,69 +132,69 @@ public class QuestionController {
 
     //===================================================================
     /*进入问题修改*/
-    @GetMapping("/profile/questionEdit/{id}")
+    @GetMapping("/profile/issueEdit/{id}")
     public String issueEdit(@PathVariable String id,
                             HttpServletRequest request) {
         /*验证是否issue作者ID与登陆者相同*/
         CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
-        if (communityUser.getId().equals(questionMapper.findQuestionByIssueId(id).getAuthor_user_id())) {
-            CommunityQuestion questionByIssueId = questionMapper.findQuestionByIssueId(id);
-            request.getSession().setAttribute("questionByIssueId",questionByIssueId);
-            return "questionEdit";
+        if (communityUser.getId().equals(issueMapper.findIssueByIssueId(id).getAuthor_user_id())) {
+            CommunityIssue issue = issueMapper.findIssueByIssueId(id);
+            request.getSession().setAttribute("issue",issue);
+            return "issueEdit";
         }else {
             return "error";
         }
     }
 
     /*修改问题后submit按钮*/
-    @PostMapping("/profile/questionUpdate")
-    public String postQuestion(
+    @PostMapping("/profile/issueUpdate")
+    public String postIssue(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "id") Integer id,
             @RequestParam(name = "description") String description
 //            @RequestParam(name = "tag") String tag
             ) {
-        CommunityQuestion communityQuestion = new CommunityQuestion();
-        communityQuestion.setTitle(title);
-        communityQuestion.setDescription(description);
-//        communityQuestion.setTag(tag);
-        communityQuestion.setId(id);
-        communityQuestion.setGmt_modified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+        CommunityIssue communityIssue = new CommunityIssue();
+        communityIssue.setTitle(title);
+        communityIssue.setDescription(description);
+//        communityIssue.setTag(tag);
+        communityIssue.setId(id);
+        communityIssue.setGmt_modified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
 
-        questionMapper.updateQuestion(communityQuestion);
+        issueMapper.updateIssue(communityIssue);
 
         return "redirect:/homepage";
     }
 
 //    ================================================================================================
-    /*进入单个question页面*/
+    /*进入单个issue页面*/
 
 //    @Autowired
 //    private RedisUtil redisUtil;
 
-    @GetMapping("/publish/question/{id}")
-    public String findQuestionByIssueId(HttpServletRequest request,
+    @GetMapping("/publish/issue/{id}")
+    public String findIssueByIssueId(HttpServletRequest request,
                                         /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                         @PathVariable String id) {
-        CommunityQuestion question = questionMapper.findQuestionByIssueId(id);        /*直接调用数据库*/
-//        CommunityQuestion question = redisUtil.findQuestionByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
-        request.getSession().setAttribute("question",question);
+        CommunityIssue issue = issueMapper.findIssueByIssueId(id);        /*直接调用数据库*/
+//        CommunityIssue issue = redisUtil.findQIssueByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
+        request.getSession().setAttribute("issue", issue);
 
         /*累加阅读数*/
-        accumulateView(question,id);
+        accumulateView(issue,id);
 
         /*显示图片*/
-        String imgAddr = questionImgMapper.findQuestionImgById(Integer.valueOf(id));
+        String imgAddr = issueImgMapper.findIssueImgById(Integer.valueOf(id));
         if (!"null".equals(imgAddr)) {
             request.getSession().setAttribute("imgAddr",imgAddr);
         }
 
         /*读取回复*/
-        List<ReplyDTO> replyDTOList = replyMapper.findReplyByIssueId(id);
-        if (replyDTOList != null) {
-            request.getSession().setAttribute("replyList", replyDTOList);
+        List<CommunityReply> communityReplyList = replyMapper.findReplyByIssueId(id);
+        if (communityReplyList != null) {
+            request.getSession().setAttribute("replyList", communityReplyList);
         }
-        return "questionPage";
+        return "issuePage";
    }
 
 
@@ -203,16 +207,16 @@ public class QuestionController {
             @RequestParam(name = "critic_id") String critic_id
             )  {
 
-        ReplyDTO replyDTO = new ReplyDTO();
-        replyDTO.setCritic_id(Integer.valueOf(critic_id));
-        replyDTO.setParent_id(Integer.valueOf(parent_id));
-        replyDTO.setReply_description(description);
+        CommunityReply communityReply = new CommunityReply();
+        communityReply.setCritic_id(Integer.valueOf(critic_id));
+        communityReply.setParent_id(Integer.valueOf(parent_id));
+        communityReply.setReply_description(description);
 
-        replyDTO.setGmt_reply_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
-        replyMapper.createReply(replyDTO);
+        communityReply.setGmt_reply_create(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
+        replyMapper.createReply(communityReply);
 
         /*应该是重定向至成功页面,然后返回到问题浏览的...*/
-        return "redirect:/publish/question/"+parent_id;
+        return "redirect:/publish/issue/"+parent_id;
     }
 
     @GetMapping("/profile/delReply/{parentId}/{replyId}")
@@ -220,7 +224,7 @@ public class QuestionController {
         CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
         if (user.getId().equals(replyMapper.findCriticIdByReplyId(replyId))) {   /*验证*/
             replyMapper.deleteReply(replyId);
-            return "redirect:/publish/question/"+parentId;
+            return "redirect:/publish/issue/"+parentId;
         }else return "error";
 
     }
@@ -240,22 +244,22 @@ public class QuestionController {
 
 
 //    ================================================================================================
-    private void accumulateView(CommunityQuestion question, String id) {
+    private void accumulateView(CommunityIssue issue, String id) {
         /*后期添加判断：同个ip至累计5次访问；*/
-        Integer view_count = question.getView_count();
+        Integer view_count = issue.getView_count();
         if (view_count == null) {
             view_count = 0;
         }
         int view = view_count + 1;
-        questionMapper.updateQuestionView(view,id);
+        issueMapper.updateIssueView(view,id);
 
     }
 
     private void showSearchPage(HttpServletRequest request, String page, String keyword){
-        Integer questionCount = questionMapper.countQuestionByKeyword(keyword);
-        int[] result = new CountPaging().countPaging(questionCount, page);
-        List<CommunityQuestion> questionList = questionMapper.findQuestionByKeyword(keyword,result[2]);
-        request.getSession().setAttribute("questionList",questionList);
+        Integer issueCount = issueMapper.countIssueByKeyword(keyword);
+        int[] result = new CountPageUtil().countPaging(issueCount, page);
+        List<CommunityIssue> issueList = issueMapper.findIssueByKeyword(keyword,result[2]);
+        request.getSession().setAttribute("issueList",issueList);
         request.getSession().setAttribute("page",result[1]);
         request.getSession().setAttribute("maxPage",result[0]);
         request.getSession().setAttribute("keyword",keyword);

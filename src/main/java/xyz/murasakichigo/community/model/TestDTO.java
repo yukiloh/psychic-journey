@@ -1,4 +1,4 @@
-package xyz.murasakichigo.community.dto;
+package xyz.murasakichigo.community.model;
 
 import java.io.Serializable;
 

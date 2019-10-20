@@ -1,9 +1,8 @@
-package xyz.murasakichigo.community.dto;
+package xyz.murasakichigo.community.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 
-public class ReplyDTO implements Serializable {
+public class CommunityReply implements Serializable {
     private Integer reply_id;
     private Integer parent_id;
     private String reply_description;
@@ -14,7 +13,7 @@ public class ReplyDTO implements Serializable {
 
     @Override
     public String toString() {
-        return "ReplyDTO{" +
+        return "CommunityReply{" +
                 "reply_id=" + reply_id +
                 ", parent_id=" + parent_id +
                 ", reply_description=" + reply_description +

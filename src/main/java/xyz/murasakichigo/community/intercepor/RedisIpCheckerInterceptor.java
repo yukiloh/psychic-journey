@@ -1,6 +1,5 @@
 package xyz.murasakichigo.community.intercepor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +14,12 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class RedisIpCheckerInterceptor implements HandlerInterceptor {
 
-    @Autowired
-    private IIpMapper ipMapper;
+    private final IIpMapper ipMapper;
+
+    public RedisIpCheckerInterceptor(IIpMapper ipMapper, RedisUtil redisUtil) {
+        this.ipMapper = ipMapper;
+        this.redisUtil = redisUtil;
+    }
 
     /*预处理拦截内容，返回布尔值*/
     @Override
@@ -34,18 +37,17 @@ public class RedisIpCheckerInterceptor implements HandlerInterceptor {
 
     /*后处理*/
     @Override
-    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView){
 //        System.out.println("post handle");
     }
 
     /*返回后处理*/
     @Override
-    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex){
 //        System.out.println("after completion");
     }
 
-    @Autowired
-    private RedisUtil redisUtil;
+    private final RedisUtil redisUtil;
 
     /*检查访问次数,当超过次数后会跳转至baidu*/
     private Boolean checkAccessCounts(HttpServletRequest request) {

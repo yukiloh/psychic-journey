@@ -1,7 +1,6 @@
-package xyz.murasakichigo.community.dto;
+package xyz.murasakichigo.community.model;
 
 import java.io.Serializable;
-import java.sql.Date;
 
 public class CommunityUser implements Serializable {
 

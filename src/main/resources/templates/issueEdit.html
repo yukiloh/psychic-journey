@@ -24,7 +24,7 @@
 
 <div class="container-fluid mainCss">
     <div class="row">
-        <form method="post" action="/profile/questionUpdate">
+        <form method="post" action="/profile/issueUpdate">
             <div class="col-md-8">
                 <div>
 
@@ -35,12 +35,12 @@
                     <h4>
                         <strong>问题标题</strong><br>
                     </h4>
-                    <input type="text" class="form-control" name="title" th:value="${session.questionByIssueId.getTitle()}">
+                    <input type="text" class="form-control" name="title" th:value="${session.issue.getTitle()}">
                 </div>
-                <input class="hidden" name="id" id="id"  th:value="${session.questionByIssueId.getId()}">
+                <input class="hidden" name="id" id="id"  th:value="${session.issue.getId()}">
                 <br>
                 <div>
-                    <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.questionByIssueId.getDescription()}"></textarea>
+                    <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.issue.getDescription()}"></textarea>
                 </div><br>
                 <div>
                     <button type="submit" class="btn btn-info " >提交</button>

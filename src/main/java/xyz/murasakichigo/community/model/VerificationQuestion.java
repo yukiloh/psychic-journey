@@ -1,4 +1,4 @@
-package xyz.murasakichigo.community.dto;
+package xyz.murasakichigo.community.model;
 
 public class VerificationQuestion {
 

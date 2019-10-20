@@ -1,15 +1,15 @@
-package xyz.murasakichigo.community.dto;
+package xyz.murasakichigo.community.model;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-/*dto = data transfer object,数据传输模型*/
+/*model = data transfer object,数据传输模型*/
 /*用于封装传输git的access token*/
 @Component
 @ConfigurationProperties(prefix = "github") /*用于读取yml中的github数据*/
-public class AccessTokenDTO implements Serializable {
+public class AccessToken implements Serializable {
     private String client_id;
     private String client_secret;
     private String code;
