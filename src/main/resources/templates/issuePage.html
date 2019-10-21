@@ -35,32 +35,32 @@
             </div>
             <hr>
             <h3>
-                <div th:text="${session.issue.getTitle()}"></div>
+                <div th:text="${issue.getTitle()}"></div>
 
             </h3>
             <div>
                 <span>作者:</span>
-                <span th:text="${session.issue.getAuthor_name()}"></span>
+                <span th:text="${issue.getAuthor_name()}"></span>
                 <span>&nbsp;创建时间:</span>
-                <span th:text="${session.issue.getGmt_create()}"></span>
-                <span th:if="${session.issue.getView_count() != null}">  <!--当阅读数为0时不显示-->
-                    <span th:text="${'&nbsp;&nbsp;阅读数：'+session.issue.getView_count()}"></span>
+                <span th:text="${issue.getGmt_create()}"></span>
+                <span th:if="${issue.getView_count() != null}">  <!--当阅读数为0时不显示-->
+                    <span th:text="${'&nbsp;&nbsp;阅读数：'+issue.getView_count()}"></span>
                 </span>
 
             </div><br>
-            <div th:text="${session.issue.getDescription()}"></div><br>
+            <div th:text="${issue.getDescription()}"></div><br>
             <!--显示图片-->
-            <div th:if="${session.imgAddr != null}">
-                <img th:src="'/upload/'+${session.imgAddr}" width="350" class="img-thumbnail "/>
+            <div th:if="${imgAddr != null}">
+                <img th:src="'/upload/'+${imgAddr}" width="350" class="img-thumbnail "/>
             </div>
             <!--显示tag-->
-<!--            <div class="label label-info middle-font-size" th:text="${session.issue.getTag()}"></div>-->
+<!--            <div class="label label-info middle-font-size" th:text="${issue.getTag()}"></div>-->
 
             <!--th:if的用法，如果单独使用th：text会出现空指针报错-->
             <div>
                 <span th:if="${session.communityUser != null}"><br>
                     <!--实际页面还是会留有span标签，考虑使用hidden-->
-                    <a th:href="'/profile/issueEdit/'+${session.issue.getId()}" th:text="${(session.issue.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑内容':''}"></a>
+                    <a th:href="'/profile/issueEdit/'+${issue.getId()}" th:text="${(issue.getAuthor_user_id()) == (session.communityUser.getId()) ? '编辑内容':''}"></a>
                 </span>
             </div>
 
@@ -78,7 +78,7 @@
                     <div th:if="${session.communityUser != null}">
                         <form method="post" action="/profile/replySubmit">
                             <div>
-                                <input class="hidden" name="parent_id" th:value="${session.issue.getId()}">
+                                <input class="hidden" name="parent_id" th:value="${issue.getId()}">
                                 <input class="hidden" name="critic_id" th:value="${session.communityUser.getId()}">
                                 <textarea class="form-control" name="reply_description" style="resize:none" cols="40" rows="5" th:placeholder="'回复...（500字以内）'"></textarea><br>
                                 <button type="submit" class="btn btn-info" href="/profile/replySubmit">提交</button>
@@ -90,8 +90,8 @@
             <hr>
             <!--回复展示区-->
             <div>
-                <div th:if="${session.replyList != null && session.replyList.size() > 0}">
-                    <div th:each="reply:${session.replyList}">
+                <div th:if="${replyList != null && replyList.size() > 0}">
+                    <div th:each="reply:${replyList}">
                         <ul class="media-list">
                             <li class="media">
                                 <div class="media-left">

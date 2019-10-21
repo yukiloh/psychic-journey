@@ -4,10 +4,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import xyz.murasakichigo.community.model.CommunityUser;
 
 import javax.servlet.http.HttpServletRequest;
@@ -31,10 +29,8 @@ public class TestController {
             return "success";
     }
 
-    @GetMapping("/showImg")
-    public String TestFileUpload(HttpServletRequest request){
-
-
+    @GetMapping("/test")
+    public String TestFileUpload(){
         return "test";
     }
 
@@ -47,8 +43,6 @@ public class TestController {
 
         return username;
     }
-
-
 
     @GetMapping("/testGithubUserForShiro")
     public @ResponseBody String TestGithubUserForShiro(){
@@ -64,6 +58,27 @@ public class TestController {
         subject.login(token);
     }
 
+
+
+    @PostMapping("/testCheckbox")
+    public @ResponseBody String TestCheckbox(
+            @RequestParam(name = "hiddenInput") String isDelete,
+            @RequestParam(name = "title") String title
+            ){
+        System.out.println("test");
+        if ("on".equals(isDelete)){
+            System.out.println(isDelete);
+        }
+        System.out.println(title);
+        return "test";
+    }
+
+    @PostMapping("/testUpload")
+    public @ResponseBody String TestUpload(MultipartFile upload){
+        String name = upload.getName();
+        System.out.println(name);
+        return "success:"+name;
+    }
 
 
 }

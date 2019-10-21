@@ -32,7 +32,7 @@
                 <h3><span class="glyphicon glyphicon-search" aria-hidden="true">&nbsp;<strong>搜索</strong></span></h3>
             </div>
             <hr>
-            <div th:each="issue:${session.issueList}">
+            <div th:each="issue:${issueList}">
                 <div class="media">
                     <div class="media-left">
                         <div href="#">
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="media-body">
-                        <a th:href="${'/publish/issue'}+${issue.getId()}">
+                        <a th:href="${'/publish/issue/'}+${issue.getId()}">
                             <h4 class="media-heading" th:text="${issue.getTitle()}"></h4>
 
                         </a>
@@ -62,32 +62,32 @@
             <nav aria-label="Page navigation" class="navbar-right right-push">
                 <ul class="pagination">
                     <li>
-                        <a th:href="@{'search?keyword='+${session.keyword}+'&page='+${1}}">
+                        <a th:href="@{'search?keyword='+${keyword}+'&page='+${1}}">
                             <span aria-hidden="true">TOP</span>
                         </a>
                     </li>
                     <li>        <!--使用二元+th：href，决定分页逻辑-->
-                        <a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-1 >=1 ? (session.page)-1:1}}" aria-label="Previous">
+                        <a th:href="@{'search?keyword='+${keyword}+'&page='+${(page)-1 >=1 ? (page)-1:1}}" aria-label="Previous">
                             <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                    <li th:class="${(session.page)-4 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-4}}" th:text="${(session.page)-4}"></a></li>
-                    <li th:class="${(session.page)-3 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-3}}" th:text="${(session.page)-3}"></a></li>
-                    <li th:class="${(session.page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-2}}" th:text="${(session.page)-2}"></a></li>
-                    <li th:class="${(session.page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${(session.page)-1}}" th:text="${(session.page)-1}"></a></li>
-                    <li th:class="'active'"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page}}" th:text="${session.page}"></a></li>
-                    <li th:class="${(session.page)+1 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+1}}" th:text="${session.page+1}"></a></li>
-                    <li th:class="${(session.page)+2 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+2}}" th:text="${session.page+2}"></a></li>
-                    <li th:class="${(session.page)+3 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+3}}" th:text="${session.page+3}"></a></li>
-                    <li th:class="${(session.page)+4 <= session.maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.page+4}}" th:text="${session.page+4}"></a></li>
+                    <li th:class="${(page)-4 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${keyword}+'&page='+${(page)-4}}" th:text="${(page)-4}"></a></li>
+                    <li th:class="${(page)-3 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${keyword}+'&page='+${(page)-3}}" th:text="${(page)-3}"></a></li>
+                    <li th:class="${(page)-2 >= 1 ? '':'hidden'} "><a th:href="@{'search?keyword='+${keyword}+'&page='+${(page)-2}}" th:text="${(page)-2}"></a></li>
+                    <li th:class="${(page)-1 >= 1 ? '':'hidden'}"><a th:href="@{'search?keyword='+${keyword}+'&page='+${(page)-1}}" th:text="${(page)-1}"></a></li>
+                    <li th:class="'active'"><a th:href="@{'search?keyword='+${keyword}+'&page='+${page}}" th:text="${page}"></a></li>
+                    <li th:class="${(page)+1 <= maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${keyword}+'&page='+${page+1}}" th:text="${page+1}"></a></li>
+                    <li th:class="${(page)+2 <= maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${keyword}+'&page='+${page+2}}" th:text="${page+2}"></a></li>
+                    <li th:class="${(page)+3 <= maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${keyword}+'&page='+${page+3}}" th:text="${page+3}"></a></li>
+                    <li th:class="${(page)+4 <= maxPage ? '':'hidden'}"><a th:href="@{'search?keyword='+${keyword}+'&page='+${page+4}}" th:text="${page+4}"></a></li>
 
                     <li >
-                        <a th:href="@{'search??keyword='+${session.keyword}+'&page='+${(session.page)+1 <= session.maxPage ? (session.page)+1:(session.maxPage)}}" aria-label="Next">
+                        <a th:href="@{'search??keyword='+${keyword}+'&page='+${(page)+1 <= maxPage ? (page)+1:(maxPage)}}" aria-label="Next">
                             <span aria-hidden="true">&raquo;</span>
                         </a>
                     </li>
                     <li>
-                        <a th:href="@{'search?keyword='+${session.keyword}+'&page='+${session.maxPage}}">
+                        <a th:href="@{'search?keyword='+${keyword}+'&page='+${maxPage}}">
                             <span aria-hidden="true">END</span>
                         </a>
                     </li>

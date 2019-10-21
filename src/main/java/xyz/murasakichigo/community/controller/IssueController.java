@@ -4,6 +4,7 @@ package xyz.murasakichigo.community.controller;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,12 +45,12 @@ public class IssueController {
 //    private RedisUtil redisUtil;
 
     @GetMapping("/publish/issue/{id}")
-    public String findIssueByIssueId(HttpServletRequest request,
+    public String findIssueByIssueId(Model model,
             /*使用{param} + @PathVariable的方法来接收地址栏的某个特定变量*/
                                      @PathVariable String id) {
         CommunityIssue issue = issueMapper.findIssueByUserId(id);        /*直接调用数据库*/
 //        CommunityIssue issue = redisUtil.findQIssueByIssueIdByRedis(id);        /*通过redis缓存；因为阅读数会写入数据库，暂时注释*/
-        request.getSession().setAttribute("issue", issue);
+        model.addAttribute("issue", issue);
 
         /*累加阅读数*/
         accumulateView(issue,id);
@@ -57,13 +58,13 @@ public class IssueController {
         /*显示图片*/
         String imgAddr = issueImgMapper.findIssueImgById(Integer.valueOf(id));
         if (!"null".equals(imgAddr)) {
-            request.getSession().setAttribute("imgAddr",imgAddr);
+            model.addAttribute("imgAddr",imgAddr);
         }
 
         /*读取回复*/
         List<CommunityReply> communityReplyList = replyMapper.findReplyByIssueId(id);
         if (communityReplyList != null) {
-            request.getSession().setAttribute("replyList", communityReplyList);
+            model.addAttribute("replyList", communityReplyList);
         }
         return "issuePage";
     }
@@ -105,7 +106,7 @@ public class IssueController {
         Integer maxIssueId = issueMapper.findMaxIssueId();
 
         /*如果upload不为空则上传*/
-        if (!upload.isEmpty()) {
+        if (upload != null && !upload.isEmpty()) {
             uploadToServer(upload,maxIssueId);          /*上传至本地服务器*/
 //            uploadToFtp(upload,request,maxIssueId);   /*上传至ftp服务器*/
         }
@@ -162,35 +163,50 @@ public class IssueController {
     /*问题修改*/
     @GetMapping("/profile/issueEdit/{id}")
     public String issueEdit(@PathVariable String id,
-                            HttpServletRequest request) {
+                            Model model) {
         /*验证是否issue作者ID与登陆者相同*/
-        CommunityUser communityUser = (CommunityUser) request.getSession().getAttribute("communityUser");
-        if (communityUser.getId().equals(issueMapper.findIssueByUserId(id).getAuthor_user_id())) {
+        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
+        if (user.getId().equals(issueMapper.findIssueByUserId(id).getAuthor_user_id())) {
             CommunityIssue issue = issueMapper.findIssueByUserId(id);
-            request.getSession().setAttribute("issue",issue);
+            model.addAttribute("issue",issue);
+            String imgAddr = issueImgMapper.findIssueImgById(Integer.valueOf(id));
+            if (!"null".equals(imgAddr)) {
+                model.addAttribute("imgAddr",imgAddr);
+            }
             return "issueEdit";
         }else {
             return "error";
         }
     }
 
-    /*修改后submit按钮*/
+    /*修改后submit*/
     @PostMapping("/profile/issueUpdate")
     public String postIssue(
             @RequestParam(name = "title") String title,
             @RequestParam(name = "id") Integer id,
-            @RequestParam(name = "description") String description
-//            @RequestParam(name = "tag") String tag
-            ) {
+            @RequestParam(name = "description") String description,
+//            @RequestParam(name = "tag") String tag,
+            @RequestParam(name = "flag") String isDelete,
+            MultipartFile upload) {
         CommunityIssue communityIssue = new CommunityIssue();
         communityIssue.setTitle(title);
         communityIssue.setDescription(description);
 //        communityIssue.setTag(tag);
         communityIssue.setId(id);
         communityIssue.setGmt_modified(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(System.currentTimeMillis()));
-
         issueMapper.updateIssue(communityIssue);
 
+        /*如果upload不为空则处理上传的图片*/
+        if (upload != null && !upload.isEmpty()) {
+            /*如果是替换上传的图片*/
+            if ("on".equals(isDelete)){
+                issueImgMapper.markDeletedImg(String.valueOf(id));
+                uploadToServer(upload,id);
+            /*如果是新上传文件*/
+            }else {
+                uploadToServer(upload,id);
+            }
+        }
         return "redirect:/homepage";
     }
 
@@ -200,32 +216,13 @@ public class IssueController {
     public String issueDelete(@PathVariable String id){
         CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
         if (user.getId().equals(issueMapper.findUserIdByIssueId(id))) {
-            System.out.println("get user");
             issueMapper.deleteIssueByIssueId(id);
-            System.out.println("del issue");
             replyMapper.deleteReplyByParentId(id);
-            System.out.println("del reply");
             issueImgMapper.markDeletedImg(id);  /*标记被删除的问题*/
-            System.out.println("mark img");
             return "redirect:/homepage";
         }else return "error";
-
-
-//        return "redirect:/homepage";
     }
 
-//    @PostMapping("/profile/issueEdit/delete.do")
-//    public String IssueDeleteDo(@RequestParam(name = "id") String id){
-//        CommunityUser user = (CommunityUser) SecurityUtils.getSubject().getPrincipal();
-//        if (user.getId().equals(issueMapper.findUserIdByIssueId(id))) {
-//            issueMapper.deleteIssueByIssueId(id);
-//            replyMapper.deleteReplyByParentId(id);
-//            issueImgMapper.markDeletedImg(id);  /*标记被删除的问题*/
-//
-//            return "redirect:/homepage";
-//        }else return "error";
-//
-//    }
 
 //    ================================================================================================
     /*回复按钮*/
@@ -261,13 +258,13 @@ public class IssueController {
 //    ================================================================================================
     /*问题搜索*/
     @GetMapping("/search")
-    public String search(HttpServletRequest request,@RequestParam(name = "keyword") String keyword) {
+    public String search(HttpServletRequest request,Model model,@RequestParam(name = "keyword") String keyword) {
         /*展示搜索页面内容*/
         String page = request.getParameter("page");
         if (page == null || page.length() == 0) {
             page = "1";
         }
-        showSearchPage(request,page,keyword);
+        showSearchPage(model,page,keyword);
         return "search";
     }
 
@@ -284,13 +281,13 @@ public class IssueController {
 
     }
 
-    private void showSearchPage(HttpServletRequest request, String page, String keyword){
+    private void showSearchPage(Model model, String page, String keyword){
         Integer issueCount = issueMapper.countIssueByKeyword(keyword);
         int[] result = new CountPageUtil().countPaging(issueCount, page);
         List<CommunityIssue> issueList = issueMapper.findIssueByKeyword(keyword,result[2]);
-        request.getSession().setAttribute("issueList",issueList);
-        request.getSession().setAttribute("page",result[1]);
-        request.getSession().setAttribute("maxPage",result[0]);
-        request.getSession().setAttribute("keyword",keyword);
+        model.addAttribute("issueList",issueList);
+        model.addAttribute("page",result[1]);
+        model.addAttribute("maxPage",result[0]);
+        model.addAttribute("keyword",keyword);
     }
 }

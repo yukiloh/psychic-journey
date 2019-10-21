@@ -43,9 +43,11 @@
         function isDeleted() {
             if ($("#isDelete").is(':checked')) {
                 $("#file").attr("type","file");
+                $("#hiddenInput").attr("value","on");
                 alert("删除的图片无法恢复,谨慎操作!!");
             }else {
                 $("#file").attr("type","hidden");
+                $("#hiddenInput").attr("value","off");
                 $("#file").val("");
                 // alert("不删除")
             }
@@ -59,14 +61,14 @@
             if(!/.(gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)$/.test(file)){
                 alert("图片类型必须为gif,jpeg,jpg,png,bmp");
                 $("#file").val("");
-                attr("disabled",true);
+                $("#submit").attr("disabled",true);
                 return false;
             }else{
                 // alert((ele.files[0].size).toFixed(2));    /*返回Byte(B),保留小数点后两位*/
                 if(((ele.files[0].size).toFixed(2))>=(2*1024*1024)){
                     alert("请上传小于2M的图片");
                     $("#file").val("");
-                    attr("disabled",true);
+                    $("#submit").attr("disabled",true);
                     return false;
                 }
             }
@@ -83,7 +85,7 @@
     <div class="row">
 
         <div class="col-md-8">
-            <form method="post" action="/profile/issueUpdate">
+            <form method="post" action="/profile/issueUpdate" enctype="multipart/form-data">
                 <div>
 
                     <h3><span class="glyphicon glyphicon-tags" aria-hidden="true">&nbsp;<strong>编辑</strong></span></h3>
@@ -93,17 +95,44 @@
                     <h4>
                         <strong>问题标题</strong><br>
                     </h4>
-                    <input type="text" class="form-control" name="title"  placeholder="你的问题..." th:value="${session.issue.getTitle()}">
+                    <input type="text" class="form-control" name="title"  placeholder="你的问题..." th:value="${issue.getTitle()}">
                 </div>
-                <input class="hidden" name="id" id="id"  th:value="${session.issue.getId()}">
+                <input class="hidden" name="id" id="id"  th:value="${issue.getId()}">
                 <br>
                 <div>
-                    <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.issue.getDescription()}"></textarea>
+                    <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${issue.getDescription()}"></textarea>
                 </div><br>
-                <div th:if="${session.imgAddr != null}">
-                    <a href="http://192.168.1.90:28080/upload/fe3e90c1-3399-4ce2-a8d9-67d56fae9f34_208382.gif" target="_parent">查看图片</a>
+                <div th:if="${imgAddr != null}">
+                    <a th:href = "'/upload/'+${imgAddr}" target="_blank">查看图片</a>
                     删除图片<input  type="checkbox" id="isDelete" name="isDelete" onchange="Javascript:isDeleted()"/>
-                    <input  type="hidden" class="upload" id="file" name="file" onchange="Javascript:validate_img(this);">
+                    <input  type="hidden" class="upload" id="file" name="upload" onchange="Javascript:validate_img(this);">
+                </div>
+                <div th:if="${imgAddr == null}">
+                    上传图片<input  type="file" class="upload" name="upload" onchange="Javascript:validate_img(this);">
+                </div>
+                <span class="attachmentFont">允许格式：jpg,png,gif；附件大小上限2M</span>
+                <input type="hidden" id="hiddenInput" name="flag" value="off">
+                <br>
+                <div>
+                    <div  >
+                        <span class="btnn" id="addTag_btn">
+                            <span class="glyphicon glyphicon-plus addTag"></span>
+                            <span class="addTag" >添加一个好看但是没用的标签&nbsp;&nbsp;</span>
+                            <span id="addTag_span" style="display: none" class="tagLocation"></span>
+                        </span>
+                        <div id="tags" class="tagLocation" style="display: none" >
+                            <!--                            <input class="input-group"><br>-->
+                            <span id="tag1"><button type="button" class="btn-xs btn-info" >老铁</button></span>
+                            <span id="tag2"><button type="button" class="btn-xs btn-info" >双击</button></span>
+                            <span id="tag3"><button type="button" class="btn-xs btn-info" >666</button></span>
+                            <span id="tag4"><button type="button" class="btn-xs btn-info" >没毛病</button></span>
+                        </div>
+
+                    </div>
+                    <br>
+                    <!--                    <input type="text" class="form-control" placeholder="标签..."  id="tag" name="tag"/><br>-->
+
+
                 </div><br>
                 <div class="nobr">
                     <button type="submit" class="btn btn-info " >提交</button>
@@ -159,7 +188,35 @@
 
 
 <script>
+    /*tag栏获取焦点显示tags，失去焦点隐藏tags*/
+    var addTagBtn = $("#addTag_btn");
+    var tags = $("#tags");
+    addTagBtn.click(function(){
+        tags.toggle("normal");
+        $("#addTag_span").toggle();
+    });
 
+    var tag1 = $("#tag1");
+    tag1.click(function () {
+        $("#addTag_span").append(tag1.clone(),"&nbsp;");
+        tag1.hide("fast");
+
+    });
+    var tag2 = $("#tag2");
+    tag2.click(function () {
+        $("#addTag_span").append(tag2.clone(),"&nbsp;");
+        tag2.hide("fast");
+    });
+    var tag3 = $("#tag3");
+    tag3.click(function () {
+        $("#addTag_span").append(tag3.clone(),"&nbsp;");
+        tag3.hide("fast");
+    });
+    var tag4 = $("#tag4");
+    tag4.click(function () {
+        $("#addTag_span").append(tag4.clone(),"&nbsp;");
+        tag4.hide("fast");
+    });
 
 
 
