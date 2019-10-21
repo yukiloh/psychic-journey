@@ -38,6 +38,42 @@
                 alert("明智之举");
             }
         }
+
+        /*检查是否被标记删除*/
+        function isDeleted() {
+            if ($("#isDelete").is(':checked')) {
+                $("#file").attr("type","file");
+                alert("删除的图片无法恢复,谨慎操作!!");
+            }else {
+                $("#file").attr("type","hidden");
+                $("#file").val("");
+                // alert("不删除")
+            }
+        }
+
+        /*验证上传图片*/
+        function validate_img(ele){
+            //alert((ele.files[0].size/(1024*1024)).toFixed(2));    /*返回 KB，保留小数点后两位*/
+            var file = ele.value;
+
+            if(!/.(gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)$/.test(file)){
+                alert("图片类型必须为gif,jpeg,jpg,png,bmp");
+                $("#file").val("");
+                attr("disabled",true);
+                return false;
+            }else{
+                // alert((ele.files[0].size).toFixed(2));    /*返回Byte(B),保留小数点后两位*/
+                if(((ele.files[0].size).toFixed(2))>=(2*1024*1024)){
+                    alert("请上传小于2M的图片");
+                    $("#file").val("");
+                    attr("disabled",true);
+                    return false;
+                }
+            }
+            $("#submit").removeAttr("disable");
+            return true;
+            // alert("图片通过");
+        }
     </script>
 </head>
 <body>
@@ -64,9 +100,14 @@
                 <div>
                     <textarea class="form-control" rows="9" name="description" style="resize:none" placeholder="问题详述..." th:text="${session.issue.getDescription()}"></textarea>
                 </div><br>
+                <div th:if="${session.imgAddr != null}">
+                    <a href="http://192.168.1.90:28080/upload/fe3e90c1-3399-4ce2-a8d9-67d56fae9f34_208382.gif" target="_parent">查看图片</a>
+                    删除图片<input  type="checkbox" id="isDelete" name="isDelete" onchange="Javascript:isDeleted()"/>
+                    <input  type="hidden" class="upload" id="file" name="file" onchange="Javascript:validate_img(this);">
+                </div><br>
                 <div class="nobr">
                     <button type="submit" class="btn btn-info " >提交</button>
-                    <button type="button" id="deleteIssue" onclick = "firm()" href="https://www.baidu.com/" class="btn btn-danger pull-right" >删除问题</button>
+                    <button type="button" id="deleteIssue" onclick = "firm()" class="btn btn-danger pull-right" >删除问题</button>
                     <!--隐藏上传按钮-->
 <!--                    <span>-->
 <!--                        &lt;!&ndash;上传功能暂时禁用&ndash;&gt;-->
@@ -121,31 +162,6 @@
 
 
 
-    $(function () {
-
-            // $(function () {
-            //     var answer = $("#input").val();
-            //     var correct_answer = $("#correct_answer").html();
-            //     // alert(correct_answer);           /*验证获取到correct_answer(从p标签)*/
-            //     var result = answer === correct_answer;
-            //     if (result) {
-            //         // alert(result == true ? '答对啦!':'再来一次');
-            //         $("#hint").html("回答正确");
-            //         $("#submit").attr("disabled",false);
-            //         // $("#submit").removeAttr("disabled"); /*设置attr的2种方式*/
-            //     }else {
-            //         $("#hint").html("你是猪吧¿");
-            //         $("#submit").attr("disabled",true);
-            //         // alert("你是猪吧")
-            //     }
-            //
-            // });
-        // })
-    })
-
-    function openResult(){    /* 绑定事件 */
-
-    }
 
 </script>
 
