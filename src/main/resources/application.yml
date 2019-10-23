@@ -87,10 +87,10 @@ ftp:
 
 file:
   staticAccessPath: /upload/**
-  ##linux path    ①nas；best choice
-  uploadFolder: /share/homes/onlyForFtp/upload/
-#                ②docker；
-#  uploadFolder: /home/share/upload/
+  ##linux path    ①nas；只适用于ftp上传
+#  uploadFolder: /share/homes/onlyForFtp/upload/
+#                ②docker；推荐
+  uploadFolder: /home/share/upload/
 
   ##windows path desktop
 #  uploadFolder: E://Code/Java/SpringBoot_Project_Community/target/classes/static/upload/
