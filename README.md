@@ -1,15 +1,29 @@
-基于springboot、bootstrap、thymeleaf、mysql/mariaDB、redis开发的一个简单论坛项目；
+#### 项目概述
+一款社交问答网站，用户进行话题或问题的发起，与其他用户进行讨论；
+后端框架基于Spring Boot，数据库使用MariaDB（MySQL）&Redis，登陆认证使用Shiro + GitHub_OAuth授权；
+前端使用Bootstrap框架、模板引擎使用Thymeleaf；
+
+
+
+====以下为备注====
+
+
+
+###移至其他项目需要更改的内容
+
+application.yml中，数据库信息和github登陆信息
+
+messages.properties中，用于login.html登陆github认证的重定向url
 
 
 
 
-
-###Linux上关于复制项目的操作
+#### Linux上关于复制项目的操作
 克隆git项目
 
 git clone https://....
 
-初始化
+Maven初始化
 
 mvn clean compile package
 
@@ -21,23 +35,13 @@ git pull origin master
 
 mvn spring-boot:run
 
-###移至其他项目需要更改的内容
-
-application.yml中，数据库信息和github登陆信息
-
-messages.properties中，用于login.html登陆github认证的重定向url
-
-
-
-
-### ----以下弃用----
-### 关于远程服务器上得mysql(2019年10月6日-已禁用)
+#### 关于远程服务器上的MySQL(2019年10月6日-已禁用)
 
 新增一个remote账号
 
-create user onlyforremote@'%' identified by 'TAof2P1OBG24OG!P3iQi';
+create user user@'%' identified by 'TAof2P1OBG24OG!P3iQi';
 
-修改了密码
+修改密码
 
 ALTER USER 'onlyforremote'@'%' IDENTIFIED WITH mysql_native_password BY '24OG!P3iQi';
 
