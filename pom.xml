@@ -9,14 +9,11 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>xyz.murasakichigo.community</groupId>
-    <!--demo名称可修改-->
-    <artifactId>demo</artifactId>
+    <artifactId>community</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <modelVersion>4.0.0</modelVersion>
 
-
-    <!--    <login>SpringBootProject_Community</login>-->
     <description>Demo project for Spring Boot</description>
 
     <properties>
@@ -40,15 +37,14 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-<!--            <version>2.1.7.RELEASE</version>-->
         </dependency>
-
 
         <!--用于解析thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
+
         <!--jdbc-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -74,25 +70,10 @@
             <optional>true</optional>
         </dependency>
 
-        <!--h2小型数据库-->
-<!--        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.199</version>
-        </dependency>-->
-
-        <!--mysql-->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.17</version>
-        </dependency>
-
         <!--maria-->
         <dependency>
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
-<!--            <version>2.2.6</version>-->
         </dependency>
 
         <dependency>
@@ -101,26 +82,12 @@
             <version>2.0.1</version>
         </dependency>
 
-
         <!--Jackson kotlin的支持（序列化）-->
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
             <artifactId>jackson-module-kotlin</artifactId>
             <version>2.9.7</version>
         </dependency>
-
-<!--        &lt;!&ndash;Aspect依赖&ndash;&gt;
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-            <version>5.1.9.RELEASE</version>
-        </dependency>-->
-
-<!--        <dependency>
-            <groupId>com.huaban</groupId>
-            <artifactId>jieba-analysis</artifactId>
-            <version>1.0.2</version>
-        </dependency>-->
 
         <!--redis-->
         <dependency>
