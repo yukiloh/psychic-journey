@@ -50,16 +50,16 @@ public class RedisIpCheckerInterceptor implements HandlerInterceptor {
     private final RedisUtil redisUtil;
 
     /*检查访问次数,当超过次数后会跳转至baidu*/
-    private Boolean checkAccessCounts(HttpServletRequest request) {
-        Integer maxCount = 1000;    /*可能因为拦截器的原因,每次ip count + 2*/
+        private Boolean checkAccessCounts(HttpServletRequest request) {
+            Integer maxCount = 1000;    /*可能因为拦截器的原因,每次ip count + 2*/
 
-        String ipAddr = request.getRemoteAddr();/*获取用户地址*/
-        Integer counts = redisUtil.findIPByRedis(ipAddr);
-        if (counts >= maxCount) {
-            /*当超出最大访问次数后更新数据库*/
-            ipMapper.updateIp(ipAddr,maxCount);
-            return false;
-        }else return true;
+            String ipAddr = request.getRemoteAddr();/*获取用户地址*/
+            Integer counts = redisUtil.findIPByRedis(ipAddr);
+            if (counts >= maxCount) {
+                /*当超出最大访问次数后更新数据库*/
+                ipMapper.updateIp(ipAddr,maxCount);
+                return false;
+            }else return true;
 
         /*原读取数据库部分*/
 //            Integer count = ipMapper.findCountByIp(ipAddr);

@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 public class SessionInterceptor implements HandlerInterceptor {
 
 //    private final IUserMapper userMapper;
-
 //    public SessionInterceptor(IUserMapper userMapper) {
 //        this.userMapper = userMapper;
 //    }

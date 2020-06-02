@@ -47,8 +47,8 @@ spring:
   # redis配置
   redis:
     host: 192.168.1.90
-    port: 36379
-    password: XqQjF&80gXZANz
+    port: 6379
+    password: MuMD02Hov6Xk
     jedis:
       pool:
         max-active: 8   # 连接池最大空闲
